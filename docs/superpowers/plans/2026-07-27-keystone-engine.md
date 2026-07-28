@@ -84,8 +84,8 @@
   },
   "files": ["skills", "extensions", "engine", "README.md", "LICENSE"],
   "scripts": {
-    "test": "node --test test/engine/",
-    "test:run": "node --test --test-reporter=spec test/engine/"
+    "test": "node --test test/engine/*.mjs",
+    "test:run": "node --test --test-reporter=spec test/engine/*.mjs"
   },
   "dependencies": {
     "playwright-core": "^1.48.0"
@@ -403,17 +403,27 @@ export function parseCss(css) {
       i++
       continue
     }
-    // Rule: selector { decl; decl; }
-    const ruleOpen = line.match(/^\s*(.+?)\s*\{\s*$/)
+    // Rule: selector { ... } (multi-line OR single-line inline)
+    const ruleOpen = line.match(/^\s*(.+?)\s*\{\s*(.*)\}\s*$/)
     if (ruleOpen) {
       const selector = ruleOpen[1].trim()
       const startLine = i + 1
       const declarations = []
-      i++
-      while (i < lines.length && !lines[i].includes("}")) {
-        const dm = lines[i].match(/^\s*([a-z-]+)\s*:\s*(.+?)\s*;?\s*$/)
-        if (dm) declarations.push({ prop: dm[1], value: dm[2], line: i + 1 })
+      const inlineBody = ruleOpen[2]
+      if (inlineBody) {
+        // single-line inline rule: parse declarations from the inline body
+        for (const d of inlineBody.split(";")) {
+          const dm = d.match(/^\s*([a-z-]+)\s*:\s*(.+?)\s*$/)
+          if (dm) declarations.push({ prop: dm[1], value: dm[2], line: startLine })
+        }
+      } else {
+        // multi-line rule: collect declarations until closing }
         i++
+        while (i < lines.length && !lines[i].includes("}")) {
+          const dm = lines[i].match(/^\s*([a-z-]+)\s*:\s*(.+?)\s*;?\s*$/)
+          if (dm) declarations.push({ prop: dm[1], value: dm[2], line: i + 1 })
+          i++
+        }
       }
       rules.push({ selector, declarations, line: startLine })
       i++

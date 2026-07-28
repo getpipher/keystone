@@ -1,0 +1,22 @@
+<!-- engine/report-template.html -->
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Keystone gate report</title>
+<style>
+  body { font: 14px/1.5 system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #111; }
+  h1 { font-size: 1.1rem; }
+  .summary { font-size: 1.4rem; margin: 1rem 0; }
+  .pass { color: #15803d; } .fail { color: #b91c1c; }
+  table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #e5e5e5; vertical-align: top; }
+  td.evidence { font-family: ui-monospace, monospace; font-size: 12px; }
+  td.fix { color: #555; }
+</style></head><body>
+<h1>Keystone · gate report · {{timestamp}}</h1>
+<div class="summary">PASS <span class="pass">{{pass}}</span> / {{total}} · FAIL <span class="fail">{{fail}}</span> / {{total}}</div>
+<table>
+<thead><tr><th>#</th><th>Gate</th><th>Result</th><th>Evidence</th><th>Fix</th><th>File:Line</th></tr></thead>
+<tbody>
+{{rows}}
+</tbody>
+</table>
+</body></html>

@@ -84,8 +84,8 @@
   },
   "files": ["skills", "extensions", "engine", "README.md", "LICENSE"],
   "scripts": {
-    "test": "node --test test/engine/*.mjs",
-    "test:run": "node --test --test-reporter=spec test/engine/*.mjs"
+    "test": "node --test test/engine/*.mjs test/engine/gates/*.mjs",
+    "test:run": "node --test --test-reporter=spec test/engine/*.mjs test/engine/gates/*.mjs"
   },
   "dependencies": {
     "playwright-core": "^1.48.0"

@@ -1,0 +1,7 @@
+/* test/fixtures/full-fail.css */
+/* Keystone · macrostructure: Bento Grid · theme: Cobalt · nav: N5 · footer: Ft5 · gates: 0/58 */
+:root { --color-ink: #000; --color-accent: oklch(60% 0.15 250); --font-display: "Inter"; --color-surface-2: oklch(95% 0 0); }
+.features { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; }
+.section__head { display: grid; grid-template-columns: 1fr 2fr; }
+.btn { color: #c0392b; } .btn:hover { color: blue; }

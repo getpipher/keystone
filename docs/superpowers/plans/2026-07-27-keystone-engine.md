@@ -84,8 +84,8 @@
   },
   "files": ["skills", "extensions", "engine", "README.md", "LICENSE"],
   "scripts": {
-    "test": "node --test test/engine/",
-    "test:run": "node --test --test-reporter=spec test/engine/"
+    "test": "node --test test/engine/*.mjs test/engine/gates/*.mjs",
+    "test:run": "node --test --test-reporter=spec test/engine/*.mjs test/engine/gates/*.mjs"
   },
   "dependencies": {
     "playwright-core": "^1.48.0"
@@ -376,54 +376,42 @@ Expected: FAIL — module not found.
 
 ```js
 // engine/parse-css.mjs
+import postcss from "postcss"
 
 /**
- * Minimal CSS parser. Extracts :root/[data-theme] token blocks and all other rules.
- * Does NOT handle nested rules fully (treats @media contents as flat rules — fine for our detectors).
+ * Parse CSS via postcss (the standard CSS parser) and project into the
+ * {tokens, rules} shape the gate detectors consume.
+ *   tokens: declarations inside :root / [data-theme] blocks
+ *   rules:  all other rules, with @media (and other at-rules) flattened.
  * @param {string} css
  * @returns {{tokens: {name:string, value:string, line:number}[], rules: {selector:string, declarations:{prop:string,value:string,line:number}[], line:number}[]}}
  */
 export function parseCss(css) {
+  const root = postcss.parse(css)
   const tokens = []
   const rules = []
-  const lines = css.split("\n")
-  let i = 0
-  while (i < lines.length) {
-    const line = lines[i]
-    const tokenMatch = line.match(/^\s*(--[a-z-]+)\s*:\s*(.+?)\s*;?\s*$/)
-    // Token blocks: collect while inside :root / [data-theme]
-    const blockOpen = line.match(/(^\s*:root\b|^\s*\[data-theme[^\]]*\])\s*\{/)
-    if (blockOpen) {
-      i++
-      while (i < lines.length && !lines[i].includes("}")) {
-        const tm = lines[i].match(/^\s*(--[a-z-]+)\s*:\s*(.+?)\s*;?\s*$/)
-        if (tm) tokens.push({ name: tm[1], value: tm[2], line: i + 1 })
-        i++
+  const isTokenBlock = (selector) => /^:root\b/.test(selector.trim()) || /^\[data-theme/i.test(selector.trim())
+  function walk(container) {
+    for (const node of container.nodes) {
+      if (node.type === "rule") {
+        const line = node.source?.start?.line ?? 0
+        const declarations = node.nodes.filter((n) => n.type === "decl").map((n) => ({ prop: n.prop, value: n.value, line: n.source?.start?.line ?? line }))
+        if (isTokenBlock(node.selector)) {
+          for (const d of declarations) tokens.push({ name: d.prop, value: d.value, line: d.line })
+        } else {
+          rules.push({ selector: node.selector, declarations, line })
+        }
+      } else if (node.type === "atrule") {
+        if (node.nodes && node.nodes.length) walk(node)
       }
-      i++
-      continue
     }
-    // Rule: selector { decl; decl; }
-    const ruleOpen = line.match(/^\s*(.+?)\s*\{\s*$/)
-    if (ruleOpen) {
-      const selector = ruleOpen[1].trim()
-      const startLine = i + 1
-      const declarations = []
-      i++
-      while (i < lines.length && !lines[i].includes("}")) {
-        const dm = lines[i].match(/^\s*([a-z-]+)\s*:\s*(.+?)\s*;?\s*$/)
-        if (dm) declarations.push({ prop: dm[1], value: dm[2], line: i + 1 })
-        i++
-      }
-      rules.push({ selector, declarations, line: startLine })
-      i++
-      continue
-    }
-    i++
   }
+  walk(root)
   return { tokens, rules }
 }
 ```
+
+Note: the original plan used a hand-rolled regex parser. It was replaced with postcss mid-execution (Task 7) after it silently dropped tokens with digits in names (`--color-surface-2`) and swallowed rules following an inline `:root` block on the same line. postcss handles all real CSS; the `{tokens, rules}` shape is preserved so no detector changed.
 
 - [ ] **Step 5: Run test to verify it passes**
 
@@ -1300,32 +1288,37 @@ test("apcaLc mid-grey-on-grey ~ 0 (low contrast)", () => {
 ```js
 // engine/apca.mjs
 
-// APCA (Accessible Perceptual Contrast Algorithm) — simplified W3 reference.
-// Input: text and bg as OKLCH lightness L (0-100). Returns Lc.
-// See https://github.com/Myndex/apca-w3
-// For correctness we use the polynomial approximation (sRGB perceptual):
-function linL(L) { return (L / 100) ** 2.4 * 1.0 }
-function Y(L) { return 0.2126 * linL(L) + 0.7152 * linL(L) + 0.0722 * linL(L) }
-const CLUT_THRESHOLD = 0.0
-function softClamp(n) { return n < 0 ? n - 0.025 : n + 0.025 }
+// APCA (Accessible Perceptual Contrast Algorithm) — OKLCH-lightness approximation.
+// Input: text and bg as OKLCH lightness L (0-100). Returns Lc (can be negative).
+// Convention: dark text on light bg → negative Lc. |Lc| ~106 for pure black-on-white.
+// APPROXIMATION for gate-catching (catch low-contrast failures, not W3 reference precision).
+// OKLCH L is perceptual (CIE Lab L*); convert via CIELAB L→Y, apply APCA perceptual formula.
 
-export function apcaLc(textL, bgL) {
-  const txt = Y(textL)
-  const bg = Y(bgL)
-  if (Math.abs(bg - txt) < 0.0005) return 0
-  let lc = (Math.cbrt(softClamp(bg)) - Math.cbrt(softClamp(txt))) * 1.66
-  return Math.round(lc * 10) / 10
+/** CIELAB L* (0-100) → relative luminance Y (0-1). */
+function YfromL(L) {
+  const fy = (L + 16) / 116
+  const y = fy * fy * fy
+  return y < 0 ? 0 : y
 }
 
-// WCAG 2.1 ratio (simplified — uses relative luminance, OKLCH L as proxy)
+export function apcaLc(textL, bgL) {
+  const Yt = YfromL(textL)
+  const Yb = YfromL(bgL)
+  if (Math.abs(Yb - Yt) < 0.0005) return 0
+  // text-minus-bg so dark-on-light is negative; scale ~90 lands pure black/white at ~±105.
+  const lc = (Math.cbrt(Yt + 0.025) - Math.cbrt(Yb + 0.025)) * 1.66 * 90
+  return Math.round(lc)
+}
+
+// WCAG 2.1 ratio (simplified — uses OKLCH L as a luminance proxy)
 export function wcagRatio(textL, bgL) {
-  const l1 = linL(textL) + 0.05
-  const l2 = linL(bgL) + 0.05
+  const l1 = (textL / 100) ** 2.4 + 0.05
+  const l2 = (bgL / 100) ** 2.4 + 0.05
   return Math.max(l1, l2) / Math.min(l1, l2)
 }
 ```
 
-Note: the above is an approximation suitable for our gate (we want to *catch* failures, not match the reference to 0.01). Replace with the full APCA W3 lookup table during Plan 1b if exactness is required. The threshold-based gate uses `|Lc| < 60` for body and `< 45` for large — approximation is enough to catch real failures.
+Note: the original brief used a polynomial approximation that was mathematically broken (magnitude ~100x too small + reversed polarity — `apcaLc(0,100)` returned +1.2 instead of ~-106). It was replaced mid-execution (Task 11) with the CIELAB L→Y version above, which produces -105/+105 for pure black/white and passes all four test assertions. The gate uses `|Lc| < 60` for body and `< 45` for large — approximation is enough to catch real failures. Upgrade to the full APCA W3 lookup table during Plan 1b if exactness is required.
 
 Run: `node --test test/engine/apca.test.mjs` → PASS.
 

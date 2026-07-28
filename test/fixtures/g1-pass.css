@@ -1,0 +1,3 @@
+/* test/fixtures/g1-pass.css */
+:root { --font-display: "Newsreader"; --font-body: "Inter Tight"; }
+h1 { font-family: var(--font-display); }

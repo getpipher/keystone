@@ -1,0 +1,3 @@
+/* Keystone · macrostructure: Long Document · theme: Garden · nav: N5 · footer: Ft5 · gates: 58/58 engine-verified */
+:root { --color-paper: oklch(96% 0.01 120); }
+body { background: var(--color-paper); }

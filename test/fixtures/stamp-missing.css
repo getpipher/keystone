@@ -1,0 +1,2 @@
+:root { --color-paper: oklch(96% 0.01 120); }
+body { background: var(--color-paper); }

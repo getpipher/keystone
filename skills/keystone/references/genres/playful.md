@@ -10,7 +10,7 @@ Brief mentions: *fun, consumer, casual, family, kids, friendly, approachable, on
 
 **Hum** — vibrant, alive. Multi-accent cream + pear + cyan + coral, mandatory motion, a single character moment. The post-Brilliant-alive register: a learning platform for curious adults, a daily-curiosity app, a habit tracker with character. Hum is the catalog's only rounded-sans-multi-accent theme — it relaxes several defaults: bouncy spring easings are canonical on its primary CTA, accent chroma goes higher than 0.16, motion is mandatory not optional.
 
-For the quieter end of friendly — "friendly but soft" rather than "alive" — reach for modern-minimal (Coral): single low-chroma accent on warm paper, smooth easings, motion optional.
+For the quieter end of friendly — "friendly but soft" rather than "alive" — reach for modern-minimal (Cobalt): near-white paper, cool blue accent, geometric-grotesk display, motion optional.
 
 One theme in v1 (Hum). Plan 2b adds depth not breadth — Hum is the v1 set.
 

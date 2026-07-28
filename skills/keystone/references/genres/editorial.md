@@ -63,3 +63,7 @@ See `component-cookbook.md` § Navigation and § Footers for full archetypes.
 ```css
 /* Keystone · genre: editorial · macrostructure: <name> · theme: <name> · enrichment: <tier> · nav: <N#> · footer: <Ft#> */
 ```
+
+## Reference register
+
+High-contrast serif display, warm paper, hairline rules, asymmetric spans, typographic CTA. Do not name external sites in the output.

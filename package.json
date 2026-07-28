@@ -1,0 +1,23 @@
+{
+  "name": "@getpipher/keystone",
+  "version": "0.1.0",
+  "description": "Anti-AI-slop design skill with an executable gate engine. Beats Hallmark by enforcing its gates instead of imagining them.",
+  "keywords": ["pi-package", "pi-skill", "pi-extension", "design", "anti-ai-slop", "enforcement"],
+  "license": "MIT",
+  "author": "RECTOR <rector@rectorspace.com>",
+  "homepage": "https://github.com/getpipher/keystone",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "pi": {
+    "skills": ["./skills"],
+    "extensions": ["./extensions/render.ts"]
+  },
+  "files": ["skills", "extensions", "engine", "README.md", "LICENSE"],
+  "scripts": {
+    "test": "node --test test/engine/",
+    "test:run": "node --test --test-reporter=spec test/engine/"
+  },
+  "dependencies": {
+    "playwright-core": "^1.48.0"
+  }
+}

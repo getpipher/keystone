@@ -13,8 +13,22 @@ export function parseCss(css) {
     const line = lines[i]
     const tokenMatch = line.match(/^\s*(--[a-z-]+)\s*:\s*(.+?)\s*;?\s*$/)
     // Token blocks: collect while inside :root / [data-theme]
-    const blockOpen = line.match(/(^\s*:root\b|^\s*\[data-theme[^\]]*\])\s*\{/)
+    const blockOpen = line.match(/(^\s*:root\b|^\s*\[data-theme[^\]]*\])\s*\{\s*(.*)\}\s*$/)
+    const blockOpenMulti = line.match(/(^\s*:root\b|^\s*\[data-theme[^\]]*\])\s*\{\s*$/)
     if (blockOpen) {
+      // inline single-line token block: parse tokens from the inline body
+      const inlineBody = blockOpen[2]
+      const startLine = i + 1
+      if (inlineBody) {
+        for (const d of inlineBody.split(";")) {
+          const tm = d.match(/^\s*(--[a-z-]+)\s*:\s*(.+?)\s*$/)
+          if (tm) tokens.push({ name: tm[1], value: tm[2], line: startLine })
+        }
+      }
+      i++
+      continue
+    }
+    if (blockOpenMulti) {
       i++
       while (i < lines.length && !lines[i].includes("}")) {
         const tm = lines[i].match(/^\s*(--[a-z-]+)\s*:\s*(.+?)\s*;?\s*$/)

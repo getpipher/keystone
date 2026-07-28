@@ -30,3 +30,4 @@ See `hero-enrichment.md` for the full E1 recipe (codec chain, autoplay rules, re
 ```
 
 **Gates:** G34 (horizontal scroll — the rightmost 10–20% extends past viewport; needs `overflow-x: clip` on html+body pair), G28 (LCP-killing demo video — must use `autoplay muted loop playsinline`, have `poster`, and `fetchpriority="high"` on the hero video).
+

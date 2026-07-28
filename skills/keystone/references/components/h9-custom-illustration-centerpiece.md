@@ -28,3 +28,4 @@ The illustration itself is *built*, not picked from Storyset / Humaaans / unDraw
 ```
 
 **Gates:** G30 (icon tells — mixed libraries / emoji-as-feature-icon are banned; the illustration must be hand-built, not a library asset), G45 (decorative without purpose — the illustration must be motivated by a semantic anchor in the copy, not ornamental).
+

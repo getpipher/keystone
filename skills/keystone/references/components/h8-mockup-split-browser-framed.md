@@ -26,3 +26,4 @@ Headline left, browser-frame mockup right, the mockup tilted 1–3° for life. F
 ```
 
 **Gates:** G47 (re-drawn UI chrome — the mockup frame must be real screenshot or hand-built CSS-art, never hand-built fake browser bars / fake phone frames / fake code-block chrome).
+

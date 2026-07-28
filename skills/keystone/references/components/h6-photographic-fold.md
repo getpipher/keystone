@@ -19,3 +19,4 @@ Single full-bleed image fills the viewport. Caption sits in a corner.
 ```
 
 **Gates:** G45 (decorative without purpose — the image must be motivated real photography, not ornamental stock).
+

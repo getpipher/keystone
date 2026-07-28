@@ -1,70 +1,47 @@
+import postcss from "postcss"
+
 /**
- * Minimal CSS parser. Extracts :root/[data-theme] token blocks and all other rules.
- * Does NOT handle nested rules fully (treats @media contents as flat rules — fine for our detectors).
+ * Parse CSS via postcss (the standard CSS parser) and project into the
+ * {tokens, rules} shape the gate detectors consume.
+ *
+ *   tokens: { name, value, line }[]  — declarations inside :root / [data-theme] blocks
+ *   rules:  { selector, declarations: [{prop, value, line}], line }[]  — all other rules,
+ *           with @media (and other at-rules) flattened: child rules are emitted as flat rules.
+ *
+ * Token names include the leading `--` (e.g. "--color-paper-2"). Values are the
+ * raw declaration value string (postcss strips trailing semicolons and comments).
+ * Line numbers are 1-indexed (postcss source.start.line).
+ *
  * @param {string} css
  * @returns {{tokens: {name:string, value:string, line:number}[], rules: {selector:string, declarations:{prop:string,value:string,line:number}[], line:number}[]}}
  */
 export function parseCss(css) {
+  const root = postcss.parse(css)
   const tokens = []
   const rules = []
-  const lines = css.split("\n")
-  let i = 0
-  while (i < lines.length) {
-    const line = lines[i]
-    const tokenMatch = line.match(/^\s*(--[a-z-]+)\s*:\s*(.+?)\s*;?\s*$/)
-    // Token blocks: collect while inside :root / [data-theme]
-    const blockOpen = line.match(/(^\s*:root\b|^\s*\[data-theme[^\]]*\])\s*\{\s*(.*)\}\s*$/)
-    const blockOpenMulti = line.match(/(^\s*:root\b|^\s*\[data-theme[^\]]*\])\s*\{\s*$/)
-    if (blockOpen) {
-      // inline single-line token block: parse tokens from the inline body
-      const inlineBody = blockOpen[2]
-      const startLine = i + 1
-      if (inlineBody) {
-        for (const d of inlineBody.split(";")) {
-          const tm = d.match(/^\s*(--[a-z-]+)\s*:\s*(.+?)\s*$/)
-          if (tm) tokens.push({ name: tm[1], value: tm[2], line: startLine })
+
+  const isTokenBlock = (selector) => /^:root\b/.test(selector.trim()) || /^\[data-theme/i.test(selector.trim())
+
+  function walk(container) {
+    for (const node of container.nodes) {
+      if (node.type === "rule") {
+        const line = node.source?.start?.line ?? 0
+        const declarations = node.nodes
+          .filter((n) => n.type === "decl")
+          .map((n) => ({ prop: n.prop, value: n.value, line: n.source?.start?.line ?? line }))
+        if (isTokenBlock(node.selector)) {
+          for (const d of declarations) tokens.push({ name: d.prop, value: d.value, line: d.line })
+        } else {
+          rules.push({ selector: node.selector, declarations, line })
         }
+      } else if (node.type === "atrule") {
+        // @media, @supports, etc. — flatten child rules out as top-level rules
+        if (node.nodes && node.nodes.length) walk(node)
       }
-      i++
-      continue
+      // decl at root level (rare, no selector) — ignore
     }
-    if (blockOpenMulti) {
-      i++
-      while (i < lines.length && !lines[i].includes("}")) {
-        const tm = lines[i].match(/^\s*(--[a-z-]+)\s*:\s*(.+?)\s*;?\s*$/)
-        if (tm) tokens.push({ name: tm[1], value: tm[2], line: i + 1 })
-        i++
-      }
-      i++
-      continue
-    }
-    // Rule: selector { ... } (multi-line OR single-line inline)
-    const ruleOpen = line.match(/^\s*(.+?)\s*\{\s*(.*)\}\s*$/)
-    if (ruleOpen) {
-      const selector = ruleOpen[1].trim()
-      const startLine = i + 1
-      const declarations = []
-      const inlineBody = ruleOpen[2]
-      if (inlineBody) {
-        // single-line inline rule: parse declarations from the inline body
-        for (const d of inlineBody.split(";")) {
-          const dm = d.match(/^\s*([a-z-]+)\s*:\s*(.+?)\s*$/)
-          if (dm) declarations.push({ prop: dm[1], value: dm[2], line: startLine })
-        }
-      } else {
-        // multi-line rule: collect declarations until closing }
-        i++
-        while (i < lines.length && !lines[i].includes("}")) {
-          const dm = lines[i].match(/^\s*([a-z-]+)\s*:\s*(.+?)\s*;?\s*$/)
-          if (dm) declarations.push({ prop: dm[1], value: dm[2], line: i + 1 })
-          i++
-        }
-      }
-      rules.push({ selector, declarations, line: startLine })
-      i++
-      continue
-    }
-    i++
   }
+
+  walk(root)
   return { tokens, rules }
 }

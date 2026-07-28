@@ -1,0 +1,26 @@
+@getpipher/keystone — Anti-AI-slop design skill with an executable gate engine.
+
+Copyright (c) 2026 RECTOR. Licensed under the MIT License (see LICENSE).
+
+———
+
+ATTRIBUTION
+
+Keystone's design taxonomy — the 21 macrostructure names, the 50 component
+archetype codes (H1–H9, S1–S5, F1–F6, C1–C4, T1–T4, Ft1–Ft8, N1–N13), the 58
+anti-slop gate concepts, the 4 genres (editorial / modern-minimal /
+atmospheric / playful), and the 7-step build-flow skeleton — is derived from
+Hallmark (https://github.com/Nutlope/hallmark), authored by Hasan El Hajji
+(@Nutlope) and contributors, released under the MIT License.
+
+Per the curated-rewrite policy in Keystone's design spec:
+  - Macrostructure NAMES and archetype CODES are reused (stable IDs / factual
+    labels).
+  - All prose is rewritten in Keystone's own voice.
+  - The executable gate-checker annotations, the enforcement engine, the
+    Playwright render extension, the 8 deep theme specifications, and the
+    engine-verified Step 7 loop are Keystone's original contribution.
+
+Hallmark's MIT license is preserved at /tmp/hallmark/LICENSE and acknowledged
+here with thanks. See README § "How Keystone relates to Hallmark" for the
+full relationship.

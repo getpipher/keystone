@@ -11,10 +11,10 @@
 ## Global Constraints
 
 - Node ≥ 20, ESM (`.mjs` for engine, `.ts` for extension).
-- 2-space indent. No semicolons in `.mjs` (match getpipher house style — check existing `.mjs` files; default to no-semi if none exist).
+- 2-space indent. Standard JS semicolons (matches existing getpipher `.mjs` style — see `pi-package-index/scripts/copy-data.mjs`).
 - Every gate detector is a **pure function**: `(input) => GateResult[]` where `GateResult = { gate: number, name: string, pass: boolean, evidence: string, fix: string, file?: string, line?: number }`. No I/O inside a detector. The orchestrator does I/O; detectors only compute.
 - Deterministic only in this plan. Vision gates (the ~18 that need `describe_image`) are Plan 3.
-- `playwright-core` is the only new runtime dep. `@getpipher/vision` is a peer (already installed in RECTOR's pi) — do NOT add it to `dependencies`.
+- `playwright-core` and `linkedom` are the only new runtime deps (linkedom for DOM parsing — ~30KB, avoids hand-rolling a fragile parser). `@getpipher/vision` is a peer (already installed in RECTOR's pi) — do NOT add it to `dependencies`.
 - MIT license. NOTICE will credit Hallmark (added in Plan 2 with the catalog; not needed for engine-only).
 - All file paths in this plan are relative to the repo root `getpipher/keystone/`.
 
@@ -1303,7 +1303,6 @@ test("apcaLc mid-grey-on-grey ~ 0 (low contrast)", () => {
 // APCA (Accessible Perceptual Contrast Algorithm) — simplified W3 reference.
 // Input: text and bg as OKLCH lightness L (0-100). Returns Lc.
 // See https://github.com/Myndex/apca-w3
-const TRC = [0.012181, 0.012181, 0.012181, ...Array(99).fill(0)] // placeholder — real APCA uses a lookup table
 // For correctness we use the polynomial approximation (sRGB perceptual):
 function linL(L) { return (L / 100) ** 2.4 * 1.0 }
 function Y(L) { return 0.2126 * linL(L) + 0.7152 * linL(L) + 0.0722 * linL(L) }

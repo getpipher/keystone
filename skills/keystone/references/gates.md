@@ -686,4 +686,4 @@ diagnosis exists in conversation scope and the user did not explicitly pivot, fa
 
 The CSS stamp at Step 6 records results: `· contrast: pass (40–41) · nav: N# · footer: Ft# ·
 slop: pass (42–45) · honest: pass (46) · chrome: pass (47) · tokens: pass (48) · responsive: pass
-(49) · icons: pass (30) · mobile: pass (34, 49, 50–57)`. Any failure must be fixed before shipping.
+(49) · icons: pass (30) · mobile: pass (34, 49, 50–57)`. Any failure must be fixed before shipping — or, if the 3+2 iteration cap is exhausted, shipped with declared failures (see SKILL.md §7.3).

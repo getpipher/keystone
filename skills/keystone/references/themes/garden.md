@@ -139,7 +139,7 @@ A minimal Long-Document opening showing moves 1 + 2 + 3. Engine-clean: tokens vi
 .entry h1 { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.2rem, 5vw, 3.6rem);
   line-height: 1.08; letter-spacing: -0.01em; color: var(--color-ink); }
 .entry .hl { color: var(--color-accent); }
-.lede { font-family: var(--font-body); font-size: 1.15rem; line-height: 1.5; color: oklch(35% 0.02 140); }
+.lede { font-family: var(--font-body); font-size: 1.15rem; line-height: 1.5; color: color-mix(in oklch, var(--color-ink) 75%, transparent); }
 .entry__body { max-width: 65ch; font-family: var(--font-body); line-height: 1.6; color: var(--color-ink); }
 .entry__body p + p { margin-top: var(--space-m); }
 .entry a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 2px;

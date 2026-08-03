@@ -147,7 +147,7 @@ A minimal Stat-Led hero showing moves 1 + 2 + 3. Engine-clean: tokens via `var()
 .hero h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(2.4rem, 6vw, 4.2rem);
   line-height: 1.04; letter-spacing: -0.02em; max-width: 16ch; }
 .hero .hl { color: var(--color-accent); }
-.lede { max-width: 52ch; color: oklch(80% 0.01 260); }
+.lede { max-width: 52ch; color: color-mix(in oklch, var(--color-ink) 82%, transparent); }
 .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.8rem 1.4rem;
   border: 1px solid var(--color-accent); border-radius: 999px; color: var(--color-accent);
   background: transparent; font-weight: 600; text-decoration: none;
@@ -155,7 +155,7 @@ A minimal Stat-Led hero showing moves 1 + 2 + 3. Engine-clean: tokens via `var()
 .btn:hover { background: var(--color-accent); color: var(--color-accent-ink); }
 .btn:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
 .stats { display: flex; gap: var(--space-xl); font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
-.stats dt { font-size: 11px; letter-spacing: 0.10em; text-transform: uppercase; color: oklch(70% 0.01 260); }
+.stats dt { font-size: 11px; letter-spacing: 0.10em; text-transform: uppercase; color: color-mix(in oklch, var(--color-ink) 70%, transparent); }
 .stats dd { color: var(--color-ink); }
 .stats b { font-size: 1.6rem; color: var(--color-accent); }
 @media (prefers-reduced-motion: reduce) { .hero__bloom { background-attachment: scroll; } }

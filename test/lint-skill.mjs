@@ -51,6 +51,31 @@ for (const theme of THEMES) {
   });
 }
 
+// 2b. Every deep theme spec has all 11 required sections.
+const DEEP_SECTIONS = [
+  "## Axes (diversification)",
+  "## Palette",
+  "## Fonts (free)",
+  "## Signature moves",
+  "## Macrostructure affinity",
+  "## Voice fixtures",
+  "## Anti-patterns (theme-specific)",
+  "## Nav & footer routing",
+  "## Worked example",
+  "## Gate overrides",
+  "## Engine cross-ref",
+];
+for (const theme of THEMES) {
+  test(`theme ${theme} deep spec has all 11 sections`, () => {
+    const content = read(join(ROOT, "references", "themes", `${theme}.md`));
+    for (const heading of DEEP_SECTIONS) {
+      assert.ok(content.includes(heading), `theme ${theme} missing heading: ${heading}`);
+    }
+    assert.ok(!content.includes("## Macrostructure affinity (short"),
+      `theme ${theme} still has the 2a short-affinity heading — rename to "## Macrostructure affinity"`);
+  });
+}
+
 // 3. Macro slugs stable — 21 per-macro files exist.
 const MACRO_SLUGS = [
   "01-bento-grid", "02-long-document", "03-marquee-hero", "04-stat-led",

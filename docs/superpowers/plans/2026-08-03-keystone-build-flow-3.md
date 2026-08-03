@@ -337,13 +337,16 @@ git commit -m "feat(render): viewport metrics (G34/G44) + oklch computed pairs"
     }
     const out = await renderModule.render({ htmlPath: args.html, viewports: widths, outDir: join(out, "keystone-render") })
     const computedPairs = JSON.parse(readFileSync(out.computedStylesPath, "utf8"))
-    const viewports = JSON.parse(readFileSync(join(out, "keystone-render", "viewports.json"), "utf8"))
-    // merge into ctx
-    ctx.computedPairs = computedPairs; ctx.viewports = viewports
+    // render returns viewportMetrics directly (Task 5) — use the return object, don't re-read viewports.json
+    ctx.computedPairs = computedPairs
+    ctx.viewports = out.viewportMetrics
     ```
-    (The CLI becomes async — wrap the body in an async IIFE or top-level await. Node 20 supports top-level await in ESM.)
+    (The CLI becomes async — wrap the body in an async IIFE or top-level await. Node 20 supports top-level await in ESM. The `tsImport` API is verified: `tsx/esm/api` exports `tsImport(specifier, parentURL)` and loads `render.ts` under plain `node` resolving `playwright-core` — no `--import tsx` flag needed.)
+
+    **Chromium binary prerequisite:** `playwright-core` needs a Chromium binary on disk. In a pi install it's already present (the extension runs there); for a standalone published-CLI run the user may need `npx playwright-core install chromium` once. Emit a clear error if `chromium.launch()` throws a missing-executable error (catch + hint), don't crash opaquely.
   - Call `orchestrate(ctx)` (now non-mutating — Task 4) and write reports as before. If `--render` ran, also copy/symlink the screenshot paths into the report (so the HTML report can link them).
   - Update the console line to include the mode: `PASS n/total · FAIL n/total — <out>/keystone-report.html (render: on/off)`.
+  - **Report screenshots (optional polish):** the report HTML template (`report-template.html`) currently has no screenshot row. If time permits, add a `SCREENSHOTS` section linking the `keystone-render/screenshot-*.png` paths (the spec's report mockup includes one). If skipped, note it as a Plan-4/5 carry-forward — not a Plan-3 blocker.
 
 - [ ] **Step 4:** Run `node --test test/engine/check-gates.test.mjs` → GREEN (the `--log` test; the `--render` test stays skipped). Run `KEYSTONE_RENDER_TEST=1 node --test test/engine/check-gates.test.mjs` locally to confirm the full suite (Chromium present) → GREEN. Run `npm test` → all engine tests GREEN.
 

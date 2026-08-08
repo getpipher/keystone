@@ -17,14 +17,15 @@ const DETECTORS = [g1, g2, g3, g7, g22, g26, g34, g40, g44, g48, g50, g54, g8_32
 
 /** @param {import("./types.mjs").DetectorContext} ctx @returns {{results: GateResult[], pass: number, fail: number, total: number}} */
 export function orchestrate(ctx) {
-  // Build projectMemory from stamp if not supplied
-  if (!ctx.projectMemory) {
+  // Build projectMemory locally — never mutate ctx. If supplied (CLI --log), honour as-is.
+  const projectMemory = ctx.projectMemory ?? (() => {
     const stamp = ctx.css ? extractStamp(ctx.css) : null
-    ctx.projectMemory = { stamp, log: [] }
-  }
+    return { stamp, log: [] }
+  })()
+  const localCtx = { ...ctx, projectMemory }
   const results = []
   for (const d of DETECTORS) {
-    const r = d(ctx)
+    const r = d(localCtx)
     if (Array.isArray(r)) results.push(...r)
     else results.push(r)
   }

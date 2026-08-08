@@ -1,10 +1,6 @@
 import { apcaLc } from "../apca.mjs"
 import { pass, fail } from "../types.mjs"
-
-function lightnessOf(oklch) {
-  const m = oklch.match(/oklch\(\s*([\d.]+)%/)
-  return m ? parseFloat(m[1]) : null
-}
+import { lightnessOf } from "../color.mjs"
 
 export default function detect(ctx) {
   const pairs = ctx.computedPairs || []

@@ -3,6 +3,7 @@ import { chromium } from "playwright-core"
 import { pathToFileURL } from "node:url"
 import { writeFileSync, mkdirSync } from "node:fs"
 import { join } from "node:path"
+import { toOklchString } from "../engine/color.mjs"
 
 interface RenderInput {
   htmlPath: string
@@ -10,10 +11,26 @@ interface RenderInput {
   outDir?: string       // default ./keystone-render
 }
 
+interface HeroRect {
+  eyebrow: { top: number; bottom: number } | null
+  headline: { top: number; bottom: number }
+  lede: { top: number; bottom: number } | null
+  cta: { top: number; bottom: number } | null
+}
+
+interface ViewportMetric {
+  width: number
+  scrollWidth: number
+  innerWidth: number
+  innerHeight: number
+  hero?: HeroRect | null
+}
+
 interface RenderOutput {
   screenshots: { width: number; path: string }[]
   computedStylesPath: string
   domSnapshotPath: string
+  viewportMetrics: ViewportMetric[]
 }
 
 export async function render(input: RenderInput): Promise<RenderOutput> {
@@ -23,6 +40,7 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
   const browser = await chromium.launch({ headless: true })
   const screenshots: { width: number; path: string }[] = []
   const computedPairs: { selector: string; color: string; backgroundColor: string }[] = []
+  const viewportMetrics: ViewportMetric[] = []
   let domSnapshot = ""
 
   for (const w of viewports) {
@@ -32,7 +50,50 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
     const shotPath = join(outDir, `screenshot-${w}.png`)
     await page.screenshot({ path: shotPath, fullPage: false })
     screenshots.push({ width: w, path: shotPath })
-    // On the 1280 pass, dump computed color pairs + DOM
+
+    // Capture viewport metrics (scrollWidth, innerHeight, hero) at every viewport.
+    // Hero rects are captured at every viewport but only attached to the metric
+    // at the 1280px pass (G44 is desktop-only); see the spread below.
+    //
+    // NOTE: the evaluate body is a STRING (not an arrow fn) on purpose. tsx/esbuild
+    // transpiles arrow-fn evaluates with keepNames, injecting __name() helpers that
+    // don't exist in the browser page.evaluate context (ReferenceError: __name is
+    // not defined). A raw JS string is not transpiled, so no __name is injected.
+    // The `)` after the closing backtick closes page.evaluate(.
+    const metrics = await page.evaluate(`(() => {
+      const rect = (el) => el ? { top: Math.round(el.getBoundingClientRect().top), bottom: Math.round(el.getBoundingClientRect().bottom) } : null
+      const scrollWidth = document.documentElement.scrollWidth
+      const innerWidth = window.innerWidth
+      const innerHeight = window.innerHeight
+      const h1 = document.querySelector("h1")
+      if (!h1) return { scrollWidth, innerWidth, innerHeight, hero: null }
+      const headline = rect(h1)
+      let eyebrow = null
+      const prev = h1.previousElementSibling
+      if ((prev && prev.offsetHeight < 60 && /^(P|SPAN|DIV|SMALL|B)$/.test(prev.tagName)) || (prev && /eyebrow|kicker|tag/i.test(prev.className))) {
+        eyebrow = rect(prev)
+      }
+      let lede = null
+      const next = h1.nextElementSibling
+      if (next && next.tagName === "P") lede = rect(next)
+      const section = h1.closest("section, header, article, main")
+      const ctaEl = section ? section.querySelector("a[href], button") : null
+      const cta = rect(ctaEl)
+      return { scrollWidth, innerWidth, innerHeight, hero: { eyebrow, headline, lede, cta } }
+    })()`)
+
+    // Hero is only meaningful at the 1280px pass; omit it from other viewports.
+    const metric: ViewportMetric = {
+      width: w,
+      scrollWidth: metrics.scrollWidth,
+      innerWidth: metrics.innerWidth,
+      innerHeight: metrics.innerHeight,
+      ...(w === 1280 ? { hero: metrics.hero } : {}),
+    }
+    viewportMetrics.push(metric)
+
+    // On the 1280 pass, dump computed color pairs + DOM. This evaluate has NO
+    // named inner functions, so the arrow-fn form does not trigger __name.
     if (w === 1280) {
       const pairs = await page.evaluate(() => {
         const out: { selector: string; color: string; backgroundColor: string }[] = []
@@ -45,7 +106,16 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
         }
         return out.slice(0, 200) // cap
       })
-      computedPairs.push(...pairs)
+      // Convert RGB computed styles to canonical OKLCH strings (Plan 3 — G40-41).
+      for (const p of pairs) {
+        const colorOk = toOklchString(p.color)
+        const bgOk = toOklchString(p.backgroundColor)
+        computedPairs.push({
+          selector: p.selector,
+          color: colorOk ?? p.color,
+          backgroundColor: bgOk ?? p.backgroundColor,
+        })
+      }
       domSnapshot = await page.content()
     }
     await ctx.close()
@@ -56,7 +126,9 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
   writeFileSync(computedStylesPath, JSON.stringify(computedPairs, null, 2))
   const domSnapshotPath = join(outDir, "dom.html")
   writeFileSync(domSnapshotPath, domSnapshot)
-  return { screenshots, computedStylesPath, domSnapshotPath }
+  const viewportsPath = join(outDir, "viewports.json")
+  writeFileSync(viewportsPath, JSON.stringify(viewportMetrics, null, 2))
+  return { screenshots, computedStylesPath, domSnapshotPath, viewportMetrics }
 }
 
 // pi extension registration (the pi extension API — see getpipher/AGENTS.md for gotchas)

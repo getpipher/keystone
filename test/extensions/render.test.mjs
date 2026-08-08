@@ -17,3 +17,28 @@ test("render produces screenshots at 2 viewports", async () => {
   assert.ok(existsSync(out.computedStylesPath))
   assert.ok(existsSync(out.domSnapshotPath))
 })
+
+test("render emits viewportMetrics + oklch computed pairs", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "keystone-render-"))
+  const html = `<html><body>
+      <header><small class="eyebrow">NEW</small><h1>Headline</h1><p>Lede text here</p><a class="cta" href="#">Go</a></header>
+    </body></html>`
+  const htmlPath = join(dir, "page.html")
+  writeFileSync(htmlPath, html)
+  const out = await render({ htmlPath, viewports: [1280, 375], outDir: dir })
+  assert.equal(out.viewportMetrics.length, 2)
+  const desk = out.viewportMetrics.find(v => v.width === 1280)
+  assert.ok(desk.scrollWidth >= 1280)
+  assert.ok(desk.innerHeight > 0)
+  assert.ok(desk.hero, "1280px pass must capture hero rects")
+  assert.ok(desk.hero.headline.bottom > 0)
+  assert.ok(desk.hero.cta.bottom > desk.hero.headline.bottom, "cta below headline")
+  const mob = out.viewportMetrics.find(v => v.width === 375)
+  assert.equal(mob.hero, undefined, "hero only captured at 1280")
+  const computed = JSON.parse(readFileSync(out.computedStylesPath, "utf8"))
+  assert.ok(computed.length > 0)
+  // colors must be oklch strings (white body)
+  assert.match(computed[0].color, /^oklch\(/)
+  assert.match(computed[0].backgroundColor, /^oklch\(/)
+  assert.ok(existsSync(join(dir, "viewports.json")))
+})

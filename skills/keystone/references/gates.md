@@ -98,7 +98,7 @@ match fails.
 ### G4 · Nested cards
 No card inside another card. If a card is a child of a card element, that's a tell.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g4-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g4-nested-cards.mjs` (shipped)
 **The check:** DOM parse: any element with a card-indicative class (`.card`, `__card`, panel, tile)
 that is a descendant of another card-indicative element.
 **Fix:** Flatten the structure — the outer card becomes a section, the inner cards stand alone.
@@ -106,7 +106,7 @@ that is a descendant of another card-indicative element.
 ### G5 · Card side-stripe border
 No card with a thick coloured left/right side-stripe border (4px+).
 **Layer:** Deterministic
-**Checker:** `engine/gates/g5-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g5-card-stripe.mjs` (shipped)
 **The check:** CSS parse: any element with a card-indicative class that declares `border-left` or
 `border-right` with width ≥ 4px and a non-neutral color.
 **Fix:** Remove the stripe; use a top-edge accent bar (2px) or a subtle background tint instead.
@@ -116,7 +116,7 @@ The hero must not be `min-height: 100vh` with everything centred, nor have eyebr
 CTA all stacked on the same centred vertical axis. At most two centred elements; the eyebrow or CTA
 should sit off-axis.
 **Layer:** Det+Vis
-**Checker:** `engine/gates/g6-*.mjs` (Plan 1b — partial det for text-align/margin) + vision:
+**Checker:** `engine/gates/g6-hero-centred.mjs` (shipped — partial det) + vision:
 `describe_image` Q1 (see § The vision pass)
 **Genre note:** Atmospheric and playful allow a centred hero when the canvas itself is the design.
 Editorial / atelier allow a centred-narrow hero, but even then the eyebrow or CTA sits off-axis.
@@ -164,7 +164,7 @@ section-break pattern.
 ### G10 · `transition: all`
 No `transition: all` (or `transition-all`) used anywhere. Specify the properties being transitioned.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g10-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g10-transition-all.mjs` (shipped)
 **The check:** CSS parse: any `transition` declaration containing `all` as a property keyword.
 **Fix:** Replace `transition: all 200ms` with `transition: background-color 200ms, color 200ms`
 — list only the properties that actually change.
@@ -172,7 +172,7 @@ No `transition: all` (or `transition-all`) used anywhere. Specify the properties
 ### G11 · Uniform hover-scale
 No `hover:scale-105` (or any uniform hover-scale) applied across multiple unrelated elements.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g11-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g11-uniform-hoverscale.mjs` (shipped)
 **The check:** CSS parse: count elements with `transform: scale(...)` in `:hover` rules. If the
 same scale value appears on 3+ unrelated selectors, fail.
 **Fix:** Use varied hover effects per element type — color shift on buttons, underline on links,
@@ -182,7 +182,7 @@ shadow on cards. Drop the uniform scale.
 No bouncy/overshoot easings (`cubic-bezier(0.34, 1.56, ...)`, etc.) on UI state changes — buttons,
 modals, tooltips. Reserve overshoots for physical interactions only.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g12-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g12-bouncy-easing.mjs` (shipped)
 **The check:** CSS parse: any `transition-timing-function` or `animation-timing-function` with a
 cubic-bezier where the second or fourth control point exceeds 1.0 (overshoot). If on a UI element
 (button, modal, tooltip, nav), fail.
@@ -193,7 +193,7 @@ for drag/throw/physical interactions.
 No element with more than one hover effect at the same time (translate + scale + shadow + color +
 rotate).
 **Layer:** Deterministic
-**Checker:** `engine/gates/g13-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g13-multiple-hover-effects.mjs` (shipped)
 **The check:** CSS parse: for each `:hover` rule, count distinct property groups that change
 (transform, box-shadow, color, background, border). If 3+ groups change on one element's hover,
 fail.
@@ -202,7 +202,7 @@ fail.
 ### G14 · Animating layout properties
 No `@keyframes` or `transition` animating `width`, `height`, `top`, `left`, `margin`, or `padding`.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g14-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g14-animating-layout.mjs` (shipped)
 **The check:** CSS parse: scan all `@keyframes` and `transition` property lists for layout-shifting
 properties (`width`, `height`, `top`, `left`, `margin`, `padding`). Any match fails.
 **Fix:** Animate `transform: translateX/Y/scale` and `opacity` instead — compositor-only, no
@@ -211,7 +211,7 @@ layout thrash.
 ### G15 · Focus ring fades in
 No focus ring that transitions into existence (fade in). Focus rings must appear instantly.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g15-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g15-focus-ring-fades.mjs` (shipped)
 **The check:** CSS parse: any `:focus-visible` rule that includes `transition` on `outline`,
 `box-shadow`, or `border-color` with a duration > 0ms. Any match fails.
 **Fix:** Remove the transition on the focus ring. The ring appears instantly on focus — keyboard
@@ -230,7 +230,7 @@ effects only.
 ### G17 · Tooltip hover-delay = focus-delay
 Tooltip hover-delay should be 800–1000ms; focus-delay should be 0ms. Equal delays fail.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g17-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g17-tooltip-delay.mjs` (shipped)
 **The check:** CSS parse: any `transition-delay` on tooltip elements that applies the same delay
 to both `:hover` and `:focus-visible`. If equal and > 0, fail.
 **Fix:** Set hover-delay 800–1000ms, focus-delay 0ms. Keyboard users need instant access.
@@ -238,7 +238,7 @@ to both `:hover` and `:focus-visible`. If equal and > 0, fail.
 ### G18 · Auto-rotating content without pause-on-hover/focus
 No auto-rotating content (carousel, banner, stats) lacking pause-on-hover-and-focus (WCAG 2.2.2).
 **Layer:** Deterministic
-**Checker:** `engine/gates/g18-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g18-auto-rotate-pause.mjs` (shipped)
 **The check:** CSS parse + DOM: any element with auto-rotation behavior (carousel, banner,
 marquee) that lacks `:hover` pause and `:focus-within` pause rules.
 **Fix:** Add `animation-play-state: paused` on `:hover` and `:focus-within` for the rotating
@@ -247,7 +247,7 @@ element.
 ### G19 · Placeholder names / startup clichés
 No placeholder name "Jane Doe / John Smith" or startup cliché (Acme, Nexus, Seamless, Unleash).
 **Layer:** Deterministic
-**Checker:** `engine/gates/g19-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g19-placeholder-names.mjs` (shipped)
 **The check:** DOM parse: scan text content for placeholder names and startup cliché terms.
 Any match fails.
 **Fix:** Use real names from the brief, or leave a labelled placeholder the user can replace.
@@ -257,7 +257,7 @@ Any match fails.
 ### G20 · Missing CSS stamp
 The `/* Keystone · macrostructure: <name> · ... */` stamp must be present at the top of the CSS.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g20-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g20-missing-stamp.mjs` (shipped)
 **The check:** `extract-stamp.mjs` parses the CSS. If no `/* Keystone ·` stamp is found, fail.
 **Fix:** Add the stamp to the top of the CSS file: `/* Keystone · macrostructure: <name> ·
 theme: <name> · gates: <n>/58 engine-verified */`.
@@ -266,7 +266,7 @@ theme: <name> · gates: <n>/58 engine-verified */`.
 Do not default to the Specimen macrostructure when the brief did not explicitly call for editorial /
 foundry / specimen energy. Specimen fall-through is banned.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g21-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g21-specimen-fallthrough.mjs` (shipped)
 **Genre note:** Atmospheric, modern-minimal, and playful never default to Specimen — only
 editorial does, and only when the brief signals it.
 **The check:** Parse the CSS stamp for `macrostructure: Specimen`. If present and the genre is not
@@ -524,7 +524,7 @@ with dark background has children inheriting dark text.
 The page's `<nav>` must not be the AI default: wordmark-left + 4–5 inline text links centred-or-right
 + button-right + 1px hairline border-bottom + white background.
 **Layer:** Det+Vis
-**Checker:** `engine/gates/g42-*.mjs` (Plan 1b — partial det for nav structure) + vision:
+**Checker:** `engine/gates/g42-nav-fingerprint.mjs` (shipped — partial det) + vision:
 `describe_image` Q4 (see § The vision pass)
 **The check:** Det: parse `<nav>` structure for wordmark + inline links + button + hairline border.
 Vision: "wordmark-left + 4-5 inline links + button-right + hairline border?"
@@ -585,7 +585,7 @@ No hand-built fake browser bar (URL pill + traffic-light dots), fake phone frame
 frame, fake terminal frame, or fake IDE chrome using HTML/CSS or SVG. Re-drawn chrome is one of
 the strongest "looks AI-generated" tells.
 **Layer:** Det+Vis
-**Checker:** `engine/gates/g47-*.mjs` (Plan 1b — partial det for chrome patterns) + vision:
+**Checker:** `engine/gates/g47-redrawn-chrome.mjs` (shipped — partial det) + vision:
 `describe_image` Q11 (see § The vision pass)
 **The check:** Det: parse for chrome patterns (`.browser-bar` + dots, `.phone-frame` + notch, mock
 window-chrome around `<pre>`). Vision: "fake browser/phone/code-block/IDE frame?"

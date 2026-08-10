@@ -21,7 +21,7 @@ import { join, resolve, dirname, isAbsolute, basename } from "node:path"
 import { pathToFileURL, fileURLToPath } from "node:url"
 import { orchestrate } from "./orchestrate.mjs"
 import { parseHtml } from "./parse-html.mjs"
-import { assertSafeUrl } from "./safety.mjs"
+import { assertSafeUrl, checkUrlHost } from "./safety.mjs"
 import { formatReport, EXCLUDED_GATES } from "./audit-report.mjs"
 
 const EXCLUDE_SET = new Set(EXCLUDED_GATES.map((e) => e.gate))
@@ -150,6 +150,10 @@ async function main() {
       const out = await renderModule.render({ htmlPath: "", url, viewports, outDir: rawDataPath })
       screenshots = out.screenshots
       html = readFileSync(out.domSnapshotPath, "utf8")
+      // Post-navigation re-check: Playwright followed redirects to out.finalUrl;
+      // abort if it landed on a private IP or metadata hostname (redirect-to-internal SSRF).
+      checkUrlHost(out.finalUrl, { allowPrivate: !!opts["allow-private"] })
+      url = out.finalUrl  // report the redirected-to URL, not the requested one
       // CSS: fetch linked sheets + inline <style> from the rendered DOM.
       const { links, inline } = extractCssSources(html)
       const fetched = await fetchLinkedCss(links, url)

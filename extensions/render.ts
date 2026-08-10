@@ -32,6 +32,7 @@ interface RenderOutput {
   computedStylesPath: string
   domSnapshotPath: string
   viewportMetrics: ViewportMetric[]
+  finalUrl: string  // the URL Playwright ended on after redirects (audit redirect-to-internal re-check)
 }
 
 export async function render(input: RenderInput): Promise<RenderOutput> {
@@ -43,6 +44,7 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
   const computedPairs: { selector: string; color: string; backgroundColor: string }[] = []
   const viewportMetrics: ViewportMetric[] = []
   let domSnapshot = ""
+  let finalUrl = ""  // the URL Playwright ended on after redirects (first viewport's goto)
 
   for (const w of viewports) {
     const ctx = await browser.newContext({ viewport: { width: w, height: Math.round(w * 0.625) } })
@@ -50,6 +52,7 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
     // audit URL mode: goto the live URL; otherwise the Plan-3 file:// path (unchanged).
     const target = input.url ?? pathToFileURL(input.htmlPath).href
     await page.goto(target, { waitUntil: "networkidle" })
+    if (!finalUrl) finalUrl = page.url()  // capture after the first navigation (reflects redirects)
     const shotPath = join(outDir, `screenshot-${w}.png`)
     await page.screenshot({ path: shotPath, fullPage: false })
     screenshots.push({ width: w, path: shotPath })
@@ -135,6 +138,8 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
     }
     await ctx.close()
   }
+  // Capture the final URL after the LAST viewport's navigation (reflects redirects).
+  // (page is closed; re-derive from the last goto — simpler: track it during the loop.)
   await browser.close()
 
   const computedStylesPath = join(outDir, "computed.json")
@@ -143,7 +148,7 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
   writeFileSync(domSnapshotPath, domSnapshot)
   const viewportsPath = join(outDir, "viewports.json")
   writeFileSync(viewportsPath, JSON.stringify(viewportMetrics, null, 2))
-  return { screenshots, computedStylesPath, domSnapshotPath, viewportMetrics }
+  return { screenshots, computedStylesPath, domSnapshotPath, viewportMetrics, finalUrl }
 }
 
 // pi extension registration (the pi extension API — see getpipher/AGENTS.md for gotchas)

@@ -125,6 +125,36 @@ export function hasBlockedScheme(url) {
 }
 
 /**
+ * Synchronous host re-check for a post-navigation final URL (no DNS).
+ * Catches redirects to internal literal IPs + metadata hostnames. Does NOT
+ * re-resolve (avoids TOCTOU; the redirect already resolved). Use after Playwright
+ * follows redirects to abort before emitting a report on a redirected-to-internal target.
+ *
+ * @param {string} url
+ * @param {{ allowPrivate?: boolean }} [opts]
+ */
+export function checkUrlHost(url, opts = {}) {
+  const { allowPrivate = false } = opts
+  let parsed
+  try {
+    parsed = new URL(url)
+  } catch {
+    throw new Error(`keystone audit: post-redirect URL not valid: ${url}`)
+  }
+  if (!ALLOWED_SCHEMES.has(parsed.protocol)) {
+    throw new Error(`keystone audit: redirect left the http(s) scheme (${parsed.protocol}) — aborted`)
+  }
+  const host = parsed.hostname
+  // Metadata hostnames ALWAYS blocked, even with --allow-private.
+  if (isBlockedHost(host)) {
+    throw new Error(`keystone audit: redirect landed on blocked hostname ${host} — aborted`)
+  }
+  if (!allowPrivate && isIP(host) !== 0 && isBlockedIpv(host)) {
+    throw new Error(`keystone audit: redirect landed on private/loopback ${host} — aborted`)
+  }
+}
+
+/**
  * Assert a URL is safe to audit. Throws on blocked. Resolves the hostname and
  * checks every resolved address, so a public hostname pointing at a metadata
  * IP is still refused.

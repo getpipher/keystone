@@ -1,6 +1,6 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
-import { assertSafeUrl, isBlockedIpv, isBlockedHost, hasBlockedScheme } from "../../engine/safety.mjs"
+import { assertSafeUrl, checkUrlHost, isBlockedIpv, isBlockedHost, hasBlockedScheme } from "../../engine/safety.mjs"
 
 test("hasBlockedScheme refuses non-http(s) schemes", () => {
   assert.ok(hasBlockedScheme("file:///etc/passwd"))
@@ -56,6 +56,24 @@ test("isBlockedIpv returns false for non-IP strings (hostnames)", () => {
   assert.ok(!isBlockedIpv("example.com"))
   assert.ok(!isBlockedIpv("localhost"))
   assert.ok(!isBlockedIpv("not-an-ip"))
+})
+
+test("checkUrlHost catches a redirect to a private literal IP", () => {
+  assert.throws(() => checkUrlHost("http://169.254.169.254/latest/meta-data/"), "redirect landed on private")
+  assert.throws(() => checkUrlHost("http://10.0.0.1/"), "redirect landed on private")
+})
+
+test("checkUrlHost catches a redirect to a metadata hostname even with --allow-private", () => {
+  assert.throws(() => checkUrlHost("http://metadata.google.internal/", { allowPrivate: true }), "redirect landed on blocked hostname")
+})
+
+test("checkUrlHost allows a redirect to a public URL", () => {
+  assert.doesNotThrow(() => checkUrlHost("https://example.com/path"))
+  assert.doesNotThrow(() => checkUrlHost("http://127.0.0.1/", { allowPrivate: true }))
+})
+
+test("checkUrlHost refuses a redirect that leaves http(s)", () => {
+  assert.throws(() => checkUrlHost("file:///etc/passwd"), "left the http(s) scheme")
 })
 
 test("assertSafeUrl refuses a literal loopback IP without --allow-private", async () => {

@@ -29,6 +29,39 @@ avoid repeating the same weakness.
 
 ---
 
+## The vision pass — the 18-question prompt
+
+Step 7.2 renders the page via `keystone_render({ htmlPath, viewports: [1280, 375] })` then calls `describe_image({ image_paths: [<1280.png>, <375.png>], prompt: <below> })`. The vision model answers each gate PASS or FAIL with one-sentence evidence, for both desktop (1280) and mobile (375).
+
+```
+You are a design critic. For each gate, answer PASS or FAIL with one-sentence evidence.
+Answer for BOTH desktop (1280) and mobile (375) screenshots.
+
+STRUCTURE
+  G6  Hero centred-everything: eyebrow+title+lede+CTA all on one centred axis?
+  G9  Equal-whitespace sections: any two adjacent sections identical in rhythm?
+  G29 Abstract background: >1 accent colour, or animating mesh on whole page?
+  G42 Nav fingerprint: wordmark-left + 4-5 inline links + button-right + hairline border?
+  G43 Footer fingerprint: 4-col links + social row + tiny copyright?
+  G44 Hero fit: eyebrow+headline+lede+primary CTA visible without scrolling (1280 only)?
+  G45 Decorative-without-purpose: ornament with no semantic anchor?
+TYPOGRAPHY
+  G38a Italic headers: any heading/display in italic? (italic emphasis word in upright headline = FAIL)
+CHROME & CONTENT
+  G30 Icon tells: mixed libraries, or emoji-as-feature-icon (✨🚀⚡)?
+  G46 Invented metrics: "10× faster", "50,000+ teams", "99.9% uptime"? (flag, not auto-fail)
+  G47 Re-drawn chrome: fake browser/phone/code-block/IDE frame?
+CRAFT
+  G35 Decorative stroke position: highlighter band at baseline (fat underline) vs behind x-height?
+  G36 Flex align-items: any nav/toolbar/CTA row where button is taller than sibling text?
+SUBJECTIVE (confidence-weighted, never auto-fail alone)
+  S1  Does this page look AI-generated? (if yes, name top 3 tells)
+  S2  Does this feel like this specific brief, or a generic page?
+  S3  Two pages from this skill for two briefs — would they feel like different sites?
+```
+
+The S1 question (*"does this look AI-generated?"*) is the one Hallmark cannot ask its model — its model never sees the page. Read each verdict; any FAIL (except G46, which is flag-only) triggers a fix → re-render → re-vision, cap 2 iterations (see SKILL.md §7.2).
+
 ## Visual
 
 ### G1 · Banned display fonts
@@ -84,7 +117,7 @@ CTA all stacked on the same centred vertical axis. At most two centred elements;
 should sit off-axis.
 **Layer:** Det+Vis
 **Checker:** `engine/gates/g6-*.mjs` (Plan 1b — partial det for text-align/margin) + vision:
-`describe_image` Q1 (Plan 3)
+`describe_image` Q1 (see § The vision pass)
 **Genre note:** Atmospheric and playful allow a centred hero when the canvas itself is the design.
 Editorial / atelier allow a centred-narrow hero, but even then the eyebrow or CTA sits off-axis.
 **The check:** Det: parse hero children for `text-align: center` / `margin: 0 auto` on all children.
@@ -120,7 +153,7 @@ the same archetype (stated in the stamp).
 No sections separated only by equal whitespace, with no rule, no ornament, no colour shift — every
 section identical in rhythm.
 **Layer:** Vision
-**Checker:** vision: `describe_image` Q2 (Plan 3)
+**Checker:** vision: `describe_image` Q2 (see § The vision pass)
 **The check:** Vision question on 1280px screenshot: "any two adjacent sections identical in
 rhythm?" If yes, fail.
 **Fix:** Vary section padding, add a rule or colour shift between sections, or use a different
@@ -188,7 +221,7 @@ users need an immediate indicator.
 No celebratory success toast for an action whose effect the user can already see. Toasts are for
 failures and invisible effects.
 **Layer:** Vision
-**Checker:** vision: `describe_image` (Plan 3 — not in the 18 core questions; ad-hoc vision check)
+**Checker:** vision: `describe_image` (ad-hoc vision check — not in the 18 core questions; see § The vision pass for the protocol)
 **The check:** Vision: "any toast/notification visible that celebrates a success the user can
 already see on screen?"
 **Fix:** Remove the success toast. Silent success is taste. Toasts are for errors and invisible
@@ -321,7 +354,7 @@ or any `<img>` with `loading="lazy"` inside the hero section. Any match fails.
 No abstract background with more than one accent colour, more than ~5% footprint, or animating
 mesh-gradient on the whole page.
 **Layer:** Vision
-**Checker:** vision: `describe_image` Q3 (Plan 3)
+**Checker:** vision: `describe_image` Q3 (see § The vision pass)
 **Genre note:** Atmospheric allows up to two warm-toned radial blooms covering ~20–30% of the
 canvas, fixed-attached, no animation.
 **The check:** Vision question on 1280px screenshot: "more than one accent colour, or animating
@@ -333,7 +366,7 @@ blooms (atmospheric genre only).
 No mixing two or more icon libraries (Material + Heroicons + Lucide on the same page), and no emoji
 glyph (✨ 🚀 ⚡ 🔥 🎯 ✅) as a feature-card/value-prop/step/pricing-tier icon.
 **Layer:** Vision
-**Checker:** vision: `describe_image` Q9 (Plan 3)
+**Checker:** vision: `describe_image` Q9 (see § The vision pass)
 **The check:** Vision question on 1280px screenshot: "mixed icon libraries, or emoji-as-feature-
 icon (✨🚀⚡)?"
 **Fix:** Pick one icon library (Lucide/Phosphor/Heroicons), build a custom SVG, or drop the icon
@@ -389,7 +422,7 @@ not at the baseline (which reads as a fat underline). Underlines must be 1–2px
 from the baseline.
 **Layer:** Det+Vis
 **Checker:** `engine/gates/g35-*.mjs` (Plan 1b — partial det for gradient position) + vision:
-`describe_image` Q13 (Plan 3)
+`describe_image` Q13 (see § The vision pass)
 **The check:** Det: parse `linear-gradient` in `background-image` on text elements — check if the
 gradient band is positioned at the baseline vs behind the x-height. Vision: "highlighter band at
 baseline (fat underline) vs behind x-height?"
@@ -401,7 +434,7 @@ Interactive bars (nav, toolbar, command bar, hero CTA row, footer link strip) mu
 `align-items: center` and `line-height: 1` on items with intrinsic height. Inheriting
 `align-items: stretch` makes a button taller than its sibling text.
 **Layer:** Vision
-**Checker:** vision: `describe_image` Q14 (Plan 3)
+**Checker:** vision: `describe_image` Q14 (see § The vision pass)
 **The check:** Vision question on 1280px screenshot: "any nav/toolbar/CTA row where button is
 taller than sibling text?"
 **Fix:** Add `align-items: center` and `line-height: 1` to flex rows mixing height-different
@@ -434,7 +467,7 @@ No heading or display type in `font-style: italic` — including `h1`–`h6`, `.
 headers are a top AI tell. Headers are roman; emphasis comes from weight, accent colour, or a drawn
 underline.
 **Layer:** Vision
-**Checker:** vision: `describe_image` Q8 (Plan 3)
+**Checker:** vision: `describe_image` Q8 (see § The vision pass)
 **The check:** Vision question on 1280px screenshot: "any heading/display in italic? (italic
 emphasis word in upright headline = FAIL)"
 **Fix:** Set `font-style: normal` on all headings. Use weight, accent color, or a drawn underline
@@ -492,7 +525,7 @@ The page's `<nav>` must not be the AI default: wordmark-left + 4–5 inline text
 + button-right + 1px hairline border-bottom + white background.
 **Layer:** Det+Vis
 **Checker:** `engine/gates/g42-*.mjs` (Plan 1b — partial det for nav structure) + vision:
-`describe_image` Q4 (Plan 3)
+`describe_image` Q4 (see § The vision pass)
 **The check:** Det: parse `<nav>` structure for wordmark + inline links + button + hairline border.
 Vision: "wordmark-left + 4-5 inline links + button-right + hairline border?"
 **Fix:** Rotate to a non-default nav pattern (N1b, N2, N3, N4, N5, N6–N13 from the component
@@ -502,7 +535,7 @@ cookbook). Vary the structure, not just the colors.
 The `<footer>` must not be the AI default: 4 columns of links + social-icon row + tiny copyright +
 1px hairline top-border + neutral grey background.
 **Layer:** Vision
-**Checker:** vision: `describe_image` Q5 (Plan 3)
+**Checker:** vision: `describe_image` Q5 (see § The vision pass)
 **The check:** Vision question on 1280px screenshot: "4-col links + social row + tiny copyright?"
 **Fix:** Rotate to a non-default footer pattern (Ft1, Ft2, Ft4–Ft8 from the component cookbook).
 Vary the structure, not just the colors.
@@ -514,7 +547,7 @@ the hero's essential content (eyebrow, headline, lede, and primary CTA) must all
 scrolling.
 **Layer:** Det+Vis
 **Checker:** `engine/gates/g44-hero-fit.mjs` (shipped — deterministic 1280×800 bounding-rect check)
-+ vision: `describe_image` Q6 (Plan 3)
++ vision: `describe_image` Q6 (see § The vision pass)
 **The check:** Det: Playwright at 1280×800 — hero eyebrow + headline + lede + CTA bounding rect
 must be within `window.innerHeight`. Vision: "eyebrow+headline+lede+primary CTA visible without
 scrolling (1280 only)?"
@@ -526,7 +559,7 @@ hero that already fits passes untouched.
 The hero must not contain a decorative element (cursor, scanline, gradient blob, abstract shape,
 ornament, badge, sticker) that has no semantic anchor in the content. Decoration must be motivated.
 **Layer:** Vision
-**Checker:** vision: `describe_image` Q7 (Plan 3)
+**Checker:** vision: `describe_image` Q7 (see § The vision pass)
 **The check:** Vision question on 1280px screenshot: "ornament with no semantic anchor?"
 **Fix:** Remove unmotivated decoration. A cursor inside a typed command, a numeral that names an
 issue/year/version, a gradient that responds to interaction — these are motivated. Random
@@ -539,7 +572,7 @@ No quantitative claim ("10× faster", "50,000+ teams", "99.9% uptime") that the 
 that has no source, and that the model fabricated to fill a stat-led layout. A stat is also never
 the hero's sole headline.
 **Layer:** Vision
-**Checker:** vision: `describe_image` Q10 (Plan 3 — flag, not auto-fail)
+**Checker:** vision: `describe_image` Q10 (see § The vision pass — flag, not auto-fail)
 **The check:** Vision question on 1280px screenshot: "any '10× faster', '50,000+ teams', '99.9%
 uptime' pattern?" Flag for user, not auto-fail alone.
 **Fix:** Replace the invented number with `—` and a labelled grey block, or rebuild the section
@@ -553,7 +586,7 @@ frame, fake terminal frame, or fake IDE chrome using HTML/CSS or SVG. Re-drawn c
 the strongest "looks AI-generated" tells.
 **Layer:** Det+Vis
 **Checker:** `engine/gates/g47-*.mjs` (Plan 1b — partial det for chrome patterns) + vision:
-`describe_image` Q11 (Plan 3)
+`describe_image` Q11 (see § The vision pass)
 **The check:** Det: parse for chrome patterns (`.browser-bar` + dots, `.phone-frame` + notch, mock
 window-chrome around `<pre>`). Vision: "fake browser/phone/code-block/IDE frame?"
 **Fix:** Use a `<picture>` or `<figure>` containing a real screenshot, or omit the chrome and let

@@ -8,6 +8,8 @@ const read = (p) => readFileSync(p, "utf8");
 const gates = read(join(ROOT, "references", "gates.md"));
 const skill = read(join(ROOT, "SKILL.md"));
 const engine = read(join(ROOT, "references", "engine.md"));
+const audit = read(join(ROOT, "references", "verbs", "audit.md"));
+const { TIER_MAP, EFFORT_MAP, EXCLUDED_GATES } = await import("../engine/audit-report.mjs");
 
 // 1. Every gate in gates.md has a **Checker:** line.
 test("every gate heading in gates.md has a Checker line", () => {
@@ -211,4 +213,49 @@ test("engine.md documents the Plan-3 CLI flags + non-mutating orchestrator", () 
   assert.ok(engine.includes("--viewports"), "engine.md missing --viewports");
   assert.ok(engine.includes("--log"), "engine.md missing --log");
   assert.match(engine, /does \*\*not\*\* mutate/i, "engine.md missing non-mutating statement");
+});
+
+// 8. Plan-4 structural assertions (audit verb wired to the real engine).
+
+test("audit.md is wired to the real CLI (engine/audit.mjs)", () => {
+  assert.match(audit, /node engine\/audit\.mjs/, "audit.md must reference the real CLI");
+  assert.match(audit, /--allow-private/, "audit.md missing --allow-private");
+  assert.match(audit, /--no-render/, "audit.md missing --no-render");
+  assert.match(audit, /N\/A/, "audit.md must note the excluded gates as N/A");
+});
+
+test("audit.md describes the Tier-4 vision split (model-callable, not engine-called)", () => {
+  assert.match(audit, /describe_image/, "audit.md must mention describe_image for Tier 4");
+  assert.match(audit, /TIER 4/i, "audit.md must reference Tier 4");
+  assert.match(audit, /never auto-fail alone/i, "audit.md must state Tier 4 never auto-fails alone");
+});
+
+test("engine.md has the audit-path section", () => {
+  assert.match(engine, /## The audit path/, "engine.md missing the audit-path section");
+  assert.match(engine, /engine\/audit\.mjs/, "engine.md audit path must reference the CLI");
+  assert.match(engine, /assertSafeUrl/, "engine.md audit path must reference the SSRF guard");
+});
+
+test("SKILL.md audit section points at the real CLI + the vision split", () => {
+  const start = skill.indexOf("## `keystone audit`");
+  assert.ok(start !== -1, "SKILL.md missing the audit section");
+  let end = skill.indexOf("## Output contract", start);
+  if (end === -1) end = skill.length;
+  const block = skill.slice(start, end);
+  assert.match(block, /node engine\/audit\.mjs/, "SKILL.md audit section must reference the real CLI");
+  assert.match(block, /describe_image/, "SKILL.md audit section must mention the vision pass");
+  assert.match(block, /TIER 4/i, "SKILL.md audit section must reference Tier 4");
+});
+
+test("audit-report tier + effort maps cover all 13 implemented gates", () => {
+  const implemented = [1, 2, 3, 7, 22, 26, 34, 40, 41, 44, 48, 50, 54];
+  for (const g of implemented) {
+    assert.ok(g in TIER_MAP, `gate ${g} has no tier`);
+    assert.ok(g in EFFORT_MAP, `gate ${g} has no effort`);
+  }
+});
+
+test("audit excludes G8 + G32 (diversification — meaningless on external code)", () => {
+  const nums = EXCLUDED_GATES.map((e) => e.gate).sort((a, b) => a - b);
+  assert.deepEqual(nums, [8, 32]);
 });

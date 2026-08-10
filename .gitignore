@@ -3,4 +3,6 @@ node_modules/
 .pi/
 *.png
 keystone-report.{json,html}
+keystone-audit-report.{md,json}
+keystone-audit/
 .keystone/

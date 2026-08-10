@@ -181,7 +181,15 @@ Always:
 
 ## `keystone audit`
 
-Load [`references/verbs/audit.md`](references/verbs/audit.md) and follow it. Same engine as Build's Step 7, pointed at external code — a read-only ranked punch list (4 severity tiers, computed APCA numbers, real file:line evidence). No iterate loop; audit scores, it doesn't fix. `keystone audit ./site` or `keystone audit https://app.com`.
+Load [`references/verbs/audit.md`](references/verbs/audit.md) and follow it. Same engine as Build's Step 7, pointed at external code — a read-only ranked punch list (4 severity tiers, computed APCA numbers, real file:line evidence). No iterate loop; audit scores, it doesn't fix.
+
+```bash
+node engine/audit.mjs ./site --out .                # path mode (file or dir)
+node engine/audit.mjs https://app.com --out .        # URL mode (SSRF guard)
+node engine/audit.mjs ./site --no-render --out .      # static-only (no Playwright)
+```
+
+The CLI produces the **Tier 1-3 deterministic** punch list + screenshots. **Then** run the vision pass yourself: `describe_image` on `keystone-audit/screenshot-1280.png` + `keystone-audit/screenshot-375.png` with the 18-question prompt ([`references/gates.md`](references/gates.md) § The vision pass), and append the **Tier 4** rows (S1-S3, G38a, G46) to `keystone-audit-report.md`. Tier 4 is confidence-weighted and never auto-fails alone. The engine does not call vision — the protocol-level split is identical to Build's Step 7. `--fix` is deliberately NOT in v1 (audit stays read-only; fixing is `redesign` in v2).
 
 ---
 

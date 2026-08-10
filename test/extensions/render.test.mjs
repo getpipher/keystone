@@ -18,6 +18,21 @@ test("render produces screenshots at 2 viewports", async () => {
   assert.ok(existsSync(out.domSnapshotPath))
 })
 
+test("render url mode: goto a file:// URL of a fixture (audit URL-mode branch)", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "keystone-render-"))
+  const html = "<html><body><h1>URL mode</h1></body></html>"
+  const htmlPath = join(dir, "page.html")
+  writeFileSync(htmlPath, html)
+  // Exercise the `url` branch with an offline file:// URL — deterministic, no network.
+  const fileUrl = new URL(`file://${htmlPath}`).href
+  const out = await render({ htmlPath, url: fileUrl, viewports: [1280], outDir: dir })
+  assert.equal(out.screenshots.length, 1)
+  assert.ok(existsSync(out.screenshots[0].path))
+  assert.ok(existsSync(out.computedStylesPath))
+  const computed = JSON.parse(readFileSync(out.computedStylesPath, "utf8"))
+  assert.ok(computed.length > 0, "url-mode render still dumps computed pairs")
+})
+
 test("render emits viewportMetrics + oklch computed pairs", async () => {
   const dir = mkdtempSync(join(tmpdir(), "keystone-render-"))
   const html = `<html><body>

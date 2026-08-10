@@ -96,12 +96,24 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
     // named inner functions, so the arrow-fn form does not trigger __name.
     if (w === 1280) {
       const pairs = await page.evaluate(() => {
-        const out: { selector: string; color: string; backgroundColor: string }[] = []
+        const out = []
         const els = document.querySelectorAll("*")
         for (const el of els) {
           const cs = getComputedStyle(el)
-          if (cs.color || cs.backgroundColor) {
-            out.push({ selector: el.tagName.toLowerCase(), color: cs.color, backgroundColor: cs.backgroundColor })
+          // Resolve the effective background: walk up while the element's own bg
+          // is transparent (rgba(...,0) or "transparent"), so text-on-transparent
+          // is contrasted against the nearest ancestor that paints a bg (usually
+          // the body's page color). Without this, transparent bg → oklch(0 0 0)
+          // (black) and every text-on-transparent pair spuriously fails contrast.
+          let bg = cs.backgroundColor
+          let node = el
+          while (bg === "transparent" || /,\s*0\)$/.test(bg)) {
+            node = node.parentElement
+            if (!node) break
+            bg = getComputedStyle(node).backgroundColor
+          }
+          if (cs.color || bg) {
+            out.push({ selector: el.tagName.toLowerCase(), color: cs.color, backgroundColor: bg })
           }
         }
         return out.slice(0, 200) // cap

@@ -153,18 +153,19 @@ Always:
 
 ### 7. The slop test (engine-verified)
 
-**Run the engine — do not imagine the render.** Hallmark's Step 7 asks the model to "run 58 gates in your head"; Keystone's Step 7 runs a real engine. See [`references/engine.md`](references/engine.md) for the loop and [`references/gates.md`](references/gates.md) for the gate list.
+**Run the engine — do not imagine the render.** Hallmark's Step 7 asks the model to "run 58 gates in your head"; Keystone's Step 7 runs a real engine. See [`references/engine.md`](references/engine.md) for the loop and [`references/gates.md`](references/gates.md) for the gate list (and § The vision pass for the 18-question prompt).
 
 - **7.1 DETERMINISTIC PASS**
-  `bash: node engine/check-gates.mjs --html <path> --css <path> --out <dir>`
-  → `keystone-report.json` + `keystone-report.html`.
+  `bash: node engine/check-gates.mjs --html <path> --css <path> --log .keystone/log.json --render --viewports 1280,375,320,414,768 --out <dir>`
+  → `keystone-report.json` + `keystone-report.html` + `keystone-render/` (screenshots + `computed.json` + `viewports.json`).
+  All 13 detectors run: the 11 CSS/HTML-only gates parse the source; G34 (horizontal scroll) + G44 (hero fit) read the viewport metrics; G40-41 (contrast) read the OKLCH computed pairs; G8/G32 (diversification) diff the CSS stamp against `.keystone/log.json`.
   If any Deterministic gate FAILs: read the fix suggestions, apply, re-emit, re-run.
-  **Cap: 3 deterministic iterations.**
+  **Cap: 3 deterministic iterations.** (Fast path: drop `--render` to run only the 11 source-only gates between full renders — cheaper iteration for pure-token fixes.)
 
-- **7.2 VISION PASS** *(Plan 3 — @getpipher/vision integration; until then, run the deterministic gates and declare vision gates as "vision: pending Plan 3")*
-  `keystone_render({ htmlPath, viewports: [1280, 375] })` → `describe_image` with the 18 vision-gate questions (see `gates.md`).
-  If any Vision gate FAILs: read verdicts, apply fixes, re-render, re-vision.
-  **Cap: 2 vision iterations.**
+- **7.2 VISION PASS**
+  `keystone_render({ htmlPath, viewports: [1280, 375] })` → `describe_image({ image_paths: [<1280.png>, <375.png>], prompt: <the 18-question prompt from gates.md § The vision pass> })`.
+  Read each verdict. Any FAIL (except G46, which flags rather than auto-fails) → apply the fix, re-render, re-vision.
+  **Cap: 2 vision iterations.** S1 (*"does this look AI-generated?"*) is the thesis gate Hallmark cannot ask.
 
 - **7.3 RESOLUTION**
   - 58/58 pass → preview row: `Slop test · 58/58 ✓ (engine-verified) — ./keystone-report.html`

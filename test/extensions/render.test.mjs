@@ -18,6 +18,20 @@ test("render produces screenshots at 2 viewports", async () => {
   assert.ok(existsSync(out.domSnapshotPath))
 })
 
+test("render computed-pairs dump skips head children (Plan 1b-1 CF1)", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "keystone-render-"))
+  // A <style> in <head> + a visible <h1> in <body>. The head <style> must NOT
+  // produce a computed pair (it has no visible text → would spuriously fail G40).
+  const html = `\u003chtml><head><style>head,meta{color:red}</style></head><body><h1>Hi</h1></body></html>`
+  const htmlPath = join(dir, "page.html")
+  writeFileSync(htmlPath, html)
+  const out = await render({ htmlPath, viewports: [1280], outDir: dir })
+  const computed = JSON.parse(readFileSync(out.computedStylesPath, "utf8"))
+  const tags = computed.map((p) => p.selector)
+  assert.ok(!tags.includes("style"), "<style> in head must not be dumped")
+  assert.ok(tags.includes("h1"), "visible body content still dumped")
+})
+
 test("render url mode: goto a file:// URL of a fixture (audit URL-mode branch)", async () => {
   const dir = mkdtempSync(join(tmpdir(), "keystone-render-"))
   const html = "<html><body><h1>URL mode</h1></body></html>"

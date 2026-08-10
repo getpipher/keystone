@@ -103,7 +103,10 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
     if (w === 1280) {
       const pairs = await page.evaluate(() => {
         const out = []
-        const els = document.querySelectorAll("*")
+        // body * skips <head> children (style/meta/title/link/script) — they have
+        // no visible text but produce computed styles, which spuriously fail G40
+        // contrast (APCA Lc 0 on transparent/empty pairs). Plan 1b-1 CF1.
+        const els = document.querySelectorAll("body *")
         for (const el of els) {
           const cs = getComputedStyle(el)
           // Resolve the effective background: walk up while the element's own bg

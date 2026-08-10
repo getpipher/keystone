@@ -5,6 +5,9 @@ import { join, basename } from "node:path";
 
 const ROOT = join(import.meta.dirname, "..", "skills", "keystone");
 const read = (p) => readFileSync(p, "utf8");
+const gates = read(join(ROOT, "references", "gates.md"));
+const skill = read(join(ROOT, "SKILL.md"));
+const engine = read(join(ROOT, "references", "engine.md"));
 
 // 1. Every gate in gates.md has a **Checker:** line.
 test("every gate heading in gates.md has a Checker line", () => {
@@ -163,4 +166,49 @@ test("every .md and .mjs file has EOF newline", () => {
     }
   }
   assert.deepEqual(missing, [], `Files missing EOF newline: ${missing.join(", ")}`);
+});
+
+// 7. Plan-3 structural assertions (vision prompt + Step 7 + engine flags).
+
+test("gates.md has the vision-pass prompt section", () => {
+  assert.match(gates, /## The vision pass — the 18-question prompt/);
+});
+
+test("gates.md vision-prompt block lists all 16 gate tokens", () => {
+  const start = gates.indexOf("## The vision pass");
+  assert.ok(start !== -1, "vision pass section not found");
+  let end = gates.indexOf("## ", start + 10);
+  if (end === -1) end = gates.length;
+  const region = gates.slice(start, end);
+  const tokens = ["G6","G9","G29","G42","G43","G44","G45","G38a","G30","G46","G47","G35","G36","S1","S2","S3"];
+  for (const tok of tokens) {
+    assert.ok(region.includes(tok), `vision prompt block missing token: ${tok}`);
+  }
+});
+
+test("SKILL.md Step 7.2 names keystone_render + describe_image + cap 2", () => {
+  const start = skill.indexOf("7.2 VISION");
+  assert.ok(start !== -1, "Step 7.2 not found");
+  let end = skill.indexOf("7.3", start);
+  if (end === -1) end = skill.length;
+  const block = skill.slice(start, end);
+  assert.ok(block.includes("keystone_render"), "Step 7.2 missing keystone_render");
+  assert.ok(block.includes("describe_image"), "Step 7.2 missing describe_image");
+  assert.ok(block.includes("Cap: 2"), "Step 7.2 missing Cap: 2");
+});
+
+test("SKILL.md has no stale pending Plan 3", () => {
+  assert.ok(!/pending Plan 3/.test(skill), "SKILL.md still contains 'pending Plan 3'");
+});
+
+test("gates.md vision Checker lines point to the vision pass", () => {
+  assert.ok(!/vision: `describe_image`[\s\S]*?\(Plan 3\)/.test(gates),
+    "a vision Checker line still references (Plan 3)");
+});
+
+test("engine.md documents the Plan-3 CLI flags + non-mutating orchestrator", () => {
+  assert.ok(engine.includes("--render"), "engine.md missing --render");
+  assert.ok(engine.includes("--viewports"), "engine.md missing --viewports");
+  assert.ok(engine.includes("--log"), "engine.md missing --log");
+  assert.match(engine, /does \*\*not\*\* mutate/i, "engine.md missing non-mutating statement");
 });

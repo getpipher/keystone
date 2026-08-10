@@ -7,6 +7,7 @@ import { toOklchString } from "../engine/color.mjs"
 
 interface RenderInput {
   htmlPath: string
+  url?: string          // optional: render a live URL (audit URL mode) instead of htmlPath. If set, page.goto(url); else the existing file:// path (build flow, unchanged).
   viewports?: number[]  // default [1280, 375, 320, 414, 768]
   outDir?: string       // default ./keystone-render
 }
@@ -46,7 +47,9 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
   for (const w of viewports) {
     const ctx = await browser.newContext({ viewport: { width: w, height: Math.round(w * 0.625) } })
     const page = await ctx.newPage()
-    await page.goto(pathToFileURL(input.htmlPath).href, { waitUntil: "networkidle" })
+    // audit URL mode: goto the live URL; otherwise the Plan-3 file:// path (unchanged).
+    const target = input.url ?? pathToFileURL(input.htmlPath).href
+    await page.goto(target, { waitUntil: "networkidle" })
     const shotPath = join(outDir, `screenshot-${w}.png`)
     await page.screenshot({ path: shotPath, fullPage: false })
     screenshots.push({ width: w, path: shotPath })
@@ -150,6 +153,7 @@ export default function (pi: any) {
     description: "Render an HTML file with headless Chromium at given viewports. Returns screenshots + computed styles + DOM snapshot for the Keystone gate engine.",
     parameters: {
       htmlPath: { type: "string", description: "Absolute path to the HTML file to render" },
+      url: { type: "string", description: "Optional live URL to render instead of htmlPath (audit URL mode). If set, htmlPath is ignored." },
       viewports: { type: "array", items: { type: "number" }, description: "CSS pixel widths to screenshot", default: [1280, 375, 320, 414, 768] },
       outDir: { type: "string", description: "Directory to write outputs", default: "./keystone-render" },
     },

@@ -14,16 +14,30 @@ export const TIER_MAP = {
   1: 1, // banned display fonts
   2: 1, // gradient text
   3: 1, // 3-equal-col card grid
+  4: 1, // nested cards
+  5: 1, // card side-stripe border
+  6: 1, // hero centred-everything (det half)
   7: 1, // pure black/white
-  54: 1, // tag-left/heading-right
+  10: 3, // transition: all (motion)
+  11: 3, // uniform hover-scale (motion)
+  12: 3, // bouncy/overshoot easing (motion)
+  13: 3, // multiple simultaneous hover effects (motion)
+  14: 3, // animating layout properties (motion)
+  15: 2, // focus ring fades in (a11y)
+  17: 2, // tooltip hover-delay = focus-delay (a11y)
+  18: 2, // auto-rotating without pause (a11y)
+  19: 1, // placeholder names / startup clichés
+  22: 3, // zero-chroma neutrals
   26: 2, // missing interaction states
+  34: 3, // horizontal scroll
   40: 2, // contrast (APCA)
   41: 2, // contrast (large/icons)
-  22: 3, // zero-chroma neutrals
-  34: 3, // horizontal scroll
+  42: 1, // nav fingerprint (det half)
   44: 3, // hero fit
+  47: 1, // re-drawn UI chrome (det half)
   48: 3, // token improvisation
   50: 3, // image-grid minmax
+  54: 1, // tag-left/heading-right
 }
 
 /** gate number → default effort (v1 lookup; refined in Plan 1b). */
@@ -31,13 +45,27 @@ export const EFFORT_MAP = {
   1: "low",
   2: "low",
   3: "medium",
+  4: "trivial",
+  5: "trivial",
+  6: "medium",
   7: "low",
+  10: "trivial",
+  11: "low",
+  12: "low",
+  13: "low",
+  14: "low",
+  15: "trivial",
+  17: "medium",
+  18: "medium",
+  19: "trivial",
   22: "trivial",
   26: "low",
   34: "trivial",
   40: "medium",
   41: "medium",
+  42: "medium",
   44: "high",
+  47: "medium",
   48: "low",
   50: "trivial",
   54: "low",
@@ -46,6 +74,8 @@ export const EFFORT_MAP = {
 /** Audit excludes gates that are meaningless on external code (spec §6). */
 export const EXCLUDED_GATES = [
   { gate: 8, name: "Diversification (macro reuse)", reason: "meaningless on external code — no Keystone log" },
+  { gate: 20, name: "Missing CSS stamp", reason: "external code has no Keystone stamp" },
+  { gate: 21, name: "Specimen fall-through", reason: "depends on the Keystone stamp" },
   { gate: 32, name: "Diversification (theme/nav/footer reuse)", reason: "meaningless on external code — no Keystone log" },
 ]
 

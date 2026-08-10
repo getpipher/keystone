@@ -247,15 +247,26 @@ test("SKILL.md audit section points at the real CLI + the vision split", () => {
   assert.match(block, /TIER 4/i, "SKILL.md audit section must reference Tier 4");
 });
 
-test("audit-report tier + effort maps cover all 13 implemented gates", () => {
-  const implemented = [1, 2, 3, 7, 22, 26, 34, 40, 41, 44, 48, 50, 54];
+test("audit-report tier + effort maps cover all 27 implemented gates", () => {
+  const implemented = [1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15, 17, 18, 19, 22, 26, 34, 40, 41, 42, 44, 47, 48, 50, 54];
   for (const g of implemented) {
     assert.ok(g in TIER_MAP, `gate ${g} has no tier`);
     assert.ok(g in EFFORT_MAP, `gate ${g} has no effort`);
   }
 });
 
-test("audit excludes G8 + G32 (diversification — meaningless on external code)", () => {
+test("every gates.md Checker line saying (shipped) points at a real detector file", () => {
+  const g = read(join(ROOT, "references", "gates.md"));
+  const re = /\*\*Checker:\*\* `engine\/gates\/([g0-9-]+\.mjs)` \(shipped/g;
+  const missing = [];
+  let m;
+  while ((m = re.exec(g)) !== null) {
+    if (!existsSync(join(import.meta.dirname, "..", "engine", "gates", m[1]))) missing.push(m[1]);
+  }
+  assert.deepEqual(missing, [], `(shipped) Checker lines with no detector file: ${missing.join(", ")}`);
+});
+
+test("audit excludes G8 + G20 + G21 + G32 (meaningless on external code)", () => {
   const nums = EXCLUDED_GATES.map((e) => e.gate).sort((a, b) => a - b);
-  assert.deepEqual(nums, [8, 32]);
+  assert.deepEqual(nums, [8, 20, 21, 32]);
 });

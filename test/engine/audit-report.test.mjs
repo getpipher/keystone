@@ -3,8 +3,8 @@ import assert from "node:assert/strict"
 import { formatReport, TIER_MAP, EFFORT_MAP, EXCLUDED_GATES, AUDITED_GATES } from "../../engine/audit-report.mjs"
 import { fail, pass } from "../../engine/types.mjs"
 
-test("TIER_MAP covers all 13 implemented gates", () => {
-  const implemented = [1, 2, 3, 7, 22, 26, 34, 40, 41, 44, 48, 50, 54]
+test("TIER_MAP covers all 27 implemented + tiered gates", () => {
+  const implemented = [1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15, 17, 18, 19, 22, 26, 34, 40, 41, 42, 44, 47, 48, 50, 54]
   for (const g of implemented) assert.ok(g in TIER_MAP, `gate ${g} must be tiered`)
   assert.equal(implemented.length, AUDITED_GATES.length)
 })
@@ -17,7 +17,7 @@ test("EFFORT_MAP covers all tiered gates", () => {
 
 test("excluded gates are 8 + 32 (diversification, meaningless externally)", () => {
   const nums = EXCLUDED_GATES.map((e) => e.gate)
-  assert.deepEqual(nums.sort((a, b) => a - b), [8, 32])
+  assert.deepEqual(nums.sort((a, b) => a - b), [8, 20, 21, 32])
 })
 
 test("formatReport groups FAIL rows by tier, highest-impact first", () => {
@@ -50,10 +50,10 @@ test("formatReport renders file:line when present, omits when absent", () => {
 test("formatReport header + footer shape matches spec §6", () => {
   const md = formatReport({ results: [], pass: 13, fail: 0, excluded: EXCLUDED_GATES, target: "https://x.com", screenshots: [{ width: 1280 }, { width: 375 }] })
   assert.match(md, /^Keystone · audit report · https:\/\/x\.com · /)
-  assert.match(md, /13 gates run · 13 PASS · 0 FAIL · 2 N\/A/)
+  assert.match(md, /13 gates run · 13 PASS · 0 FAIL · 4 N\/A/)
   assert.match(md, /RANKED PUNCH LIST \(highest-impact first\)/)
   assert.match(md, /TIER 4 · SUBJECTIVE/)
-  assert.match(md, /N\/A \(2\): G8 Diversification \(macro reuse\), G32 Diversification/)
+  assert.match(md, /N\/A \(4\): G8 Diversification \(macro reuse\), G20 Missing CSS stamp, G21 Specimen fall-through, G32/)
   assert.match(md, /SCREENSHOTS: \[1280\] \[375\]/)
   assert.match(md, /RAW DATA: \.\/keystone-audit\/{computed\.json, dom\.html, viewports\.json}/)
 })

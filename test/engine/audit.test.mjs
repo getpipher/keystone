@@ -87,7 +87,7 @@ test("path-mode --no-render audit: produces a ranked report with the fixture's f
   assert.match(report, /G26   Missing interaction states/, "G26 catches .btn missing states")
   assert.match(report, /G54   Tag-left\/heading-right/, "G54 catches the 1fr 1fr pitch grid")
   // G8/G32 are excluded → N/A footer, not in the punch list
-  assert.match(report, /N\/A \(2\): G8 Diversification \(macro reuse\), G32/)
+  assert.match(report, /N\/A \(4\): G8 Diversification \(macro reuse\), G20 Missing CSS stamp, G21 Specimen fall-through, G32/)
   // parse-error block should NOT appear (the fixture CSS is valid)
   assert.doesNotMatch(report, /PARSE ERROR/)
   // Tier 4 subjective note present

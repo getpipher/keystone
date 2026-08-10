@@ -128,6 +128,37 @@ columns: `#` (gate number), `Gate` (name), `Result` (✓/✗), `Evidence`
 `keystone-report.json` is the raw `{ results, pass, fail, total }` object —
 machine-readable for the iterate loop.
 
+## The audit path
+
+`keystone audit <target>` (`engine/audit.mjs`) reuses the same engine pointed at
+**external** code — a local path or a live URL. Read-only, no iterate loop.
+
+```bash
+node engine/audit.mjs ./site --out .                # path mode (file or dir)
+node engine/audit.mjs https://app.com --out .        # URL mode (SSRF guard)
+node engine/audit.mjs ./site --no-render --out .      # static-only (no Playwright)
+node engine/audit.mjs http://localhost:3000 --allow-private --out .
+```
+
+Path mode resolves the HTML file (dir → `index.html`), reads linked
+`<link>` stylesheets from disk + concatenates inline `<style>`, and renders
+via `file://`. URL mode runs `assertSafeUrl` (engine/safety.mjs — refuses
+non-http(s) schemes, private/loopback/link-local IPs, localhost + metadata
+hostnames; `--allow-private` escapes the private-IP block), renders via
+`page.goto(url)`, and Node-fetches each linked stylesheet.
+
+The diversification gates (G8/G32) are **excluded** (meaningless on external
+code — no `.keystone/log.json`); they show as `N/A` in the footer. The report
+is the deliverable: `keystone-audit-report.md` — a ranked punch list grouped by
+severity tier (`engine/audit-report.mjs`), each FAIL row with gate #, name,
+evidence value, fix suggestion, effort, and file:line (path mode) or selector
+(URL mode). Tier 4 (subjective / vision) is model-callable — run `describe_image`
+on the screenshots with the 18-question prompt, then append those rows. The
+engine does NOT call vision.
+
+`engine/audit.mjs` exports `extractCssSources`, `readLinkedCssFromDisk`,
+`fetchLinkedCss`, `filterExcluded` for unit testing.
+
 ## Plan-3 wiring (shipped)
 
 - **RGB→OKLCH** — the render extension emits OKLCH into `computed.json`

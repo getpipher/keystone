@@ -4,7 +4,9 @@ Same engine as Build's Step 7, pointed at someone else's code. Read-only ranked 
 
 ## What it does
 
-Runs the 52 applicable gates against external HTML/CSS (local files or a live URL). Renders via Playwright + vision model. Outputs a ranked punch list grouped by severity tier. No code emitted, no edits, no iteration loop — audit scores, doesn't fix.
+Runs the **13 shipped gates** (v1; the remaining ~28 deterministic gates land in Plan 1b, bringing the spec's 52) against external HTML/CSS (local files or a live URL). Renders via Playwright + vision model. Outputs a ranked punch list grouped by severity tier. No code emitted, no edits, no iteration loop — audit scores, doesn't fix.
+
+The diversification gates (G8/G32) are **excluded** from audit — they compare against `.keystone/log.json`, which an external site doesn't have (meaningless externally). They show as `N/A` in the report footer.
 
 ## Build vs Audit
 
@@ -24,8 +26,8 @@ Runs the 52 applicable gates against external HTML/CSS (local files or a live UR
 
 | Mode | Invocation | How |
 |---|---|---|
-| Path mode | `keystone audit ./site` or `keystone audit index.html styles.css` | Playwright loads local file(s) via `file://` or temp `http-server` |
-| URL mode | `keystone audit https://yourapp.com` | Playwright navigates headless, waits network-idle, extracts rendered DOM + computed styles + reachable CSS. Renders the real site — catches rendering-only gates (hero fit, horizontal scroll, mobile breakpoints) that static code analysis can't. |
+| Path mode | `keystone audit ./site` or `keystone audit index.html styles.css` | Playwright loads the local HTML via `file://`; linked `<link>` stylesheets are read from disk + inline `<style>` concatenated |
+| URL mode | `keystone audit https://yourapp.com` | Playwright navigates headless (networkidle), extracts the rendered DOM + computed styles + reachable CSS (Node-fetches each linked stylesheet). Renders the real site — catches rendering-only gates (hero fit, horizontal scroll, mobile breakpoints) that static code analysis can't. |
 
 URL mode reuses the adversarial-fetch safety posture from the `study` verb: refuse private IPs, localhost, metadata endpoints (`169.254.169.254`), and non-web schemes. Same class of risk, same guardrails.
 
@@ -53,9 +55,27 @@ Tier 4 findings are confidence-weighted and never auto-fail alone — they flag 
 
 `keystone audit --fix` blurs into `redesign`. Audit stays read-only in v1 — the user reads the report, then runs `redesign` (v2) or fixes manually. This matches the read-only contract: audit scores, doesn't edit.
 
+## The deterministic vs vision split
+
+The audit CLI (`engine/audit.mjs`) produces the **Tier 1-3 deterministic punch list** + screenshots. **Tier 4 (subjective) is model-callable, not engine-called** — the engine never calls vision (it's protocol-level, same decision as Build's Step 7). After the CLI runs, call `describe_image` on the screenshots with the 18-question vision-gate prompt (`gates.md` § The vision pass), then append the Tier 4 rows (S1-S3, G38a, G46) to the report. Tier 4 findings are confidence-weighted and never auto-fail alone.
+
 ## Run it
 
 ```bash
-keystone audit ./site          # path mode — local files
-keystone audit https://app.com # URL mode — live site
+# path mode — directory (finds index.html)
+node engine/audit.mjs ./site --out .
+# path mode — explicit html file (linked + inline CSS auto-extracted)
+node engine/audit.mjs index.html --out .
+# URL mode — live site (SSRF guard refuses private IPs + metadata endpoints by default)
+node engine/audit.mjs https://yourapp.com --out .
+# URL mode — local dev server (escapes the private-IP guard)
+node engine/audit.mjs http://localhost:3000 --allow-private --out .
+# fast static audit (no Playwright — only the CSS/HTML gates, no contrast/hero/scroll)
+node engine/audit.mjs ./site --no-render --out .
 ```
+
+Flags: `--viewports 1280,375,320,414,768` (default), `--out <dir>` (default `.`), `--no-render`, `--allow-private`.
+
+Writes `keystone-audit-report.md` (the report) + `keystone-audit-report.json` (raw) + `keystone-audit/` (screenshots, `computed.json`, `dom.html`, `viewports.json`) under `--out`. The report is printed to stdout and the file path to stderr.
+
+**Then** run the vision pass: `describe_image` on the `keystone-audit/screenshot-1280.png` + `keystone-audit/screenshot-375.png` with the 18-question prompt, and append the Tier 4 rows to the report. Audit never edits the target — read-only.

@@ -1,0 +1,43 @@
+:root {
+  --font-display: Inter, system-ui, sans-serif;       /* G1 banned font */
+  --color-paper: #fff;                               /* G7 pure white */
+  --color-ink: #000;                                 /* G7 pure black */
+  --color-surface-2: oklch(98% 0 0);                  /* G22 zero-chroma */
+  --color-accent: oklch(60% 0.2 30);                  /* fine */
+}
+
+* { margin: 0; box-sizing: border-box; }
+body { font-family: var(--font-display); background: var(--color-paper); color: var(--color-ink); }
+
+.nav { display: flex; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid #eee; }
+.hero { text-align: center; padding: 80px 24px; }
+.hero .eyebrow { color: #6b7280; letter-spacing: 0.1em; text-transform: uppercase; }
+.hero h1 { font-size: clamp(32px, 6vw, 64px); }
+.btn {
+  background: var(--color-accent);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+.btn:hover { opacity: 0.9; }                          /* G26 missing :focus-visible/:active/:disabled */
+
+.features {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;                  /* G3 three-equal-col card grid */
+  gap: 24px;
+  padding: 80px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.card { padding: 32px; border: 1px solid #eee; border-radius: 12px; }
+.card h3 { font-size: 20px; margin-bottom: 8px; }
+
+.pitch {                                              /* G54 tag-left/heading-right two-column */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 64px 24px;
+}
+
+footer { padding: 32px 24px; text-align: center; color: #9ca3af; }

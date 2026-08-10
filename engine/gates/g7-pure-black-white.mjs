@@ -9,7 +9,7 @@ export default function detect(ctx) {
   for (const t of tokens) {
     if (!t.name.startsWith("--color-")) continue
     if (PURE.some(p => p.test(t.value))) {
-      results.push(fail(7, "Pure #000/#fff base", `${t.name}: ${t.value}`, "use a near-black/near-white oklch with chroma ≥ 0.005", "tokens.css", t.line))
+      results.push(fail(7, "Pure #000/#fff base", `${t.name}: ${t.value}`, "use a near-black/near-white oklch with chroma ≥ 0.005", ctx.cssFile ?? "tokens.css", t.line))
     }
   }
   if (results.length === 0) results.push(pass(7, "Pure black/white base"))

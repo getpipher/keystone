@@ -13,6 +13,7 @@
  * @typedef {Object} DetectorContext
  * @property {string} html        — raw HTML string
  * @property {string} css        — raw CSS string
+ * @property {string} [cssFile]  — path/URL the CSS came from (audit mode; gates fall back to "tokens.css" when absent)
  * @property {{width: number, scrollWidth: number, innerHeight: number}[]} [viewports] — Playwright dump
  * @property {Record<string, string>[]} [computedPairs] — {selector, color, backgroundColor} from Playwright
  * @property {{stamp: Object|null, log: Object[]}} [projectMemory] — stamp + log.json

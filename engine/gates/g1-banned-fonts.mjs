@@ -18,7 +18,7 @@ export default function detect(ctx) {
   for (const t of tokens) {
     if (!t.name.startsWith("--font-")) continue
     if (hasBannedFont(t.value)) {
-      results.push(fail(1, "Banned display fonts", `${t.name}: ${t.value}`, `swap to a non-default face`, "tokens.css", t.line))
+      results.push(fail(1, "Banned display fonts", `${t.name}: ${t.value}`, `swap to a non-default face`, ctx.cssFile ?? "tokens.css", t.line))
     }
   }
   // Check inline font-family declarations outside tokens

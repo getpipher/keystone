@@ -1,19 +1,35 @@
 import g1 from "./gates/g1-banned-fonts.mjs"
 import g2 from "./gates/g2-gradient-text.mjs"
 import g3 from "./gates/g3-three-col-cards.mjs"
+import g4 from "./gates/g4-nested-cards.mjs"
+import g5 from "./gates/g5-card-stripe.mjs"
+import g6 from "./gates/g6-hero-centred.mjs"
 import g7 from "./gates/g7-pure-black-white.mjs"
+import g10 from "./gates/g10-transition-all.mjs"
+import g11 from "./gates/g11-uniform-hoverscale.mjs"
+import g12 from "./gates/g12-bouncy-easing.mjs"
+import g13 from "./gates/g13-multiple-hover-effects.mjs"
+import g14 from "./gates/g14-animating-layout.mjs"
+import g15 from "./gates/g15-focus-ring-fades.mjs"
+import g17 from "./gates/g17-tooltip-delay.mjs"
+import g18 from "./gates/g18-auto-rotate-pause.mjs"
+import g19 from "./gates/g19-placeholder-names.mjs"
+import g20 from "./gates/g20-missing-stamp.mjs"
+import g21 from "./gates/g21-specimen-fallthrough.mjs"
 import g22 from "./gates/g22-zero-chroma.mjs"
 import g26 from "./gates/g26-missing-states.mjs"
 import g34 from "./gates/g34-horizontal-scroll.mjs"
 import g40 from "./gates/g40-41-contrast.mjs"
+import g42 from "./gates/g42-nav-fingerprint.mjs"
 import g44 from "./gates/g44-hero-fit.mjs"
+import g47 from "./gates/g47-redrawn-chrome.mjs"
 import g48 from "./gates/g48-token-improvisation.mjs"
 import g50 from "./gates/g50-image-grid-minmax.mjs"
 import g54 from "./gates/g54-tag-left-heading-right.mjs"
 import g8_32 from "./gates/g8-32-diversification.mjs"
 import { extractStamp } from "./extract-stamp.mjs"
 
-const DETECTORS = [g1, g2, g3, g7, g22, g26, g34, g40, g44, g48, g50, g54, g8_32]
+const DETECTORS = [g1, g2, g3, g4, g5, g6, g7, g10, g11, g12, g13, g14, g15, g17, g18, g19, g20, g21, g22, g26, g34, g40, g42, g44, g47, g48, g50, g54, g8_32]
 
 /** @param {import("./types.mjs").DetectorContext} ctx @returns {{results: GateResult[], pass: number, fail: number, total: number}} */
 export function orchestrate(ctx) {

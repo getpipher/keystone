@@ -35,6 +35,20 @@ test("orchestrate does not mutate ctx.projectMemory", () => {
   assert.equal(ctx.projectMemory, undefined, "orchestrate must not set ctx.projectMemory")
 })
 
+test("orchestrate catches a malformed CSS parse error instead of crashing", () => {
+  const html = readFileSync("test/fixtures/full-fail.html", "utf8")
+  // Unclosed block — postcss throws CssSyntaxError. Each CSS-parsing gate would
+  // throw independently; orchestrate dedupes to ONE synthetic parse-error row.
+  const css = "a { color: red"
+  const computedPairs = [{ selector: ".btn", color: "oklch(40% 0 0)", backgroundColor: "oklch(45% 0 0)" }]
+  const summary = orchestrate({ css, html, viewports: [], computedPairs })
+  const parseErrors = summary.results.filter(r => r.gate === 0 && !r.pass)
+  assert.equal(parseErrors.length, 1, "exactly one synthetic parse-error row")
+  assert.match(parseErrors[0].name, /parse error/i)
+  // CSS-independent gates still ran off computedPairs → G40 still produced a result.
+  assert.ok(summary.results.some(r => r.gate === 40), "G40 (computedPairs) ran despite the CSS parse error")
+})
+
 test("orchestrate honours a supplied projectMemory.log (G8-32)", () => {
   const css = readFileSync("test/fixtures/stamp-valid.css", "utf8")
   const stamp = extractStamp(css)

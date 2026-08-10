@@ -24,8 +24,24 @@ export function orchestrate(ctx) {
   })()
   const localCtx = { ...ctx, projectMemory }
   const results = []
+  // A malformed CSS/HTML string makes postcss (or linkedom) throw inside a detector.
+  // Catch per-detector so the CSS-independent gates (G34/G44 viewports, G40-41
+  // computedPairs) still run, but dedupe to ONE synthetic parse-error row so the
+  // report isn't noisy with 13 identical errors. Without this an audit of a
+  // real-world site with broken CSS would crash the whole engine (Plan-3 carryover).
+  let parseErrorSeen = false
   for (const d of DETECTORS) {
-    const r = d(localCtx)
+    let r
+    try {
+      r = d(localCtx)
+    } catch (e) {
+      if (!parseErrorSeen) {
+        const msg = e instanceof Error ? e.message : String(e)
+        results.push({ gate: 0, name: "CSS parse error", pass: false, evidence: msg, fix: "fix the CSS syntax error (the engine cannot score a stylesheet it can't parse)" })
+        parseErrorSeen = true
+      }
+      continue
+    }
     if (Array.isArray(r)) results.push(...r)
     else results.push(r)
   }

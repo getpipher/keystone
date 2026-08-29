@@ -1,0 +1,223 @@
+/* Keystone · macrostructure: Manifesto · tone: austere-declarative · anchor hue: 25 warm-neutral red · gates: 48/48 engine-verified */
+:root[data-theme="manifesto"] {
+  --color-paper:      oklch(98% 0.004 0);
+  --color-paper-2:    oklch(94% 0.006 0);
+  --color-ink:        oklch(15% 0.005 0);
+  --color-muted:      oklch(45% 0.01 25);
+  --color-rule:       oklch(85% 0.008 25);
+  --color-accent:     oklch(55% 0.08 25);
+  --color-accent-ink: oklch(98% 0.004 0);
+  --color-focus:      oklch(55% 0.08 25);
+  --color-link:       oklch(38% 0.07 25);
+  --font-display:     "Anton", sans-serif;
+  --font-body:        "Geist", sans-serif;
+  --font-mono:        "Geist Mono", monospace;
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-md:   1.25rem;
+  --text-lg:   1.5625rem;
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs:  0.5rem;
+  --space-sm:  0.75rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:     cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms;
+  --rule-hair: 1px;
+  --page-gutter: clamp(1rem, 4vw, 1.5rem);
+}
+
+/* Global clip — horizontal scroll is a hard fail (G34) */
+html { overflow-x: clip; }
+body { overflow-x: clip; }
+
+body {
+  margin: 0;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── N9 · Edge-aligned minimal — wordmark left, one CTA right, absence between ── */
+.nav-edge {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--page-gutter);
+}
+.wordmark {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  letter-spacing: 0.02em;
+  color: var(--color-ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.nav-cta {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+  transition: color var(--dur-micro) var(--ease-out);
+}
+.nav-cta:hover {
+  color: var(--color-accent);
+}
+.nav-cta:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+.nav-cta:active {
+  color: var(--color-ink);
+}
+.nav-cta:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Manifesto spine — poster statement + numbered declarations ── */
+.manifesto {
+  max-width: 46rem;
+  margin-inline: auto;
+  padding: var(--space-3xl) var(--page-gutter) var(--space-3xl);
+}
+.statement {
+  margin: 0 0 var(--space-2xl) 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(3rem, 11vw, 8rem);
+  line-height: 1.0;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.declarations {
+  list-style: none;
+  margin: 0 0 var(--space-2xl);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+.declaration {
+  font-size: var(--text-lg);
+  line-height: 1.5;
+  color: var(--color-ink);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.declaration.indent-1 {
+  margin-left: var(--space-2xl);
+}
+.ordinal {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: var(--text-sm);
+  letter-spacing: 0.06em;
+  color: var(--color-link);
+  margin-right: var(--space-sm);
+}
+.what {
+  margin: 0;
+  max-width: 55ch;
+  color: var(--color-muted);
+  font-size: var(--text-md);
+  line-height: 1.65;
+}
+
+/* ── Ft5 · Statement — one closing line, Geist bold (Anton stays above the fold) ── */
+.foot-stmt {
+  display: grid;
+  gap: var(--space-lg);
+  padding: var(--space-2xl) var(--page-gutter) var(--space-2xl);
+}
+.foot-stmt__line {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: clamp(1.75rem, 5vw, 3.25rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.foot-stmt__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-2xs) var(--space-md);
+  padding-block-start: var(--space-sm);
+  border-top: var(--rule-hair) solid var(--color-rule);
+}
+.wordmark-foot {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  letter-spacing: 0.02em;
+}
+.foot-meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+}
+.foot-meta a {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+  transition: color var(--dur-micro) var(--ease-out);
+}
+.foot-meta a:hover {
+  color: var(--color-accent);
+}
+.foot-meta a:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+.foot-meta a:active {
+  color: var(--color-ink);
+}
+.foot-meta a:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Mobile — type breakpoint */
+@media (max-width: 40rem) {
+  .statement {
+    font-size: clamp(2.75rem, 15vw, 4rem);
+    margin-right: 0;
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+  .declaration.indent-1 {
+    margin-left: var(--space-lg);
+  }
+  .what { font-size: var(--text-base); }
+}
+
+/* Reduced motion — the page is still; block for belt and suspenders (G27) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 150ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
+  }
+}

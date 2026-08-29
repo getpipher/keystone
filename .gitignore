@@ -17,3 +17,9 @@ examples/**/keystone-render/dom.html
 examples/**/keystone-render/viewports.json
 examples/**/keystone-render/clickable.json
 examples/**/keystone-audit/
+# comparison gallery: committed evidence (screenshots + scores); raw render data stays local
+!test/compare/gallery/**/*.png
+test/compare/gallery/**/keystone-render/computed.json
+test/compare/gallery/**/keystone-render/dom.html
+test/compare/gallery/**/keystone-render/viewports.json
+test/compare/gallery/**/keystone-render/clickable.json

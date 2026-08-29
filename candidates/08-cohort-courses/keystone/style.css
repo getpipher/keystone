@@ -1,0 +1,186 @@
+/* Keystone · macrostructure: Letter · theme: Specimen · tone: warm-salon-editorial · anchor hue: 45 ochre · nav: N9 · footer: Ft1 · gates: 48/48 engine-verified */
+:root[data-theme="specimen"] {
+  --color-paper:      oklch(96% 0.01 80);
+  --color-paper-2:    oklch(93% 0.012 80);
+  --color-ink:        oklch(20% 0.01 60);
+  --color-muted:      oklch(42% 0.02 70);
+  --color-rule:       oklch(85% 0.015 80);
+  --color-accent:     oklch(58% 0.13 45);
+  --color-accent-ink: oklch(98% 0.01 80);
+  --color-focus:      oklch(58% 0.13 45);
+  --color-link:       oklch(38% 0.09 45);
+  --font-display:     "Fraunces", ui-serif, Georgia, serif;
+  --font-body:        "Source Serif 4", ui-serif, Georgia, serif;
+  --font-mono:        "IBM Plex Mono", monospace;
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-md:   1.25rem;
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs:  0.5rem;
+  --space-sm:  0.75rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --dur-micro: 120ms;
+  --page-gutter: clamp(1rem, 4vw, 1.5rem);
+}
+
+/* Global clip — horizontal scroll is a hard fail (G34) */
+html { overflow-x: clip; }
+body { overflow-x: clip; }
+
+body {
+  margin: 0;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── N9 · Edge-aligned minimal nav ───────────────────────── */
+.nav-edge {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-lg) var(--page-gutter);
+}
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-md);
+  letter-spacing: -0.005em;
+  color: var(--color-ink);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.edge-link {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+  transition: color var(--dur-micro) var(--ease-out);
+}
+
+/* ── Letter ──────────────────────────────────────────────── */
+.letter {
+  max-width: 50ch;
+  margin-inline: auto;
+  padding: var(--space-xl) var(--page-gutter) var(--space-2xl);
+}
+.letter > p {
+  margin: 0 0 var(--space-lg);
+  max-width: 50ch;
+}
+.salutation {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: var(--text-md);
+  color: var(--color-ink);
+}
+.divider {
+  text-align: center;
+  letter-spacing: 0.3em;
+  color: var(--color-muted);
+}
+.signoff {
+  margin: 0 0 var(--space-lg);
+}
+
+/* ── Link states (G26) — one hover group, instant ring ───── */
+.wordmark,
+.edge-link,
+.foot-links a,
+.signoff a {
+  transition: color var(--dur-micro) var(--ease-out);
+}
+.wordmark:hover,
+.edge-link:hover,
+.foot-links a:hover,
+.signoff a:hover {
+  color: var(--color-link);
+}
+.wordmark:focus-visible,
+.edge-link:focus-visible,
+.foot-links a:focus-visible,
+.signoff a:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+.wordmark:active,
+.edge-link:active,
+.foot-links a:active,
+.signoff a:active {
+  color: var(--color-muted);
+}
+.wordmark:disabled,
+.edge-link:disabled,
+.foot-links a:disabled,
+.signoff a:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Ft1 · Wordmark-led close ────────────────────────────── */
+.foot-mast {
+  background-color: var(--color-paper-2);
+  border-top: 1px solid var(--color-rule);
+  padding: var(--space-xl) var(--page-gutter) var(--space-2xl);
+  text-align: center;
+}
+.foot-word {
+  margin: 0 0 var(--space-2xs);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-md);
+  letter-spacing: -0.005em;
+  color: var(--color-ink);
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.foot-tag {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+.foot-links {
+  margin: var(--space-sm) 0 0;
+  font-size: var(--text-sm);
+}
+.foot-links a {
+  white-space: nowrap;
+}
+.foot-meta {
+  margin: var(--space-md) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+}
+
+/* Mobile collapse — 40rem type breakpoint */
+@media (max-width: 40rem) {
+  .letter {
+    padding-block: var(--space-lg) var(--space-xl);
+  }
+}
+
+/* Reduced motion — links shift color only; nothing moves (G27) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 150ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
+  }
+}

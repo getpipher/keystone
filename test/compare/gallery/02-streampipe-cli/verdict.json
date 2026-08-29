@@ -1,0 +1,602 @@
+{
+  "brief": "02-streampipe-cli",
+  "hallmark": {
+    "rowsPass": 43,
+    "rowsTotal": 61,
+    "distinctFailedGates": [
+      20,
+      26,
+      40,
+      49
+    ],
+    "score48": 44,
+    "results": [
+      {
+        "gate": 1,
+        "name": "Banned display fonts",
+        "pass": true
+      },
+      {
+        "gate": 2,
+        "name": "Gradient text",
+        "pass": true
+      },
+      {
+        "gate": 3,
+        "name": "3-equal-col card grid",
+        "pass": true
+      },
+      {
+        "gate": 4,
+        "name": "Nested cards",
+        "pass": true
+      },
+      {
+        "gate": 5,
+        "name": "Card side-stripe border",
+        "pass": true
+      },
+      {
+        "gate": 6,
+        "name": "Hero centred-everything",
+        "pass": true
+      },
+      {
+        "gate": 7,
+        "name": "Pure black/white base",
+        "pass": true
+      },
+      {
+        "gate": 10,
+        "name": "`transition: all`",
+        "pass": true
+      },
+      {
+        "gate": 11,
+        "name": "Uniform hover-scale",
+        "pass": true
+      },
+      {
+        "gate": 12,
+        "name": "Bouncy/overshoot easing on UI",
+        "pass": true
+      },
+      {
+        "gate": 13,
+        "name": "Multiple simultaneous hover effects",
+        "pass": true
+      },
+      {
+        "gate": 14,
+        "name": "Animating layout properties",
+        "pass": true
+      },
+      {
+        "gate": 15,
+        "name": "Focus ring fades in",
+        "pass": true
+      },
+      {
+        "gate": 17,
+        "name": "Tooltip hover-delay = focus-delay",
+        "pass": true
+      },
+      {
+        "gate": 18,
+        "name": "Auto-rotating content without pause",
+        "pass": true
+      },
+      {
+        "gate": 19,
+        "name": "Placeholder names / startup clichés",
+        "pass": true
+      },
+      {
+        "gate": 20,
+        "name": "Missing CSS stamp",
+        "pass": false,
+        "evidence": "no Keystone stamp comment at the top of the CSS",
+        "fix": "add the stamp: /* Keystone · macrostructure: <name> · theme: <name> · gates: <n>/58 engine-verified */",
+        "file": "tokens.css",
+        "line": 1
+      },
+      {
+        "gate": 21,
+        "name": "Specimen fall-through",
+        "pass": true
+      },
+      {
+        "gate": 22,
+        "name": "Zero-chroma neutral",
+        "pass": true
+      },
+      {
+        "gate": 23,
+        "name": "Accent >5% viewport",
+        "pass": true
+      },
+      {
+        "gate": 24,
+        "name": "Off-scale spacing",
+        "pass": true
+      },
+      {
+        "gate": 25,
+        "name": "Prose max-width outside 45–75ch",
+        "pass": true
+      },
+      {
+        "gate": 26,
+        "name": "Missing interaction states",
+        "pass": false,
+        "evidence": "a has :hover,:focus-visible,:active; missing :disabled",
+        "fix": "add :disabled rules"
+      },
+      {
+        "gate": 27,
+        "name": "Motion without reduced-motion fallback",
+        "pass": true
+      },
+      {
+        "gate": 28,
+        "name": "LCP-killing demo video",
+        "pass": true
+      },
+      {
+        "gate": 31,
+        "name": "Lottie as default",
+        "pass": true
+      },
+      {
+        "gate": 33,
+        "name": "Decorative element without aria",
+        "pass": true
+      },
+      {
+        "gate": 34,
+        "name": "Horizontal scroll",
+        "pass": true
+      },
+      {
+        "gate": 35,
+        "name": "Decorative text-effect position",
+        "pass": true
+      },
+      {
+        "gate": 37,
+        "name": "More than three font families",
+        "pass": true
+      },
+      {
+        "gate": 38,
+        "name": "Outlier face in >2 slots",
+        "pass": true
+      },
+      {
+        "gate": 39,
+        "name": "Input field states",
+        "pass": true
+      },
+      {
+        "gate": 40,
+        "name": "Contrast",
+        "pass": false,
+        "evidence": "span: APCA Lc 49 < 60",
+        "fix": "raise text lightness or lower bg lightness"
+      },
+      {
+        "gate": 40,
+        "name": "Contrast",
+        "pass": false,
+        "evidence": "span: APCA Lc 49 < 60",
+        "fix": "raise text lightness or lower bg lightness"
+      },
+      {
+        "gate": 40,
+        "name": "Contrast",
+        "pass": false,
+        "evidence": "span: APCA Lc 49 < 60",
+        "fix": "raise text lightness or lower bg lightness"
+      },
+      {
+        "gate": 40,
+        "name": "Contrast",
+        "pass": false,
+        "evidence": "span: APCA Lc 49 < 60",
+        "fix": "raise text lightness or lower bg lightness"
+      },
+      {
+        "gate": 40,
+        "name": "Contrast",
+        "pass": false,
+        "evidence": "span: APCA Lc 49 < 60",
+        "fix": "raise text lightness or lower bg lightness"
+      },
+      {
+        "gate": 40,
+        "name": "Contrast",
+        "pass": false,
+        "evidence": "span: APCA Lc 49 < 60",
+        "fix": "raise text lightness or lower bg lightness"
+      },
+      {
+        "gate": 40,
+        "name": "Contrast",
+        "pass": false,
+        "evidence": "span: APCA Lc 49 < 60",
+        "fix": "raise text lightness or lower bg lightness"
+      },
+      {
+        "gate": 40,
+        "name": "Contrast",
+        "pass": false,
+        "evidence": "span: APCA Lc 49 < 60",
+        "fix": "raise text lightness or lower bg lightness"
+      },
+      {
+        "gate": 40,
+        "name": "Contrast",
+        "pass": false,
+        "evidence": "h2: APCA Lc 49 < 60",
+        "fix": "raise text lightness or lower bg lightness"
+      },
+      {
+        "gate": 40,
+        "name": "Contrast",
+        "pass": false,
+        "evidence": "h2: APCA Lc 49 < 60",
+        "fix": "raise text lightness or lower bg lightness"
+      },
+      {
+        "gate": 40,
+        "name": "Contrast",
+        "pass": false,
+        "evidence": "h2: APCA Lc 49 < 60",
+        "fix": "raise text lightness or lower bg lightness"
+      },
+      {
+        "gate": 40,
+        "name": "Contrast",
+        "pass": false,
+        "evidence": "h2: APCA Lc 49 < 60",
+        "fix": "raise text lightness or lower bg lightness"
+      },
+      {
+        "gate": 40,
+        "name": "Contrast",
+        "pass": false,
+        "evidence": "footer: APCA Lc 49 < 60",
+        "fix": "raise text lightness or lower bg lightness"
+      },
+      {
+        "gate": 40,
+        "name": "Contrast",
+        "pass": false,
+        "evidence": "p: APCA Lc 49 < 60",
+        "fix": "raise text lightness or lower bg lightness"
+      },
+      {
+        "gate": 42,
+        "name": "Nav fingerprint",
+        "pass": true
+      },
+      {
+        "gate": 44,
+        "name": "Hero fit",
+        "pass": true
+      },
+      {
+        "gate": 47,
+        "name": "Re-drawn UI chrome",
+        "pass": true
+      },
+      {
+        "gate": 48,
+        "name": "Token improvisation",
+        "pass": true
+      },
+      {
+        "gate": 49,
+        "name": "Two-line clickable text",
+        "pass": false,
+        "evidence": "a.index__link at 1280px: offsetHeight 50px > line-height 25.6px × 1.5 (2+ lines)",
+        "fix": "shorten the label, set white-space: nowrap on the affordance, or collapse the nav into a sheet/menu at narrow widths"
+      },
+      {
+        "gate": 49,
+        "name": "Two-line clickable text",
+        "pass": false,
+        "evidence": "a.index__link at 375px: offsetHeight 74px > line-height 25.6px × 1.5 (2+ lines)",
+        "fix": "shorten the label, set white-space: nowrap on the affordance, or collapse the nav into a sheet/menu at narrow widths"
+      },
+      {
+        "gate": 50,
+        "name": "Image grid track minmax",
+        "pass": true
+      },
+      {
+        "gate": 51,
+        "name": "Display headers without long-word wrap",
+        "pass": true
+      },
+      {
+        "gate": 52,
+        "name": "Section-head without mobile collapse",
+        "pass": true
+      },
+      {
+        "gate": 53,
+        "name": "CSS-only radio tabs that scroll-jump",
+        "pass": true
+      },
+      {
+        "gate": 54,
+        "name": "Tag-left/heading-right",
+        "pass": true
+      },
+      {
+        "gate": 55,
+        "name": "All-caps display with line-height < 1.0",
+        "pass": true
+      },
+      {
+        "gate": 56,
+        "name": "Sticky top:0 below a sticky nav",
+        "pass": true
+      },
+      {
+        "gate": 8,
+        "name": "Diversification",
+        "pass": true
+      },
+      {
+        "gate": 32,
+        "name": "Nav/footer rotation",
+        "pass": true
+      }
+    ]
+  },
+  "keystone": {
+    "rowsPass": 47,
+    "rowsTotal": 47,
+    "distinctFailedGates": [],
+    "score48": 48,
+    "results": [
+      {
+        "gate": 1,
+        "name": "Banned display fonts",
+        "pass": true
+      },
+      {
+        "gate": 2,
+        "name": "Gradient text",
+        "pass": true
+      },
+      {
+        "gate": 3,
+        "name": "3-equal-col card grid",
+        "pass": true
+      },
+      {
+        "gate": 4,
+        "name": "Nested cards",
+        "pass": true
+      },
+      {
+        "gate": 5,
+        "name": "Card side-stripe border",
+        "pass": true
+      },
+      {
+        "gate": 6,
+        "name": "Hero centred-everything",
+        "pass": true
+      },
+      {
+        "gate": 7,
+        "name": "Pure black/white base",
+        "pass": true
+      },
+      {
+        "gate": 10,
+        "name": "`transition: all`",
+        "pass": true
+      },
+      {
+        "gate": 11,
+        "name": "Uniform hover-scale",
+        "pass": true
+      },
+      {
+        "gate": 12,
+        "name": "Bouncy/overshoot easing on UI",
+        "pass": true
+      },
+      {
+        "gate": 13,
+        "name": "Multiple simultaneous hover effects",
+        "pass": true
+      },
+      {
+        "gate": 14,
+        "name": "Animating layout properties",
+        "pass": true
+      },
+      {
+        "gate": 15,
+        "name": "Focus ring fades in",
+        "pass": true
+      },
+      {
+        "gate": 17,
+        "name": "Tooltip hover-delay = focus-delay",
+        "pass": true
+      },
+      {
+        "gate": 18,
+        "name": "Auto-rotating content without pause",
+        "pass": true
+      },
+      {
+        "gate": 19,
+        "name": "Placeholder names / startup clichés",
+        "pass": true
+      },
+      {
+        "gate": 20,
+        "name": "Missing CSS stamp",
+        "pass": true
+      },
+      {
+        "gate": 21,
+        "name": "Specimen fall-through",
+        "pass": true
+      },
+      {
+        "gate": 22,
+        "name": "Zero-chroma neutral",
+        "pass": true
+      },
+      {
+        "gate": 23,
+        "name": "Accent >5% viewport",
+        "pass": true
+      },
+      {
+        "gate": 24,
+        "name": "Off-scale spacing",
+        "pass": true
+      },
+      {
+        "gate": 25,
+        "name": "Prose max-width outside 45–75ch",
+        "pass": true
+      },
+      {
+        "gate": 26,
+        "name": "Missing interaction states",
+        "pass": true
+      },
+      {
+        "gate": 27,
+        "name": "Motion without reduced-motion fallback",
+        "pass": true
+      },
+      {
+        "gate": 28,
+        "name": "LCP-killing demo video",
+        "pass": true
+      },
+      {
+        "gate": 31,
+        "name": "Lottie as default",
+        "pass": true
+      },
+      {
+        "gate": 33,
+        "name": "Decorative element without aria",
+        "pass": true
+      },
+      {
+        "gate": 34,
+        "name": "Horizontal scroll",
+        "pass": true
+      },
+      {
+        "gate": 35,
+        "name": "Decorative text-effect position",
+        "pass": true
+      },
+      {
+        "gate": 37,
+        "name": "More than three font families",
+        "pass": true
+      },
+      {
+        "gate": 38,
+        "name": "Outlier face in >2 slots",
+        "pass": true
+      },
+      {
+        "gate": 39,
+        "name": "Input field states",
+        "pass": true
+      },
+      {
+        "gate": 40,
+        "name": "Contrast",
+        "pass": true
+      },
+      {
+        "gate": 42,
+        "name": "Nav fingerprint",
+        "pass": true
+      },
+      {
+        "gate": 44,
+        "name": "Hero fit",
+        "pass": true
+      },
+      {
+        "gate": 47,
+        "name": "Re-drawn UI chrome",
+        "pass": true
+      },
+      {
+        "gate": 48,
+        "name": "Token improvisation",
+        "pass": true
+      },
+      {
+        "gate": 49,
+        "name": "Two-line clickable text",
+        "pass": true
+      },
+      {
+        "gate": 50,
+        "name": "Image grid track minmax",
+        "pass": true
+      },
+      {
+        "gate": 51,
+        "name": "Display headers without long-word wrap",
+        "pass": true
+      },
+      {
+        "gate": 52,
+        "name": "Section-head without mobile collapse",
+        "pass": true
+      },
+      {
+        "gate": 53,
+        "name": "CSS-only radio tabs that scroll-jump",
+        "pass": true
+      },
+      {
+        "gate": 54,
+        "name": "Tag-left/heading-right",
+        "pass": true
+      },
+      {
+        "gate": 55,
+        "name": "All-caps display with line-height < 1.0",
+        "pass": true
+      },
+      {
+        "gate": 56,
+        "name": "Sticky top:0 below a sticky nav",
+        "pass": true
+      },
+      {
+        "gate": 8,
+        "name": "Macrostructure reuse",
+        "pass": true
+      },
+      {
+        "gate": 32,
+        "name": "Nav/footer rotation",
+        "pass": true
+      }
+    ]
+  }
+}

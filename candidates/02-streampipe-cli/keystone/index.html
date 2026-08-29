@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en" data-theme="terminal">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Keystone · pre-emit critique: P5 H4 E5 S4 R5 V5 -->
+  <meta name="description" content="Streampipe — stream parsing for log and event pipelines. One static binary: parse, filter, emit JSON. MIT licensed.">
+  <title>streampipe — stream parsing for log and event pipelines</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="nav-term">
+    <pre class="nav-term__line"><span class="prompt">&gt;</span> streampipe <a href="#docs">--docs</a> <a href="#install">--install</a> <a href="#gh">--gh</a><span class="caret" aria-hidden="true">▮</span></pre>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="glow" aria-hidden="true"></div>
+      <h1 class="cmd">$ streampipe parse access.log --format ndjson</h1>
+      <pre class="out">  ┌──────────────────────────────────────┐
+  │  events  18,204      exit  0         │
+  │  stage   parse   → nginx  → PASS     │
+  │  stage   filter  → 5xx    → 212 ev   │
+  └──────────────────────────────────────┘</pre>
+      <button class="run" type="button">$ run</button>
+    </section>
+
+    <p class="intro">Docs · v0.9.2 · stream parsing for log and event pipelines.
+    One static binary. Reads lines from files, pipes, sockets, and kubectl logs.</p>
+
+    <section class="index" id="docs">
+      <h2 class="cat">getting-started</h2>
+      <ul class="links">
+        <li><a class="idx-link" href="#install">Install</a><span class="idx-desc">brew · curl · go install</span></li>
+        <li><a class="idx-link" href="#install">Quickstart</a><span class="idx-desc">parse your first log in one line</span></li>
+        <li><a class="idx-link" href="#install">streampipe --version</a><span class="idx-desc">0.9.2, exit 0</span></li>
+      </ul>
+
+      <h2 class="cat" id="install">guides</h2>
+      <ul class="links">
+        <li><a class="idx-link" href="#docs">Parse nginx logs</a><span class="idx-desc">access.log → JSON events</span></li>
+        <li><a class="idx-link" href="#docs">Filter 5xx</a><span class="idx-desc">the status=5xx stage</span></li>
+        <li><a class="idx-link" href="#docs">Write a stage</a><span class="idx-desc">one function in, one stream out</span></li>
+      </ul>
+
+      <h2 class="cat">reference</h2>
+      <ul class="links">
+        <li><a class="idx-link" href="#docs">CLI flags</a><span class="idx-desc">every flag, every default</span></li>
+        <li><a class="idx-link" href="#docs">Stage grammar</a><span class="idx-desc">parse → filter → emit</span></li>
+        <li><a class="idx-link" href="#docs">Exit codes</a><span class="idx-desc">what 0, 1, and 2 mean</span></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="foot-dense">
+    <p>streampipe v0.9.2 · one static binary, no daemon, no config file · MIT licensed ·
+    github.com/streampipe/cli · docs built from the repo, same register as the tool</p>
+  </footer>
+</body>
+</html>

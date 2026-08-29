@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>streampipe — stream parsing for log and event pipelines</title>
+    <meta name="description" content="Streampipe is an open-source CLI that parses log and event streams into structured events. One binary, no daemon. Install it and read the docs.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+
+    <header class="nav-term">
+      <pre class="nav-term__line"><span class="prompt">&gt;</span> streampipe <a href="#docs">--docs</a> <a href="#install">--install</a> <a href="#colophon">--gh</a><span class="caret" aria-hidden="true">▮</span></pre>
+    </header>
+
+    <main>
+
+      <header class="intro">
+        <h1 class="intro__line"><span class="prompt">$</span>streampipe <span class="tagline">— stream parsing for log and event pipelines.</span></h1>
+        <p class="intro__body">One static binary. Reads lines from files, pipes, sockets, and <code>kubectl logs</code>. Parses each line into a structured event, filters it, writes JSON to the next stage. No agent, no daemon, no config file.</p>
+      </header>
+
+      <section class="section" id="install" aria-labelledby="install-head">
+        <h2 class="section__head" id="install-head">Install</h2>
+        <pre class="code"><span class="code__label">shell</span><span class="prompt">$</span>brew install streampipe/tap/streampipe
+<span class="prompt">$</span>curl -fsSL https://get.streampipe.dev | sh
+<span class="prompt">$</span>go install github.com/streampipe/cli/cmd/streampipe@latest
+<span class="prompt">$</span>streampipe --version<span class="caret" aria-hidden="true">▮</span>
+<span class="out">streampipe 0.9.2</span></pre>
+      </section>
+
+      <section class="section" id="example" aria-labelledby="example-head">
+        <h2 class="section__head" id="example-head">One pipeline</h2>
+        <pre class="code"><span class="code__label">5xx paths from an nginx access log, as JSON</span><span class="prompt">$</span>streampipe parse access.log <span class="flag">--format nginx</span> <span class="flag">--filter status=5xx</span> | jq .path</pre>
+        <p class="intro__body">Every stage is a flag. <code>--format</code> picks the parser, <code>--filter</code> keeps the events you name, and the output is JSON lines on stdout — so the next tool in the pipe doesn’t care where the lines came from.</p>
+      </section>
+
+      <nav class="index" id="docs" aria-label="Documentation">
+        <div class="index__group">
+          <h2 class="index__head">Start here</h2>
+          <ul class="index__list">
+            <li class="index__row"><a class="index__link" href="#docs"><span class="index__cmd">quickstart</span><span class="index__desc">install → parse one file → pipe to jq</span></a></li>
+            <li class="index__row"><a class="index__link" href="#docs"><span class="index__cmd">concepts</span><span class="index__desc">sources, parsers, filters, sinks — the four stage kinds</span></a></li>
+            <li class="index__row"><a class="index__link" href="#docs"><span class="index__cmd">streaming vs batch</span><span class="index__desc">when a pipe beats a queue, and when it doesn’t</span></a></li>
+          </ul>
+        </div>
+        <div class="index__group">
+          <h2 class="index__head">Reference</h2>
+          <ul class="index__list">
+            <li class="index__row"><a class="index__link" href="#docs"><span class="index__cmd">CLI reference</span><span class="index__desc">every command, flag, and default — generated from the binary</span></a></li>
+            <li class="index__row"><a class="index__link" href="#docs"><span class="index__cmd">parse formats</span><span class="index__desc">nginx, common log, JSON lines, logfmt, CSV, plain lines</span></a></li>
+            <li class="index__row"><a class="index__link" href="#docs"><span class="index__cmd">filter syntax</span><span class="index__desc">field comparisons, set membership, regex, time windows</span></a></li>
+            <li class="index__row"><a class="index__link" href="#docs"><span class="index__cmd">output formats</span><span class="index__desc">JSON lines, CSV, template strings, raw pass-through</span></a></li>
+            <li class="index__row"><a class="index__link" href="#docs"><span class="index__cmd">exit codes</span><span class="index__desc">what streampipe returns when a source breaks mid-stream</span></a></li>
+          </ul>
+        </div>
+        <div class="index__group">
+          <h2 class="index__head">Guides</h2>
+          <ul class="index__list">
+            <li class="index__row"><a class="index__link" href="#docs"><span class="index__cmd">parse kubectl logs</span><span class="index__desc">multi-container logs, sorted, filtered, per pod</span></a></li>
+            <li class="index__row"><a class="index__link" href="#docs"><span class="index__cmd">tail + alert</span><span class="index__desc">watch an access log, emit 5xx events to a webhook</span></a></li>
+            <li class="index__row"><a class="index__link" href="#docs"><span class="index__cmd">journald ingestion</span><span class="index__desc">reading the systemd journal as a streampipe source</span></a></li>
+          </ul>
+        </div>
+        <div class="index__group">
+          <h2 class="index__head">Project</h2>
+          <ul class="index__list">
+            <li class="index__row"><a class="index__link" href="#docs"><span class="index__cmd">source on GitHub</span><span class="index__desc">streampipe/cli — issues and pull requests welcome</span></a></li>
+            <li class="index__row"><a class="index__link" href="#docs"><span class="index__cmd">changelog</span><span class="index__desc">release notes, breaking-change migration notes</span></a></li>
+            <li class="index__row"><a class="index__link" href="#docs"><span class="index__cmd">contributing</span><span class="index__desc">dev setup, parser test fixtures, review process</span></a></li>
+          </ul>
+        </div>
+      </nav>
+
+    </main>
+
+    <footer class="foot-dense" id="colophon">
+      <p>streampipe 0.9.2 · Apache-2.0 · a single static binary, built by the streampipe contributors · source and issues at github.com/streampipe/cli · docs generated from the manual · © 2026</p>
+    </footer>
+
+  </body>
+</html>

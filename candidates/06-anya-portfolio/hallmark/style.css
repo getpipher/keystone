@@ -1,0 +1,214 @@
+/* Hallmark · pre-emit critique: P5 H4 E4 S5 R5 V5 */
+/* Hallmark · genre: editorial · macrostructure: Letter · theme: Almanac · enrichment: none · nav: N1a · footer: Ft6 */
+:root {
+  --color-paper:  oklch(97% 0.008 75);
+  --color-ink:    oklch(23% 0.015 70);
+  --color-muted:  oklch(42% 0.02 70);
+  --color-rule:   oklch(85% 0.015 75);
+  --color-accent: oklch(45% 0.09 150);
+  --color-link:   oklch(38% 0.05 255);
+  --color-focus:  oklch(45% 0.09 150);
+  --font-display: "EB Garamond", Georgia, serif;
+  --font-body:    "IBM Plex Sans", sans-serif;
+  --font-mono:    "IBM Plex Mono", monospace;
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-md:   1.25rem;
+  --text-lg:   1.5625rem;
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs:  0.5rem;
+  --space-sm:  0.75rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:     cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms;
+  --rule-hair: 1px;
+  --page-gutter: clamp(1rem, 4vw, 1.5rem);
+}
+
+/* Global clip — horizontal scroll is a hard fail (G34) */
+html { overflow-x: clip; }
+body { overflow-x: clip; }
+
+body {
+  margin: 0;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── N1a · Wordmark + 2 links — a one-pager genuinely has two destinations ── */
+.nav-min {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: var(--space-lg) var(--page-gutter) var(--space-md);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+}
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-lg);
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.nav-links {
+  display: flex;
+  gap: var(--space-lg);
+}
+.nav-links a {
+  font-size: var(--text-sm);
+  color: var(--color-link);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--dur-micro) var(--ease-out);
+}
+.nav-links a:hover {
+  color: var(--color-accent);
+}
+.nav-links a:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+.nav-links a:active {
+  color: var(--color-ink);
+}
+.nav-links a:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Letter body ─────────────────────────────────────────── */
+.letter {
+  max-width: 60ch;
+  margin-inline: auto;
+  padding: var(--space-2xl) var(--page-gutter) var(--space-xl);
+}
+.lede {
+  margin: 0 0 var(--space-xl);
+  font-size: var(--text-md);
+  line-height: 1.6;
+  max-width: 56ch;
+}
+.letter > p,
+.prose-p {
+  margin: 0 0 var(--space-md);
+}
+.inline-head {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-md);
+  line-height: 1.25;
+  letter-spacing: 0.005em;
+  margin: var(--space-2xl) 0 var(--space-md);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+/* Principles — roman-numeral marks, hairline-free, the almanac register */
+.principles {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.principles li {
+  margin: 0;
+  max-width: 56ch;
+}
+.mark {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+  margin-right: var(--space-sm);
+}
+
+/* ── Ft6 · Letter close — roman (G38a: no italic display) ── */
+.foot-letter {
+  max-width: 60ch;
+  margin-inline: auto;
+  padding: var(--space-xl) var(--page-gutter) var(--space-2xl);
+}
+.foot-letter__close {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-lg);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.foot-letter__sign {
+  font-style: normal;
+}
+.foot-letter__ps {
+  margin: var(--space-md) 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  max-width: 55ch;
+}
+.foot-meta {
+  margin: var(--space-lg) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+}
+
+/* Inline prose links */
+.letter a[href^="mailto"],
+.foot-letter__ps a {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color var(--dur-micro) var(--ease-out);
+}
+.letter a[href^="mailto"]:hover,
+.foot-letter__ps a:hover {
+  color: var(--color-accent);
+}
+.letter a[href^="mailto"]:focus-visible,
+.foot-letter__ps a:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+.letter a[href^="mailto"]:active,
+.foot-letter__ps a:active {
+  color: var(--color-ink);
+}
+.letter a[href^="mailto"]:disabled,
+.foot-letter__ps a:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Mobile — type breakpoint */
+@media (max-width: 40rem) {
+  .lede { font-size: var(--text-base); }
+  .principles li { max-width: none; }
+}
+
+/* Reduced motion — a letter doesn't move */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 150ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
+  }
+}

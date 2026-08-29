@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en" data-theme="cobalt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Keystone · pre-emit critique: P5 H4 E5 S4 R5 V5 -->
+  <meta name="description" content="Tracejam — tracing for distributed systems. Capture spans from every service, stitch them into one trace, query them like data. Self-hosted, one binary, OpenTelemetry native.">
+  <title>Tracejam — tracing for distributed systems</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Geist:wght@400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="#">Tracejam</a>
+      <nav class="nav__center" aria-label="Primary">
+        <a class="nav__link" href="#how">Docs</a>
+        <a class="nav__link" href="#pricing">Pricing</a>
+        <a class="nav__link" href="#changelog">Changelog</a>
+      </nav>
+      <div class="nav__right">
+        <a class="nav__signin" href="#">Sign in</a>
+        <a class="btn btn--accent" href="#try">Try Tracejam</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero__copy">
+        <p class="eyebrow">v0.14.2 · STATUS · BETA</p>
+        <h1 class="display">Every span, <span class="hl">one query</span> away.</h1>
+        <div class="hero__lede">
+          <p>Tracejam captures spans from every service, stitches them into one
+          trace, and queries them like data. Self-hosted, one binary,
+          OpenTelemetry native.</p>
+        </div>
+        <div class="hero__cta">
+          <a class="btn btn--accent" href="#try">Try Tracejam</a>
+          <a class="btn btn--outline" href="#contact">Contact sales</a>
+        </div>
+      </div>
+      <div class="hero__proof" aria-label="A trace waterfall: five spans across four services">
+        <div class="span-row"><span class="span-label">gateway</span><span class="span-bar" style="width: 12%"></span><span class="span-ms">12ms</span></div>
+        <div class="span-row"><span class="span-label">checkout</span><span class="span-bar span-bar--hit" style="width: 86%"></span><span class="span-ms">186ms</span></div>
+        <div class="span-row"><span class="span-label">payments</span><span class="span-bar" style="width: 34%"></span><span class="span-ms">64ms</span></div>
+        <div class="span-row"><span class="span-label">db.orders</span><span class="span-bar" style="width: 22%"></span><span class="span-ms">41ms</span></div>
+        <div class="span-row"><span class="span-label">cache</span><span class="span-bar" style="width: 8%"></span><span class="span-ms">8ms</span></div>
+        <p class="proof-caption">trace 7f3c · checkout@prod · 5 spans, 4 services</p>
+      </div>
+    </section>
+
+    <section class="split" id="how">
+      <div class="split__claim">
+        <h2 class="head">Capture without agents.</h2>
+        <p>One binary speaks OpenTelemetry on <code>:4317</code>. Point your SDKs
+        at it and every service shows up in the same trace — no sidecars, no
+        per-team collectors.</p>
+      </div>
+      <div class="split__proof">
+        <pre class="term">$ brew install tracejam
+$ tracejam capture --otlp :4317
+  listening on :4317 · otlp/grpc + http</pre>
+      </div>
+    </section>
+
+    <section class="split split--alt">
+      <div class="split__claim">
+        <h2 class="head">Query traces like tables.</h2>
+        <p>Spans land in a queryable store. Ask in one line what used to take a
+        dashboard, three services, and a hunch.</p>
+      </div>
+      <div class="split__proof">
+        <pre class="term">$ tracejam query 'latency &gt; 200ms &amp;&amp; service = checkout'
+  212 spans · 3 services · 1 root cause</pre>
+      </div>
+    </section>
+
+    <section class="split" id="pricing">
+      <div class="split__claim">
+        <h2 class="head">Find the span that regressed.</h2>
+        <p>Diffs are first-class: pick two deploys and Tracejam lines up every
+        changed span — new, gone, slower — side by side.</p>
+      </div>
+      <div class="split__proof">
+        <pre class="term">$ tracejam diff v2.4.1 v2.4.2 --service checkout
+  + payments.auth      41ms → 118ms   (regressed)
+  − cache.warm        removed
+  = db.orders          unchanged</pre>
+      </div>
+    </section>
+
+    <section class="tryband" id="try">
+      <h2 class="head">Try it on your own traces.</h2>
+      <p class="tryband__sub">Free while self-hosted. Sales for fleets, compliance
+      reviews, and retained storage.</p>
+      <div class="tryband__cta">
+        <a class="btn btn--accent" href="#">Try Tracejam</a>
+        <a class="btn btn--outline" href="#contact" id="contact">Contact sales</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot-line">
+    <p>© 2026 Tracejam · <a href="#docs">Docs</a> · <a href="#gh">GitHub</a> · <a href="#status">Status</a> · OpenTelemetry-native tracing for distributed systems</p>
+  </footer>
+</body>
+</html>

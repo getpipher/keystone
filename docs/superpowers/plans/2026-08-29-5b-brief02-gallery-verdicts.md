@@ -8,7 +8,7 @@
 
 **Tech Stack:** Markdown (no build step) · git (exact-path adds).
 
-**Execution status:** Not yet executed — this plan operationalizes the brainstorm phase's judgment from 2026-08-29 (transcript artifact: the A/B verdict lines reproduced verbatim in Task 1).
+**Execution status:** Executed 2026-08-29 — `verdict.md` committed at `dd96455`; a concurrent summary pass (`cf8d79b`) clobbered it with compact rows, and `c0ea355` restored the blind verdicts with the engine table appended as an addendum (the restored file merges this plan's Task 1 content with that addendum — structure differs slightly from the Task 1 block, all content present). Cross-checks re-run post-restore: scores match `verdict.json` exactly.
 
 ## Global Constraints
 

@@ -1,0 +1,534 @@
+/* Hallmark · genre: editorial · macrostructure: Marquee Hero · tone: soft · anchor hue: 230 (deep harbour) · theme: Almanac · enrichment: none (typography only) · nav: N6 · footer: Ft1
+ * H1 Marquee knobs: size=--text-display (41-char headline bracket) · alignment=left-bias · underlay=single thick rule below
+ * N6 knobs: issue-line=below wordmark · wordmark=3xl (title case) · rule=double · Ft1 knobs: wordmark=2xl · tagline=roman body · links=inline
+ * Inferred context (user opted out): audience = casual podcast listeners · use = play the latest episode / follow · tone = soft
+ * Diversification axes: light paper / roman-serif display / cool accent — first Hallmark run in this project.
+ */
+/* Hallmark · pre-emit critique: P5 H4 E5 S4 R5 V5 */
+:root {
+  /* colour — warm salt paper band, anchor hue 85 */
+  --color-paper:      oklch(96.5% 0.012 85);
+  --color-paper-2:    oklch(93.5% 0.014 85);
+  --color-rule:       oklch(82% 0.012 85);
+  --color-neutral:    oklch(43% 0.012 85);
+  --color-muted:      oklch(40% 0.012 85);
+  --color-ink:        oklch(20% 0.012 150);
+  --color-accent:     oklch(44% 0.12 230);
+  --color-accent-deep: oklch(36% 0.11 230);
+  --color-focus:      oklch(52% 0.16 230);
+
+  /* type */
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-body: "Newsreader", "Iowan Old Style", Georgia, serif;
+
+  --text-xs:   0.64rem;
+  --text-sm:   0.8rem;
+  --text-base: 1rem;
+  --text-md:   1.25rem;
+  --text-lg:   1.5625rem;
+  --text-xl:   1.9531rem;
+  --text-2xl:  2.4414rem;
+  --text-3xl:  3.0518rem;
+  --text-display: clamp(2.75rem, 5vw + 1rem, 5.25rem);
+
+  /* space — 4pt scale, named by role */
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs:  0.5rem;
+  --space-sm:  0.75rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --space-4xl: 9rem;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+  --dur-long: 420ms;
+  --dur-marquee: 48s;
+
+  /* lines, radii, layout */
+  --rule-hair: 1px;
+  --radius-flat: 0px;
+  --radius-soft: 2px;
+  --page-gutter: clamp(1.25rem, 4vw, 3rem);
+  --measure: 65ch;
+
+  /* depth — six named levels */
+  --z-base: 1;
+  --z-raised: 10;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-modal: 400;
+  --z-toast: 500;
+}
+
+
+/* ---------- base ---------- */
+
+html {
+  overflow-x: clip;
+}
+
+body {
+  overflow-x: clip;
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-optical-sizing: auto;
+  line-height: 1.6;
+  font-variant-numeric: oldstyle-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+  min-width: 0;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-thickness: var(--rule-hair);
+  text-underline-offset: 0.18em;
+  text-decoration-color: var(--color-rule);
+  transition: color var(--dur-micro) var(--ease-out);
+}
+
+a:hover {
+  color: var(--color-accent-deep);
+  text-decoration-color: var(--color-accent-deep);
+}
+
+a:active {
+  color: var(--color-accent);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+a:visited {
+  color: var(--color-muted);
+  text-decoration-color: var(--color-rule);
+}
+
+a:visited:hover {
+  color: var(--color-accent-deep);
+}
+
+.wrap {
+  padding-inline: var(--page-gutter);
+  max-width: 76rem;
+}
+
+/* ---------- N6 · newspaper masthead ---------- */
+
+.nav-mast {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2xs);
+  padding: var(--space-lg) var(--page-gutter) 0;
+  text-align: center;
+}
+
+.mast-name {
+  font-size: clamp(2.25rem, 5vw, 3.05rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 0.95;
+}
+
+.mast-line {
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.08em;
+  font-size: var(--text-sm);
+  color: var(--color-neutral);
+}
+
+.mast-nav ul {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-md);
+  list-style: none;
+  padding: 0;
+  margin: var(--space-2xs) 0 0;
+}
+
+.mast-nav a {
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.mast-nav a:hover {
+  color: var(--color-accent-deep);
+}
+
+.mast-rule {
+  border: 0;
+  border-top: var(--rule-hair) solid var(--color-rule);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+  height: 4px;
+  width: 100%;
+  margin: var(--space-sm) 0 0;
+}
+
+/* ---------- H1 · marquee hero ---------- */
+
+.hero-marquee {
+  min-height: 72dvh;
+  display: grid;
+  align-content: end;
+  padding: var(--space-xl) var(--page-gutter) var(--space-2xl);
+}
+
+.hero-marquee h1 {
+  font-size: var(--text-display);
+  font-weight: 300;
+  line-height: 1.04;
+  max-width: 14ch;
+}
+
+.hero-marquee h1 .tide-mark {
+  color: var(--color-accent);
+}
+
+.hero-note {
+  margin-top: var(--space-lg);
+  max-width: var(--measure);
+  color: var(--color-neutral);
+  font-size: var(--text-md);
+}
+
+.rule-thick {
+  border: 0;
+  border-top: 6px solid var(--color-ink);
+  margin: 0;
+}
+
+/* ---------- episode ticker (marquee scroll) ---------- */
+
+.ticker {
+  overflow: hidden;
+  background: var(--color-paper-2);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+  padding-block: var(--space-xs);
+}
+
+.ticker-track {
+  display: inline-flex;
+  gap: var(--space-xl);
+  white-space: nowrap;
+  will-change: transform;
+  animation: ticker-scroll var(--dur-marquee) linear infinite;
+  padding-inline-start: var(--space-lg);
+}
+
+.ticker:hover .ticker-track,
+.ticker:focus-within .ticker-track {
+  animation-play-state: paused;
+}
+
+.ticker-item {
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.08em;
+  font-size: var(--text-sm);
+  color: var(--color-neutral);
+}
+
+.ticker-item .tnum {
+  color: var(--color-accent-deep);
+}
+
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- sections ---------- */
+
+.section {
+  padding-block: var(--space-3xl) var(--space-2xl);
+}
+
+.section + .section {
+  padding-top: 0;
+}
+
+.head-hang {
+  padding-block: 0 var(--space-xl);
+}
+
+.head-hang h2 {
+  font-size: var(--text-2xl);
+  font-weight: 600;
+}
+
+.head-hang .head-note {
+  margin-top: var(--space-xs);
+  color: var(--color-neutral);
+  font-size: var(--text-base);
+}
+
+/* ---------- F3 · episodes as tabular rows ---------- */
+
+.episodes {
+  border-top: var(--rule-hair) solid var(--color-rule);
+}
+
+.episode {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr) auto;
+  gap: var(--space-xs) var(--space-lg);
+  align-items: baseline;
+  padding-block: var(--space-lg);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+}
+
+.episode .ep-no {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-accent-deep);
+  font-size: var(--text-sm);
+  letter-spacing: 0.04em;
+}
+
+.episode h3 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.episode .ep-desc {
+  grid-column: 2 / 3;
+  color: var(--color-neutral);
+  max-width: var(--measure);
+  font-size: var(--text-base);
+}
+
+.episode .ep-meta {
+  grid-column: 2 / 4;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm) var(--space-md);
+  align-items: baseline;
+  font-size: var(--text-sm);
+  color: var(--color-neutral);
+  font-variant-numeric: tabular-nums;
+}
+
+.episode .listen {
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+  justify-self: end;
+  align-self: center;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- about · prose + T1 pull quote ---------- */
+
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+.about-prose {
+  max-width: var(--measure);
+}
+
+.about-prose p + p {
+  margin-top: var(--space-md);
+}
+
+.proof-margin {
+  border-left: var(--rule-hair) solid var(--color-rule);
+  padding-left: var(--space-lg);
+}
+
+.proof-margin blockquote {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--text-xl);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.proof-margin blockquote::before {
+  content: "\201C";
+  display: block;
+  color: var(--color-accent);
+  font-size: var(--text-3xl);
+  line-height: 0.6;
+  padding-block-end: var(--space-xs);
+}
+
+.proof-margin .attribution {
+  margin-top: var(--space-md);
+  font-size: var(--text-sm);
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.08em;
+  color: var(--color-neutral);
+}
+
+/* ---------- C3 · follow links ---------- */
+
+.follow-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md) var(--space-xl);
+  align-items: baseline;
+}
+
+.follow-row .link {
+  white-space: nowrap;
+  font-size: var(--text-md);
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+
+.follow-row .arrow {
+  color: var(--color-accent);
+}
+
+/* ---------- Ft1 · mast-headed footer ---------- */
+
+.foot-mast {
+  border-top: var(--rule-hair) solid var(--color-rule);
+  margin-top: var(--space-3xl);
+  padding: var(--space-2xl) var(--page-gutter) var(--space-xl);
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.foot-mast .wordmark {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-2xl);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.foot-mast .tagline {
+  color: var(--color-neutral);
+  max-width: var(--measure);
+}
+
+.foot-mast .links {
+  margin-top: var(--space-sm);
+  font-size: var(--text-sm);
+  color: var(--color-neutral);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-md);
+}
+
+.foot-mast .links a {
+  white-space: nowrap;
+}
+
+.foot-mast .colophon {
+  margin-top: var(--space-md);
+  font-size: var(--text-xs);
+  color: var(--color-neutral);
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.08em;
+}
+
+/* ---------- page-load reveal (one orchestrated entrance) ---------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: reveal var(--dur-long) var(--ease-out) forwards;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+@keyframes reveal {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- mobile collapse ---------- */
+
+@media (max-width: 40rem) {
+  .episode {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .episode .ep-no {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+  .episode h3 {
+    grid-column: 1 / 3;
+    grid-row: 2 / 3;
+  }
+  .episode .listen {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+  }
+  .episode .ep-desc {
+    grid-column: 1 / 3;
+  }
+  .episode .ep-meta {
+    grid-column: 1 / 3;
+  }
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+  .proof-margin {
+    border-left: 0;
+    border-top: var(--rule-hair) solid var(--color-rule);
+    padding-left: 0;
+    padding-top: var(--space-lg);
+  }
+}
+
+/* ---------- reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+    transform: none;
+  }
+  .reveal {
+    animation: reveal-reduced 150ms linear forwards;
+  }
+  @keyframes reveal-reduced {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}

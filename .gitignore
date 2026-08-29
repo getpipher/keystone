@@ -5,7 +5,8 @@ node_modules/
 keystone-report.{json,html}
 keystone-audit-report.{md,json}
 keystone-audit/
-.keystone/# examples: committed evidence (reports + screenshots); raw data stays local
+.keystone/
+# examples: committed evidence (reports + screenshots); raw data stays local
 !examples/**/keystone-report.json
 !examples/**/keystone-report.html
 !examples/**/*.png

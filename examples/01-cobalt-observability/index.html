@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kestrel · Traces, not dashboards</title>
+  <meta name="description" content="Kestrel instruments your services and returns readable traces. OpenTelemetry-native distributed tracing for engineers who read spans, not charts.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="shell">
+    <nav class="nav" aria-label="Main">
+      <a class="nav-brand" href="/">Kestrel</a>
+      <ul class="nav-links">
+        <li><a href="#install">Docs</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#faq">Changelog</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a class="btn" href="#start">Start free</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- hero diptych: claim on the left, the product (a trace) on the right -->
+    <section class="shell hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">v2.4 · OTel-native · status: stable</p>
+        <h1 id="hero-title">Traces, not <span class="hl">dashboards</span>.</h1>
+        <p class="lede">Kestrel instruments your services and returns readable traces: every span, every cause, one query language you already know. It answers &ldquo;what was slow?&rdquo; with the fix, not a chart.</p>
+        <div class="hero-ctas">
+          <a class="btn" href="#start">Start tracing</a>
+          <a class="btn btn-ghost" href="#install">Read the docs</a>
+        </div>
+        <dl class="stats">
+          <div><dt>Query p99</dt><dd><b>40</b>ms</dd></div>
+          <div><dt>Retention</dt><dd><b>30</b>days</dd></div>
+          <div><dt>Regions</dt><dd><b>14</b></dd></div>
+        </dl>
+      </div>
+      <div class="hero-proof">
+        <div class="waterfall" role="img" aria-label="Span waterfall for a checkout request: total 412 milliseconds. The postgres query span took 298 milliseconds and is highlighted as the slow span.">
+          <div class="span-row"><span class="span-name">GET /checkout</span><span class="span-track"><span class="span-bar bw-100"></span></span><span class="span-ms">412ms</span></div>
+          <div class="span-row"><span class="span-name">auth.verify</span><span class="span-track"><span class="span-bar bw-3"></span></span><span class="span-ms">12ms</span></div>
+          <div class="span-row"><span class="span-name">cart.load</span><span class="span-track"><span class="span-bar bw-8"></span></span><span class="span-ms">31ms</span></div>
+          <div class="span-row"><span class="span-name">postgres.query</span><span class="span-track"><span class="span-bar span-bar-slow bw-72"></span></span><span class="span-ms"><b>298ms</b></span></div>
+          <div class="span-row"><span class="span-name">queue.publish</span><span class="span-track"><span class="span-bar bw-2"></span></span><span class="span-ms">9ms</span></div>
+          <div class="span-row"><span class="span-name">render.html</span><span class="span-track"><span class="span-bar bw-4"></span></span><span class="span-ms">18ms</span></div>
+        </div>
+        <p class="snippet-caption">trace 4f2a&nbsp;·&nbsp;checkout&nbsp;·&nbsp;slow span: postgres.query&nbsp;·&nbsp;missing index: orders(customer_id)</p>
+      </div>
+    </section>
+
+    <!-- split 1: install (text left, command right) -->
+    <section class="shell split" id="install" aria-labelledby="install-title">
+      <div class="split-copy">
+        <p class="eyebrow">Install</p>
+        <h2 id="install-title">One SDK. Three runtimes. No agent.</h2>
+        <p>Kestrel ships as an OpenTelemetry exporter, so the instrumentation you already run is the instrumentation Kestrel reads. Point the SDK at a collector and the first trace lands in seconds.</p>
+        <a class="btn btn-ghost" href="#start">Installation guide</a>
+      </div>
+      <div class="split-proof">
+        <pre class="snippet"><code><span class="tok-comment"># node · python · go — same collector, same traces</span>
+<span class="tok-cmd">npm</span> i @kestrel/otel
+<span class="tok-cmd">pip</span> install kestrel-otel
+<span class="tok-cmd">go</span> get kestrel.dev/otel
+<span class="tok-comment"># env</span>
+<span class="tok-flag">OTEL_EXPORTER_OTLP_ENDPOINT</span>=<span class="tok-string">https://collector.kestrel.dev</span></code></pre>
+      </div>
+    </section>
+
+    <!-- split 2, reversed: the cause (waterfall left, claim right) -->
+    <section class="shell split reverse" aria-labelledby="cause-title">
+      <div class="split-copy">
+        <p class="eyebrow">Cause, not symptom</p>
+        <h2 id="cause-title">The slow span names its suspect.</h2>
+        <p>Kestrel reads flame order, wait reasons, and query plans together, so a 298ms span arrives with its missing index attached. You debug from the trace, not from three dashboards and a hunch.</p>
+        <a class="btn btn-ghost" href="#start">How analysis works</a>
+      </div>
+      <div class="split-proof">
+        <pre class="snippet"><code><span class="tok-comment">// span detail · postgres.query · 298ms</span>
+wait: <span class="tok-string">Seq Scan on orders</span>
+rows: <span class="tok-string">1.2M scanned, 4 returned</span>
+<span class="tok-cmd">suggest:</span> <span class="tok-string">CREATE INDEX ON orders (customer_id)</span>
+est. saving: <span class="tok-cmd">291ms / request</span></code></pre>
+      </div>
+    </section>
+
+    <!-- spec sheet band -->
+    <section class="band" aria-labelledby="spec-title">
+      <div class="shell">
+        <div class="band-head">
+          <p class="eyebrow">Spec sheet</p>
+          <h2 id="spec-title">The whole system, in numbers.</h2>
+        </div>
+        <table class="spec-table">
+          <caption>Kestrel managed service · plan-independent figures</caption>
+          <thead>
+            <tr><th scope="col">Dimension</th><th scope="col">Value</th><th scope="col">Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Query p99</th><td class="num">40ms</td><td>14-day rolling, all regions</td></tr>
+            <tr><th scope="row">Ingest</th><td class="num">OTLP/HTTP, OTLP/gRPC</td><td>OpenTelemetry-native; Zipkin &amp; Jaeger ingest included</td></tr>
+            <tr><th scope="row">Retention</th><td class="num">up to 30 days</td><td>per-plan; archive to your own bucket on Team</td></tr>
+            <tr><th scope="row">Tail sampling</th><td class="num">yes</td><td>latency-, error-, and rule-based</td></tr>
+            <tr><th scope="row">Self-host</th><td class="num">single binary</td><td>Apache-2.0, no phone-home</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- pricing: comparison table, not a card trio -->
+    <section class="shell split" id="pricing" aria-labelledby="pricing-title">
+      <div class="split-copy">
+        <p class="eyebrow">Pricing</p>
+        <h2 id="pricing-title">Two plans. The price is on the page.</h2>
+        <p>Hobby is free forever for personal projects. Team adds tail sampling, longer retention, and a 24-hour support lane. Self-hosting is free and feature-complete.</p>
+      </div>
+      <div class="split-proof">
+        <table class="spec-table">
+          <caption>Per-workspace pricing</caption>
+          <thead>
+            <tr><th scope="col"></th><th scope="col">Hobby</th><th scope="col">Team</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Price</th><td class="num">$0</td><td class="num">$29 / seat / mo</td></tr>
+            <tr><th scope="row">Traces / mo</th><td class="num">1M</td><td class="num">50M</td></tr>
+            <tr><th scope="row">Retention</th><td class="num">7 days</td><td class="num">30 days</td></tr>
+            <tr><th scope="row">Tail sampling</th><td>—</td><td class="yes">included</td></tr>
+            <tr><th scope="row">Support</th><td>community</td><td>24-hour lane</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="shell faq" id="faq" aria-labelledby="faq-title">
+      <div class="faq-grid">
+        <div>
+          <p class="eyebrow">FAQ</p>
+          <h2 id="faq-title">Asked, answered.</h2>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item">
+            <h3>Does it speak OpenTelemetry?</h3>
+            <p>Only OpenTelemetry. Kestrel accepts OTLP natively and reads the semantic conventions without translation, so there is no vendor SDK to rip out later.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Can we self-host?</h3>
+            <p>Yes. The single binary is Apache-2.0 and feature-complete, including tail sampling. The managed service exists because operating trace storage at 50M spans a month is a job, not a side project.</p>
+          </div>
+          <div class="faq-item">
+            <h3>What does it cost to try?</h3>
+            <p>Nothing. The Hobby plan is free with no trial clock, and the install command above is the whole onboarding.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Where do traces live?</h3>
+            <p>In the region you pick at workspace creation, on disk you own if you self-host. Trace data never leaves the region; metadata replication is documented in the security note.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA strip -->
+    <section class="cta-strip" id="start">
+      <h2>Instrument the first service before lunch.</h2>
+      <p>Create a workspace, point your SDK at the collector, and the first readable trace lands before your coffee cools.</p>
+      <a class="btn" href="#start">Start tracing free</a>
+    </section>
+  </main>
+
+  <!-- footer · Ft7 newsletter-first -->
+  <footer class="shell footer">
+    <form class="footer-form" action="#" method="post">
+      <label for="release-notes">Release notes, monthly. Nothing else.</label>
+      <div class="field-row">
+        <input id="release-notes" name="email" type="email" autocomplete="email" placeholder="you@company.dev" required>
+        <button class="btn" type="submit">Subscribe</button>
+      </div>
+      <p class="field-note">One email per release. Unsubscribe link in the footer of every send.</p>
+    </form>
+    <div class="footer-meta">
+      <span class="footer-brand">Kestrel</span>
+      <ul class="footer-links">
+        <li><a href="#install">Docs</a></li>
+        <li><a href="#faq">GitHub</a></li>
+        <li><a href="#faq">Status</a></li>
+        <li><a href="#faq">Privacy</a></li>
+      </ul>
+      <p class="footer-legal">© 2026 Kestrel Systems · Apache-2.0 · v2.4.0</p>
+    </div>
+  </footer>
+</body>
+</html>

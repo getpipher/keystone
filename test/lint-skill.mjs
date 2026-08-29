@@ -247,8 +247,8 @@ test("SKILL.md audit section points at the real CLI + the vision split", () => {
   assert.match(block, /TIER 4/i, "SKILL.md audit section must reference Tier 4");
 });
 
-test("audit-report tier + effort maps cover all 27 implemented gates", () => {
-  const implemented = [1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15, 17, 18, 19, 22, 26, 34, 40, 41, 42, 44, 47, 48, 50, 54];
+test("audit-report tier + effort maps cover all 44 implemented gates", () => {
+  const implemented = [1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15, 17, 18, 19, 22, 23, 24, 25, 26, 27, 28, 31, 33, 34, 35, 37, 38, 39, 40, 41, 42, 44, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56];
   for (const g of implemented) {
     assert.ok(g in TIER_MAP, `gate ${g} has no tier`);
     assert.ok(g in EFFORT_MAP, `gate ${g} has no effort`);

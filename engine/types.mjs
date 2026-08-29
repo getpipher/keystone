@@ -15,7 +15,8 @@
  * @property {string} css        — raw CSS string
  * @property {string} [cssFile]  — path/URL the CSS came from (audit mode; gates fall back to "tokens.css" when absent)
  * @property {{width: number, scrollWidth: number, innerHeight: number}[]} [viewports] — Playwright dump
- * @property {Record<string, string>[]} [computedPairs] — {selector, color, backgroundColor} from Playwright
+ * @property {Record<string, string>[]} [computedPairs] — {selector, color, backgroundColor, width?, height?} from Playwright
+ * @property {{viewport:number, selector:string, offsetHeight:number, lineHeight:number}[]} [clickableMetrics] — Plan 1b-2: G49 two-line clickable check
  * @property {{stamp: Object|null, log: Object[]}} [projectMemory] — stamp + log.json
  */
 

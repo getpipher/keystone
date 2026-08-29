@@ -73,6 +73,7 @@ async function main() {
 
     ctx.computedPairs = JSON.parse(readFileSync(out2.computedStylesPath, "utf8"))
     ctx.viewports = out2.viewportMetrics
+    ctx.clickableMetrics = out2.clickableMetrics  // Plan 1b-2: G49
   }
 
   const summary = orchestrate(ctx)

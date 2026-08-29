@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en" data-theme="cobalt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tracejam — distributed tracing that explains itself</title>
+  <meta name="description" content="Tracejam replays any request across your services — spans, timings, and failures in one flame chart. Instrument in minutes; read a trace like a story.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="#top">Tracejam</a>
+      <nav class="nav__center" aria-label="Primary">
+        <a class="nav__link" href="#product">Product</a>
+        <a class="nav__link" href="#pricing">Pricing</a>
+        <a class="nav__link" href="#faq">Docs</a>
+      </nav>
+      <div class="nav__right">
+        <button class="cmdk-trigger" type="button" aria-haspopup="dialog" aria-controls="palette">
+          <span class="cmdk-glyph" aria-hidden="true">⌘K</span>
+        </button>
+        <a class="btn btn--primary" href="#try">Try Tracejam</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="palette-backdrop" id="palette" hidden>
+    <div class="palette" role="dialog" aria-modal="true" aria-label="Command palette">
+      <input class="palette__input" type="text" placeholder="Search docs and commands…" aria-label="Search docs and commands">
+      <ul class="palette__list">
+        <li><button type="button" data-cmd>Open the flame chart<span class="palette__hint">docs</span></button></li>
+        <li><button type="button" data-cmd>Instrument a service<span class="palette__hint">docs</span></button></li>
+        <li><button type="button" data-cmd>Read a trace<span class="palette__hint">docs</span></button></li>
+        <li><button type="button" data-cmd>Pricing and plans<span class="palette__hint">page</span></button></li>
+        <li><button type="button" data-cmd>Contact sales<span class="palette__hint">page</span></button></li>
+      </ul>
+    </div>
+  </div>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero__copy">
+        <p class="eyebrow">Distributed tracing</p>
+        <h1>Every request, on one timeline.</h1>
+        <p class="lede">Tracejam replays any request across your services — spans, timings, and failures in one flame chart. Find the failing span without opening five tabs.</p>
+        <div class="hero__ctas">
+          <a class="btn btn--primary" href="#try">Try it free</a>
+          <a class="link-quiet" href="#contact">Contact sales →</a>
+        </div>
+      </div>
+      <figure class="hero__media" aria-label="Trace waterfall for one request, rendered by Tracejam">
+        <div class="code-card">
+          <div class="code-card__bar" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="code-card__file">trace-7f3a.json</span>
+            <span class="status--ok">482 ms</span>
+          </div>
+          <pre class="code-card__cmd" id="typein">$ tracejam open trace-7f3a</pre>
+          <div class="waterfall" aria-hidden="true">
+            <div class="wf-row"><span class="wf-label">gateway</span><span class="wf-bar wf-bar--full"></span></div>
+            <div class="wf-row"><span class="wf-label">auth-svc</span><span class="wf-bar wf-bar--d1 wf-bar--hot"></span></div>
+            <div class="wf-row"><span class="wf-label">cart-svc</span><span class="wf-bar wf-bar--d2"></span></div>
+            <div class="wf-row"><span class="wf-label">db.query</span><span class="wf-bar wf-bar--d3 wf-bar--hot"></span></div>
+            <div class="wf-row"><span class="wf-label">render</span><span class="wf-bar wf-bar--d2"></span></div>
+          </div>
+        </div>
+      </figure>
+    </section>
+
+    <section class="proof" aria-label="Teams using Tracejam">
+      <p class="proof__mark">Harbourline</p>
+      <p class="proof__mark">Mainsail</p>
+      <p class="proof__mark">Ferrous</p>
+      <p class="proof__mark">Tidewater</p>
+      <p class="proof__mark">Packet &amp; Co</p>
+    </section>
+
+    <section class="tour" id="product">
+      <header class="tour__head">
+        <h2>The workbench, in three moves</h2>
+        <p>Record once. Read the trace like a story.</p>
+      </header>
+      <div class="panel panel--wide reveal">
+        <div class="panel__art waterfall waterfall--detail" aria-hidden="true">
+          <div class="wf-row"><span class="wf-label">gateway</span><span class="wf-bar wf-bar--full"></span></div>
+          <div class="wf-row"><span class="wf-label">auth-svc</span><span class="wf-bar wf-bar--d1"></span></div>
+          <div class="wf-row"><span class="wf-label">cart-svc</span><span class="wf-bar wf-bar--d2 wf-bar--hot"></span></div>
+          <div class="wf-row"><span class="wf-label">db.query</span><span class="wf-bar wf-bar--d3 wf-bar--hot"></span></div>
+          <div class="wf-row"><span class="wf-label">db.query</span><span class="wf-bar wf-bar--d4"></span></div>
+          <div class="wf-row"><span class="wf-label">render</span><span class="wf-bar wf-bar--d2"></span></div>
+        </div>
+        <div class="panel__text">
+          <h3>Find the span that ate the weekend</h3>
+          <p>Spans sort by time and depth. The slow path is highlighted before you ask; click any bar to open its attributes, logs, and children.</p>
+          <span class="pin">1</span>
+        </div>
+      </div>
+      <div class="panel-row">
+        <div class="panel panel--narrow reveal">
+          <div class="panel__art map" aria-hidden="true">
+            <span class="map-node map-node--a">edge</span>
+            <span class="map-edge"></span>
+            <span class="map-node map-node--b">cart</span>
+            <span class="map-edge"></span>
+            <span class="map-node map-node--c">db</span>
+          </div>
+          <div class="panel__text">
+            <h3>See the services, not the guesses</h3>
+            <p>The map draws itself from real spans — dependencies appear as they are called, not as the diagram last said.</p>
+            <span class="pin">2</span>
+          </div>
+        </div>
+        <div class="panel panel--narrow reveal">
+          <div class="panel__art tail" aria-hidden="true">
+            <p class="tail-line">14:02:11 <span>checkout</span> 200 · 96 ms</p>
+            <p class="tail-line">14:02:12 <span>checkout</span> 200 · 88 ms</p>
+            <p class="tail-line tail-line--hot">14:02:13 <span>checkout</span> 503 · 1,204 ms</p>
+          </div>
+          <div class="panel__text">
+            <h3>Tail live traffic while it happens</h3>
+            <p>Watch events land as they are recorded, then jump from a bad response straight into its full trace.</p>
+            <span class="pin">3</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="wrap">
+        <p class="eyebrow eyebrow--light">Quickstart</p>
+        <h2>From install to first trace before stand-up ends</h2>
+        <pre class="band__code">$ brew install tracejam
+$ tracejam record --port 8080
+$ tracejam open trace-7f3a</pre>
+        <p class="band__note">Records from your local ports first. Point it at production when you are ready — the collector is yours, the data stays in it.</p>
+      </div>
+    </section>
+
+    <section class="quotes">
+      <figure class="quote reveal">
+        <blockquote>“We stopped reproducing the bug and started reading the trace. The five-tab ritual is gone.”</blockquote>
+        <figcaption>Maya Okonkwo · SRE, Harbourline</figcaption>
+      </figure>
+      <figure class="quote reveal">
+        <blockquote>“Instrumentation took one afternoon. The on-call rotation noticed before I told them.”</blockquote>
+        <figcaption>Sam Tan · Platform engineer, Mainsail</figcaption>
+      </figure>
+    </section>
+
+    <section class="pricing" id="pricing">
+      <header class="pricing__head">
+        <h2>Pricing</h2>
+        <p>Per engineer, not per span. Your bill never depends on a bad week.</p>
+      </header>
+      <div class="tiers">
+        <div class="tier">
+          <h3>Solo</h3>
+          <p class="tier__price">$0</p>
+          <p class="tier__line">One engineer. Full traces on three services. Community support.</p>
+        </div>
+        <div class="tier tier--hot">
+          <h3>Team</h3>
+          <p class="tier__price">$29<span>/engineer/mo</span></p>
+          <p class="tier__line">Unlimited services, unlimited retention on saved traces, SSO.</p>
+        </div>
+        <div class="tier">
+          <h3>Enterprise</h3>
+          <p class="tier__price">Talk to us</p>
+          <p class="tier__line">Self-hosted collector, audit logs, and a named human on call for you.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq" id="faq">
+      <h2>Questions engineers actually ask</h2>
+      <details>
+        <summary>Does Tracejam sample?</summary>
+        <p>No. Head-based sampling hides the one slow request you needed. Tracejam records locally and lets you decide what leaves the machine.</p>
+      </details>
+      <details>
+        <summary>What can it instrument?</summary>
+        <p>Anything that emits OTLP, plus auto-instrumentation for HTTP frameworks in Node, Go, Python, and Ruby. Raw log lines parse too.</p>
+      </details>
+      <details>
+        <summary>Where does the data live?</summary>
+        <p>On the collector you run — your VPC or your laptop. The hosted workbench reads from it; it never stores your spans.</p>
+      </details>
+      <details>
+        <summary>How is the Team plan counted?</summary>
+        <p>Engineers with an account. Services, traces, and retention are unlimited on every paid plan.</p>
+      </details>
+    </section>
+
+    <section class="cta-strip" id="try">
+      <h2>Open your first trace today.</h2>
+      <a class="btn btn--primary" href="#top">Try it free</a>
+      <p class="cta-strip__note" id="contact">Prefer a walkthrough? <a href="mailto:sales@tracejam.dev">Contact sales</a> — an engineer replies.</p>
+    </section>
+  </main>
+
+  <footer class="foot-inline">
+    <p><span class="foot-brand">Tracejam</span> — tracing for distributed systems · <a href="#faq">Docs</a> · <a href="#pricing">Pricing</a> · <a href="https://github.com/tracejam/tracejam">GitHub</a></p>
+    <p class="foot-credit">© 2026 Tracejam · built with a distaste for five-tab debugging</p>
+  </footer>
+
+  <script>
+    (function () {
+      "use strict";
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+      // nav frost on scroll
+      var nav = document.getElementById("nav");
+      var ticking = false;
+      function frost() {
+        nav.classList.toggle("is-scrolled", window.scrollY > 24);
+        ticking = false;
+      }
+      window.addEventListener("scroll", function () {
+        if (!ticking) { requestAnimationFrame(frost); ticking = true; }
+      }, { passive: true });
+      frost();
+
+      // section reveals
+      var revealed = document.querySelectorAll(".reveal");
+      if ("IntersectionObserver" in window && !reduce.matches) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.15 });
+        revealed.forEach(function (el) { io.observe(el); });
+      } else {
+        revealed.forEach(function (el) { el.classList.add("is-in"); });
+      }
+
+      // one-shot type-in on the hero command
+      var cmd = document.getElementById("typein");
+      if (cmd && !reduce.matches) {
+        var text = cmd.textContent;
+        cmd.textContent = "";
+        var i = 0;
+        var t = setInterval(function () {
+          i += 1;
+          cmd.textContent = text.slice(0, i);
+          if (i >= text.length) clearInterval(t);
+        }, 34);
+      }
+
+      // command palette
+      var backdrop = document.getElementById("palette");
+      var input = backdrop.querySelector(".palette__input");
+      var rows = Array.prototype.slice.call(backdrop.querySelectorAll(".palette__list button"));
+      function openPalette() {
+        backdrop.hidden = false;
+        input.focus();
+      }
+      function closePalette() {
+        backdrop.hidden = true;
+      }
+      document.querySelectorAll(".cmdk-trigger").forEach(function (b) {
+        b.addEventListener("click", openPalette);
+      });
+      backdrop.addEventListener("click", function (e) {
+        if (e.target === backdrop) closePalette();
+      });
+      document.addEventListener("keydown", function (e) {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+          e.preventDefault();
+          backdrop.hidden ? openPalette() : closePalette();
+        }
+        if (e.key === "Escape" && !backdrop.hidden) closePalette();
+      });
+      input.addEventListener("input", function () {
+        var q = input.value.toLowerCase();
+        rows.forEach(function (r) {
+          r.parentElement.hidden = r.textContent.toLowerCase().indexOf(q) === -1;
+        });
+      });
+      rows.forEach(function (r) {
+        r.addEventListener("click", function () { closePalette(); });
+      });
+    })();
+  </script>
+</body>
+</html>

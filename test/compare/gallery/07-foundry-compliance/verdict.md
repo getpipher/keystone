@@ -1,11 +1,11 @@
-# Brief 02 · verdict — Keystone vs Hallmark
+# Brief 07 · verdict — Keystone vs Hallmark
 
 Engine: Keystone's check-gates, fresh empty log, 5 viewports — same rules for both sides. Scores are 48 gate numbers (G40/41 share a row). **Losses published.**
 
 | Side | Score | Distinct failed gates |
 |---|---|---|
 | Keystone | **48/48 (rows 47/47)** | none |
-| Hallmark | **44/48 (rows 43/61)** | G20, G26, G40, G49 |
+| Hallmark | **44/48 (rows 43/53)** | G4, G20, G40, G51 |
 
 **Winner by engine score: keystone** (delta +4 gates).
 
@@ -13,8 +13,8 @@ Engine: Keystone's check-gates, fresh empty log, 5 viewports — same rules for 
 
 | Side | S1 | Confidence | Evidence (1280 + 375) |
 |---|---|---|---|
-| Keystone | NO | ~0.20 | dark mono register with deep-cobalt hit bar and bordered term blocks — coherent CLI docs |
-| Hallmark | NO | ~0.20 | coherent dark phosphor terminal; the large empty right column is the main tell |
+| Keystone | NO | ~0.20 | stat-led with honest em-dash strip, mono labels, ink-filled CTA — engineered restraint |
+| Hallmark | NO | ~0.20 | honest em-dash placeholder stat (convergent with keystone's approach); bordered 2-col cards mild |
 
 Hallmark failed-gate notes: G20 (missing *Keystone* stamp) is a cross-skill convention difference; G40/G49/G51/G54 are craft failures the moat exists to catch. G46 flag on Keystone's demo-output figures: tool demo fiction, labelled in the build brief.
 

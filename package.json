@@ -17,6 +17,9 @@
   "engines": {
     "node": ">=20"
   },
+  "bin": {
+    "keystone": "./engine/keystone.mjs"
+  },
   "pi": {
     "skills": [
       "./skills"

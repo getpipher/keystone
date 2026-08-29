@@ -1,6 +1,6 @@
 {
   "name": "@getpipher/keystone",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Anti-AI-slop design skill with an executable gate engine. Beats Hallmark by enforcing its gates instead of imagining them.",
   "keywords": [
     "pi-package",

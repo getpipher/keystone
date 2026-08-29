@@ -53,5 +53,6 @@
   "devDependencies": {
     "@types/node": "^24.13.3",
     "playwright": "1.62.0"
-  }
+  },
+  "packageManager": "pnpm@10.33.2"
 }

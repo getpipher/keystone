@@ -1,0 +1,36 @@
+/* capstan · Terminal tokens — portable export of the :root block in style.css.
+   Keystone example 03 · macrostructure: Manifesto · theme: Terminal.
+   Mono purity: one family. Copy this file into any project and reference tokens by name. */
+
+:root {
+  --color-paper: oklch(13% 0.01 145);
+  --color-paper-2: oklch(18% 0.012 145);
+  --color-paper-3: oklch(23% 0.015 145);
+  --color-ink: oklch(92% 0.02 145);
+  --color-ink-2: oklch(76% 0.015 145);
+  --color-accent: oklch(78% 0.2 145);
+  --color-accent-ink: oklch(13% 0.01 145);
+  --color-focus: oklch(78% 0.2 145);
+  --font-display: "JetBrains Mono", monospace;
+  --font-body: "JetBrains Mono", monospace;
+  --font-mono: "JetBrains Mono", monospace;
+  --space-3xs: 4px;
+  --space-2xs: 8px;
+  --space-xs: 12px;
+  --space-s: 16px;
+  --space-m: 24px;
+  --space-l: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --shell: 64rem;
+  --gutter: clamp(16px, 4vw, 40px);
+}

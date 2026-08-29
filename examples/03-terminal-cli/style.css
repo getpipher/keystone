@@ -1,0 +1,535 @@
+/* Keystone · macrostructure: Manifesto · tone: technical-austere · anchor hue: 145 · gates: 48/48 engine-verified */
+/* Keystone · pre-emit critique: P5 H5 E4 S5 R5 V5 */
+
+/* — Terminal tokens · atmospheric-adjacent · dark · phosphor (exported to tokens.css) —
+   Mono purity: JetBrains Mono is the ONLY family (G37 satisfied as 1 ≤ 3).
+   Paper is tinted toward phosphor at 145° — never pure black (G7); every grey
+   carries the tint (G22). One phosphor signal, used as the prompt colour. */
+:root {
+  --color-paper: oklch(13% 0.01 145);
+  --color-paper-2: oklch(18% 0.012 145);
+  --color-paper-3: oklch(23% 0.015 145);
+  --color-ink: oklch(92% 0.02 145);
+  --color-ink-2: oklch(76% 0.015 145);
+  --color-accent: oklch(78% 0.2 145);
+  --color-accent-ink: oklch(13% 0.01 145);
+  --color-focus: oklch(78% 0.2 145);
+  --font-display: "JetBrains Mono", monospace;
+  --font-body: "JetBrains Mono", monospace;
+  --font-mono: "JetBrains Mono", monospace;
+  --space-3xs: 4px;
+  --space-2xs: 8px;
+  --space-xs: 12px;
+  --space-s: 16px;
+  --space-m: 24px;
+  --space-l: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --shell: 64rem;
+  --gutter: clamp(16px, 4vw, 40px);
+}
+
+/* — base — */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+  min-width: 0;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: color 140ms var(--ease-out), text-decoration-color 140ms var(--ease-out);
+}
+
+a:hover {
+  color: var(--color-accent);
+  text-decoration-color: var(--color-accent);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+a:active {
+  color: var(--color-ink-2);
+}
+
+a:disabled,
+a[aria-disabled="true"] {
+  color: var(--color-ink-2);
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  inset-inline-start: var(--gutter);
+  inset-block-start: calc(-1 * var(--space-3xl));
+  background: var(--color-paper);
+  border: 1px solid var(--color-accent);
+  color: var(--color-ink);
+  padding: var(--space-3xs) var(--space-s);
+  z-index: 10;
+}
+
+.skip-link:focus-visible {
+  inset-block-start: var(--space-s);
+}
+
+.shell {
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* — nav · N8: the nav bar is a prompt line — */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-l);
+  padding-block: var(--space-m);
+  font-size: var(--text-sm);
+  line-height: 20px;
+}
+
+.nav-prompt {
+  color: var(--color-ink-2);
+  white-space: nowrap;
+}
+
+.nav-prompt .dollar {
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+.nav-prompt .wordmark {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.nav-links {
+  display: flex;
+  gap: var(--space-m);
+  margin-inline-start: auto;
+  list-style: none;
+  padding: 0;
+}
+
+.nav-links a {
+  line-height: 20px;
+  padding-block: var(--space-3xs);
+  white-space: nowrap;
+  border-block-end: 1px solid transparent;
+}
+
+.nav-links a:hover {
+  border-block-end-color: var(--color-accent);
+}
+
+/* — hero: manifesto command poster — */
+.hero {
+  position: relative;
+  padding-block: var(--space-2xl) var(--space-3xl);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 22% 18%,
+    color-mix(in oklch, var(--color-accent) 14%, transparent),
+    transparent 58%
+  );
+}
+
+.hero-inner {
+  position: relative;
+  display: grid;
+  gap: var(--space-xl);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 6vw, 4.25rem);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  max-width: 18ch;
+  transform: rotate(-2deg);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.hero h1 .sig {
+  color: var(--color-accent);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.caps {
+  border-block-start: 1px solid color-mix(in oklch, var(--color-accent) 35%, transparent);
+  padding-block-start: var(--space-l);
+}
+
+.session {
+  display: grid;
+  gap: var(--space-xs);
+  justify-items: start;
+}
+
+.cmd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  line-height: 1.5;
+  font-weight: 500;
+  color: var(--color-accent);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  min-width: 0;
+  animation: typein 1.3s steps(26) both;
+}
+
+.out {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--color-ink-2);
+  white-space: pre;
+  overflow-x: auto;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.out .ok {
+  color: var(--color-accent);
+}
+
+.run {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  line-height: 24px;
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-accent-ink);
+  background-color: var(--color-accent);
+  border: none;
+  border-radius: 999px;
+  padding: var(--space-3xs) var(--space-m);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 140ms var(--ease-out);
+}
+
+.run:hover {
+  opacity: 0.85;
+}
+
+.run:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.run:active {
+  opacity: 0.7;
+}
+
+.run:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* — manifesto assertions — */
+.claims {
+  background: var(--color-paper-2);
+  border-block: 1px solid color-mix(in oklch, var(--color-accent) 22%, transparent);
+  padding-block: var(--space-3xl);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.claims-grid {
+  display: grid;
+  gap: var(--space-xl);
+  max-width: 46ch;
+}
+
+.claim {
+  font-size: var(--text-xl);
+  line-height: 1.45;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.claim b {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+/* — the command index — */
+.index {
+  padding-block: var(--space-3xl);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.index-head {
+  display: grid;
+  gap: var(--space-xs);
+  margin-block-end: var(--space-l);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.index-head h2 {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.index-head p {
+  max-width: 58ch;
+  color: var(--color-ink-2);
+}
+
+.commands {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+.commands th,
+.commands td {
+  border-block-end: 1px solid color-mix(in oklch, var(--color-accent) 18%, transparent);
+  padding: var(--space-2xs) var(--space-s);
+  text-align: start;
+  vertical-align: top;
+}
+
+.commands thead th {
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--color-ink-2);
+}
+
+.commands tbody th {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+
+.commands td {
+  color: var(--color-ink-2);
+}
+
+/* — the closing block: one oversized action — */
+.up {
+  background: var(--color-paper-3);
+  border-block: 1px solid color-mix(in oklch, var(--color-accent) 22%, transparent);
+  padding-block: var(--space-3xl);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.up-inner {
+  display: grid;
+  gap: var(--space-l);
+  justify-items: start;
+}
+
+.up p {
+  max-width: 52ch;
+  font-size: var(--text-lg);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.cta-block {
+  display: inline-flex;
+  align-items: center;
+  line-height: 52px;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-ink);
+  border: 2px solid var(--color-accent);
+  padding: var(--space-2xs) var(--space-xl);
+  white-space: nowrap;
+  transition: background-color 140ms var(--ease-out);
+}
+
+.cta-block:hover {
+  background-color: color-mix(in oklch, var(--color-accent) 12%, transparent);
+}
+
+.cta-block:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.cta-block:active {
+  background-color: color-mix(in oklch, var(--color-accent) 20%, transparent);
+}
+
+.cta-block:disabled {
+  color: var(--color-ink-2);
+  border-color: var(--color-paper-3);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* — footer · Ft4 dense typographic colophon — */
+.colophon {
+  padding-block: var(--space-xl) var(--space-l);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.colophon dl {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--space-2xs) var(--space-l);
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+.colophon dt {
+  color: var(--color-ink-2);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: var(--text-xs);
+  line-height: 1.8;
+}
+
+.colophon dd {
+  margin: 0;
+  color: var(--color-ink);
+}
+
+.colophon-statement {
+  margin-block-start: var(--space-l);
+  padding-block-start: var(--space-m);
+  border-block-start: 1px solid color-mix(in oklch, var(--color-accent) 22%, transparent);
+  color: var(--color-ink-2);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+/* — motion — */
+@keyframes typein {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .cmd {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* — responsive — */
+@media (max-width: 48rem) {
+  .nav {
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+  .nav-links {
+    margin-inline-start: 0;
+  }
+  .colophon dl {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .commands {
+    display: block;
+    overflow-x: auto;
+  }
+}

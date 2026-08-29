@@ -1,0 +1,36 @@
+/* Kestrel · Cobalt tokens — portable export of the :root block in style.css.
+   Keystone example 01 · macrostructure: Split Studio · theme: Cobalt.
+   Copy this file into any project and reference tokens by name. */
+
+:root {
+  --color-paper: oklch(99% 0.002 250);
+  --color-paper-2: oklch(96% 0.004 250);
+  --color-paper-3: oklch(92% 0.006 250);
+  --color-ink: oklch(25% 0.01 250);
+  --color-accent: oklch(55% 0.2 255);
+  --color-accent-ink: oklch(99% 0.002 250);
+  --color-focus: oklch(55% 0.2 255);
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Geist", sans-serif;
+  --font-mono: "Geist Mono", monospace;
+  --space-4xs: 2px;
+  --space-3xs: 4px;
+  --space-2xs: 8px;
+  --space-xs: 12px;
+  --space-s: 16px;
+  --space-m: 24px;
+  --space-l: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --shell: 72rem;
+  --gutter: clamp(16px, 4vw, 32px);
+}

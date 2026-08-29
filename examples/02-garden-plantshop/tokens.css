@@ -1,0 +1,38 @@
+/* Fern & Fog · Garden tokens — portable export of the :root block in style.css.
+   Keystone example 02 · macrostructure: Long Document · theme: Garden.
+   Copy this file into any project and reference tokens by name. */
+
+:root {
+  --color-paper: oklch(97% 0.015 120);
+  --color-paper-2: oklch(94% 0.02 120);
+  --color-paper-3: oklch(90% 0.025 120);
+  --color-ink: oklch(22% 0.015 140);
+  --color-ink-2: oklch(34% 0.02 140);
+  --color-accent: oklch(52% 0.13 145);
+  --color-accent-deep: oklch(38% 0.12 145);
+  --color-accent-ink: oklch(98% 0.01 120);
+  --color-focus: oklch(52% 0.13 145);
+  --font-display: "Newsreader", ui-serif, Georgia, serif;
+  --font-body: "Source Serif 4", ui-serif, Georgia, serif;
+  --font-mono: "IBM Plex Mono", monospace;
+  --space-3xs: 4px;
+  --space-2xs: 8px;
+  --space-xs: 12px;
+  --space-s: 16px;
+  --space-m: 24px;
+  --space-l: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --measure: 65ch;
+  --gutter: clamp(20px, 6vw, 64px);
+}

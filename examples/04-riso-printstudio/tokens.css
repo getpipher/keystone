@@ -1,0 +1,40 @@
+/* Two Drum Press · Riso tokens — portable export of the :root block in style.css.
+   Keystone example 04 · macrostructure: Catalogue · theme: Riso.
+   The two inks at full saturation live in shadows/rules/borders; text and fills
+   use the deep steps. Copy this file into any project and reference tokens by name. */
+
+:root {
+  --color-paper: oklch(95% 0.02 15);
+  --color-paper-2: oklch(91% 0.025 15);
+  --color-paper-3: oklch(87% 0.03 15);
+  --color-ink: oklch(25% 0.03 30);
+  --color-ink-2: oklch(36% 0.03 30);
+  --color-accent: oklch(68% 0.22 195);
+  --color-accent-2: oklch(65% 0.2 350);
+  --color-accent-deep: oklch(40% 0.17 195);
+  --color-accent-2-deep: oklch(38% 0.18 350);
+  --color-accent-ink: oklch(95% 0.02 15);
+  --color-focus: oklch(40% 0.17 195);
+  --font-display: "Bricolage Grotesque", sans-serif;
+  --font-body: "Geist", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+  --space-3xs: 4px;
+  --space-2xs: 8px;
+  --space-xs: 12px;
+  --space-s: 16px;
+  --space-m: 24px;
+  --space-l: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.5rem;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --shell: 68rem;
+  --gutter: clamp(16px, 4vw, 40px);
+}

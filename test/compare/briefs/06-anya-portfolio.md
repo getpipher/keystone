@@ -1,0 +1,9 @@
+# Brief 06 · anya portfolio
+
+> I'm Anya, a software architect. Build me a one-pager. Don't ask me questions, just figure it out.
+
+---
+
+Source: Hallmark `site/_tests/06-anya-portfolio/brief.md` (verbatim prompt), MIT —
+https://github.com/Nutlope/hallmark — taxonomy origin, credited in NOTICE.
+Input for the Plan 5b comparison run: the same brief verbatim into both skills.

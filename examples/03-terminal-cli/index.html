@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>capstan · deploy from the terminal</title>
+  <meta name="description" content="capstan is a deploy tool that lives in your terminal: one binary, one command to ship, one command to roll back. No agents, no YAML, no dashboards.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#manifest">Skip to content</a>
+
+  <header class="shell">
+    <nav class="nav" aria-label="Main">
+      <p class="nav-prompt"><span class="wordmark">capstan</span> <b class="dollar">$</b> --help</p>
+      <ul class="nav-links">
+        <li><a href="#index">docs</a></li>
+        <li><a href="#up">install</a></li>
+        <li><a href="#colophon">repo</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- manifesto hero: the declaration, then the proof session -->
+    <section class="hero shell" id="manifest" aria-labelledby="manifest-title">
+      <div class="glow" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <h1 id="manifest-title"><span class="sig">Ship</span> from the terminal, stay in the terminal.</h1>
+        <div class="session">
+          <pre class="cmd">$ capstan up --env prod</pre>
+          <pre class="out">  building     42 files, 1.8MB, 3.1s
+  releasing    v248 → edge (14 regions)
+  healthcheck  200 OK · p99 41ms · <span class="ok">exit 0</span></pre>
+          <button class="run" type="button">▸ run</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- assertions -->
+    <section class="claims" aria-label="Beliefs">
+      <div class="shell claims-grid">
+        <p class="claim">Deploys are a <b>terminal command</b>, not a browser tab you keep open and refresh.</p>
+        <p class="claim">Rollback is the same command with a <b>version number</b>. If it takes a meeting, it is not a rollback.</p>
+        <p class="claim">The tool reports to <b>stdout</b> and exits. Your build log belongs to you, in your scrollback, forever.</p>
+      </div>
+    </section>
+
+    <!-- the command index -->
+    <section class="index shell" id="index" aria-labelledby="index-title">
+      <div class="index-head">
+        <h2 id="index-title">The whole surface.</h2>
+        <p>Six commands. Every flag is documented in <a href="#colophon">the repo</a>, and `capstan help &lt;command&gt;` never leaves your shell.</p>
+      </div>
+      <table class="commands">
+        <caption class="mono">capstan --help · v2.9</caption>
+        <thead>
+          <tr><th scope="col">Command</th><th scope="col">What it does</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">up</th><td>Build, release, healthcheck — the whole deploy in one line.</td></tr>
+          <tr><th scope="row">rollback</th><td>Point traffic back at any previous version, by number.</td></tr>
+          <tr><th scope="row">status</th><td>What is live, where, since when, at what p99.</td></tr>
+          <tr><th scope="row">logs</th><td>Stream the release you just shipped. Tail, filter, pipe.</td></tr>
+          <tr><th scope="row">secret</th><td>Set or rotate environment secrets. Encrypted at rest.</td></tr>
+          <tr><th scope="row">down</th><td>Decommission cleanly, with a receipt.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- closing action -->
+    <section class="up" id="up" aria-labelledby="up-title">
+      <div class="shell up-inner">
+        <h2 class="mono" id="up-title">$ curl -fsSL capstan.dev/sh | sh</h2>
+        <p>One static binary, 9MB, no dependencies, no account. Your first deploy takes about ninety seconds, most of which is you reading the healthcheck line.</p>
+        <a class="cta-block" href="#manifest">▸ capstan up --env prod</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- footer · Ft4 dense typographic colophon -->
+  <footer class="colophon shell" id="colophon">
+    <dl>
+      <dt>Version</dt><dd>2.9.1 · <a href="#colophon">changelog</a></dd>
+      <dt>License</dt><dd>Apache-2.0</dd>
+      <dt>Repo</dt><dd>git.capstan.dev/capstan</dd>
+      <dt>Platforms</dt><dd>linux · macos · freebsd</dd>
+      <dt>Contact</dt><dd>crew@capstan.dev · <a href="#colophon">security.txt</a></dd>
+    </dl>
+    <p class="colophon-statement">No account. No telemetry. Just the terminal.</p>
+  </footer>
+</body>
+</html>

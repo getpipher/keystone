@@ -70,4 +70,6 @@ test("render emits viewportMetrics + oklch computed pairs", async () => {
   assert.match(computed[0].color, /^oklch\(/)
   assert.match(computed[0].backgroundColor, /^oklch\(/)
   assert.ok(existsSync(join(dir, "viewports.json")))
+  // Plan 1b-2: computed pairs carry bounding-box width/height (for G23 accent-area).
+  assert.ok(typeof computed[0].width === "number" && typeof computed[0].height === "number", "pairs have width/height")
 })

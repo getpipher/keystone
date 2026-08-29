@@ -3,8 +3,8 @@ import assert from "node:assert/strict"
 import { formatReport, TIER_MAP, EFFORT_MAP, EXCLUDED_GATES, AUDITED_GATES } from "../../engine/audit-report.mjs"
 import { fail, pass } from "../../engine/types.mjs"
 
-test("TIER_MAP covers all 27 implemented + tiered gates", () => {
-  const implemented = [1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15, 17, 18, 19, 22, 26, 34, 40, 41, 42, 44, 47, 48, 50, 54]
+test("TIER_MAP covers all 44 implemented + tiered gates", () => {
+  const implemented = [1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15, 17, 18, 19, 22, 23, 24, 25, 26, 27, 28, 31, 33, 34, 35, 37, 38, 39, 40, 41, 42, 44, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56]
   for (const g of implemented) assert.ok(g in TIER_MAP, `gate ${g} must be tiered`)
   assert.equal(implemented.length, AUDITED_GATES.length)
 })
@@ -55,7 +55,7 @@ test("formatReport header + footer shape matches spec §6", () => {
   assert.match(md, /TIER 4 · SUBJECTIVE/)
   assert.match(md, /N\/A \(4\): G8 Diversification \(macro reuse\), G20 Missing CSS stamp, G21 Specimen fall-through, G32/)
   assert.match(md, /SCREENSHOTS: \[1280\] \[375\]/)
-  assert.match(md, /RAW DATA: \.\/keystone-audit\/{computed\.json, dom\.html, viewports\.json}/)
+  assert.match(md, /RAW DATA: \.\/keystone-audit\/{computed\.json, dom\.html, viewports\.json, clickable\.json}/)
 })
 
 test("formatReport surfaces a parse error above the tiers", () => {

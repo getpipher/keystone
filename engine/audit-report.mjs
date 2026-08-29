@@ -38,6 +38,23 @@ export const TIER_MAP = {
   48: 3, // token improvisation
   50: 3, // image-grid minmax
   54: 1, // tag-left/heading-right
+  23: 3, // accent >5% viewport
+  24: 3, // off-scale spacing
+  25: 3, // prose max-width outside 45-75ch
+  27: 2, // motion without reduced-motion fallback (a11y)
+  28: 3, // LCP-killing demo video
+  31: 3, // Lottie as default
+  33: 2, // decorative SVG without aria (a11y)
+  35: 3, // decorative text-effect position (det half)
+  37: 3, // more than 3 font families
+  38: 3, // outlier face in >2 slots
+  39: 2, // input field states (a11y)
+  49: 3, // two-line clickable text
+  51: 3, // display headers without long-word wrap
+  52: 3, // section-head without mobile collapse
+  53: 3, // CSS-only radio tabs that scroll-jump
+  55: 3, // all-caps display with line-height <1.0
+  56: 3, // sticky top:0 below a sticky nav
 }
 
 /** gate number → default effort (v1 lookup; refined in Plan 1b). */
@@ -69,6 +86,23 @@ export const EFFORT_MAP = {
   48: "low",
   50: "trivial",
   54: "low",
+  23: "medium",
+  24: "trivial",
+  25: "trivial",
+  27: "low",
+  28: "low",
+  31: "trivial",
+  33: "trivial",
+  35: "medium",
+  37: "low",
+  38: "trivial",
+  39: "medium",
+  49: "medium",
+  51: "trivial",
+  52: "low",
+  53: "low",
+  55: "trivial",
+  56: "low",
 }
 
 /** Audit excludes gates that are meaningless on external code (spec §6). */
@@ -167,7 +201,7 @@ export function formatReport(input) {
     const dims = screenshots.map((s) => `[${s.width}]`).join(" ")
     lines.push(`SCREENSHOTS: ${dims}`)
   }
-  lines.push(`RAW DATA: ./${rawDataDir}/{computed.json, dom.html, viewports.json}`)
+  lines.push(`RAW DATA: ./${rawDataDir}/{computed.json, dom.html, viewports.json, clickable.json}`)
   lines.push("")
 
   return lines.join("\n")

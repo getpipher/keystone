@@ -185,14 +185,17 @@ async function main() {
   // Computed pairs + viewport metrics come from the render dump (if rendered).
   let computedPairs = []
   let viewportMetrics = []
+  let clickableMetrics = []
   if (!noRender) {
     const computedPath = join(rawDataPath, "computed.json")
     if (existsSync(computedPath)) computedPairs = JSON.parse(readFileSync(computedPath, "utf8"))
     const viewportsPath = join(rawDataPath, "viewports.json")
     if (existsSync(viewportsPath)) viewportMetrics = JSON.parse(readFileSync(viewportsPath, "utf8"))
+    const clickablePath = join(rawDataPath, "clickable.json")  // Plan 1b-2: G49
+    if (existsSync(clickablePath)) clickableMetrics = JSON.parse(readFileSync(clickablePath, "utf8"))
   }
 
-  const summary = orchestrate({ html, css, cssFile, viewports: viewportMetrics, computedPairs })
+  const summary = orchestrate({ html, css, cssFile, viewports: viewportMetrics, computedPairs, clickableMetrics })
   const filtered = filterExcluded(summary)
 
   const reportMd = formatReport({

@@ -33,6 +33,7 @@ interface RenderOutput {
   domSnapshotPath: string
   viewportMetrics: ViewportMetric[]
   finalUrl: string  // the URL Playwright ended on after redirects (audit redirect-to-internal re-check)
+  clickableMetrics: { viewport: number; selector: string; offsetHeight: number; lineHeight: number }[]  // Plan 1b-2: G49
 }
 
 export async function render(input: RenderInput): Promise<RenderOutput> {
@@ -45,6 +46,7 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
   const viewportMetrics: ViewportMetric[] = []
   let domSnapshot = ""
   let finalUrl = ""  // the URL Playwright ended on after redirects (first viewport's goto)
+  const clickableMetrics: { viewport: number; selector: string; offsetHeight: number; lineHeight: number }[] = []  // Plan 1b-2: G49  // the URL Playwright ended on after redirects (first viewport's goto)
 
   for (const w of viewports) {
     const ctx = await browser.newContext({ viewport: { width: w, height: Math.round(w * 0.625) } })
@@ -122,7 +124,9 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
             bg = getComputedStyle(node).backgroundColor
           }
           if (cs.color || bg) {
-            out.push({ selector: el.tagName.toLowerCase(), color: cs.color, backgroundColor: bg })
+            // Plan 1b-2: bounding-box (width/height) for G23 accent-area. Additive.
+            const r = el.getBoundingClientRect()
+            out.push({ selector: el.tagName.toLowerCase(), color: cs.color, backgroundColor: bg, width: Math.round(r.width), height: Math.round(r.height) })
           }
         }
         return out.slice(0, 200) // cap
@@ -135,9 +139,25 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
           selector: p.selector,
           color: colorOk ?? p.color,
           backgroundColor: bgOk ?? p.backgroundColor,
+          width: p.width,      // Plan 1b-2: bounding-box for G23 accent-area (additive)
+          height: p.height,
         })
       }
       domSnapshot = await page.content()
+    }
+    // Plan 1b-2: clickable line-metrics for G49 (two-line clickable text). Additive.
+    // Capture offsetHeight + lineHeight for buttons/CTAs/nav links at 1280 + 375.
+    if (w === 1280 || w === 375) {
+      const clickables = await page.evaluate(`(() => {
+        const sel = "button, a.btn, a.cta, [role=button], nav a"
+        const out = []
+        for (const el of document.querySelectorAll(sel)) {
+          const cs = getComputedStyle(el)
+          out.push({ selector: el.tagName.toLowerCase() + (el.className ? "." + el.className.split(" ")[0] : ""), offsetHeight: el.offsetHeight, lineHeight: parseFloat(cs.lineHeight) || 0 })
+        }
+        return out
+      })()`)
+      for (const c of clickables) clickableMetrics.push({ viewport: w, ...c })
     }
     await ctx.close()
   }
@@ -151,7 +171,9 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
   writeFileSync(domSnapshotPath, domSnapshot)
   const viewportsPath = join(outDir, "viewports.json")
   writeFileSync(viewportsPath, JSON.stringify(viewportMetrics, null, 2))
-  return { screenshots, computedStylesPath, domSnapshotPath, viewportMetrics, finalUrl }
+  const clickablePath = join(outDir, "clickable.json")
+  writeFileSync(clickablePath, JSON.stringify(clickableMetrics, null, 2))
+  return { screenshots, computedStylesPath, domSnapshotPath, viewportMetrics, finalUrl, clickableMetrics }
 }
 
 // pi extension registration (the pi extension API — see getpipher/AGENTS.md for gotchas)

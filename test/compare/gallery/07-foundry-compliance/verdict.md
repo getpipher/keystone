@@ -1,22 +1,32 @@
-# Brief 07 · verdict — Keystone vs Hallmark
+# Verdict · Brief 07 — foundry compliance
 
-Engine: Keystone's check-gates, fresh empty log, 5 viewports — same rules for both sides. Scores are 48 gate numbers (G40/41 share a row). **Losses published.**
+> "Build a landing page for Foundry — SOC2 and ISO 27001 compliance automation for B2B SaaS. Show: how many companies got compliant, what it costs, who uses it. Audience: founders + CTOs. Tone: technical but trustworthy."
 
-| Side | Score | Distinct failed gates |
-|---|---|---|
-| Keystone | **48/48 (rows 47/47)** | none |
-| Hallmark | **44/48 (rows 43/53)** | G4, G20, G40, G51 |
+## Engine (48 gates, deterministic)
 
-**Winner by engine score: keystone** (delta +4 gates).
-
-## Vision S1 — both sides, same 18-question prompt
-
-| Side | S1 | Confidence | Evidence (1280 + 375) |
+| Side | Score | Failed gates | Failing rows |
 |---|---|---|---|
-| Keystone | NO | ~0.20 | stat-led with honest em-dash strip, mono labels, ink-filled CTA — engineered restraint |
-| Hallmark | NO | ~0.20 | honest em-dash placeholder stat (convergent with keystone's approach); bordered 2-col cards mild |
+| Hallmark | 44/48 | G4, G20, G40, G51 | 43/53 |
+| Keystone | **48/48** | none | 47/47 |
 
-Hallmark failed-gate notes: G20 (missing *Keystone* stamp) is a cross-skill convention difference; G40/G49/G51/G54 are craft failures the moat exists to catch. G46 flag on Keystone's demo-output figures: tool demo fiction, labelled in the build brief.
+Hallmark's real failures: G4 (nested cards), G40 (a link pair below the APCA
+floor), G51 (display rule missing wrap props). G20 = stamp metadata.
 
-Rendered at 1280/375/320/414/768 from the committed candidates; screenshots in `hallmark/keystone-render/` and `keystone/keystone-render/`.
+## Vision (18-question prompt, 1280 + 375)
 
+| Row | Hallmark | Keystone |
+|---|---|---|
+| S1 | NO (0.30) — restrained black/white minimal with mono framework pills; slightly generic | NO (0.25) — corporate blue is safe; token discipline shows |
+| S2 | YES — and the brief's trap ("show how many companies") is answered HONESTLY: "number to confirm before launch" with a placeholder slot | YES — same trap, the gate's own prescribed pattern: "—" + "metric to confirm" in a stat strip; "FRAMEWORKS WIRED IN 04" uses the brief's real count |
+| G38a | PASS | PASS |
+| G46 | clean — exemplary honest placeholder | clean — exemplary honest placeholder |
+| G42 nav fingerprint | PASS (3 links + CTA, no hairline) | PASS (3 links + ⌘K + CTA; blue hairline present but link count safe) |
+| G44 hero fit | PASS | PASS |
+| Mobile 375 | clean (nav collapses to wordmark + CTA) | clean (same pattern) |
+
+Skill picks: Hallmark = Coral/Bento · Keystone = Stat-Led/Cobalt.
+
+**Engine winner: Keystone (+4).** Both skills refused to invent a customer
+count — the honest-copy discipline is real on both sides. The gap is again the
+invisible kind: a nested-card structure (G4), one low-contrast link pair
+(G40), and a wrap-prop gap (G51) that only a render-aware checker finds.

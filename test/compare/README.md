@@ -42,10 +42,26 @@ personal / enterprise / education. See `briefs/*.md`.
    vision rows to each `gallery/<brief>/verdict.md`, commit everything
    — including the losses.
 
-## Success criteria (spec §8)
+## Success criteria (spec §8) — measured 2026-08-29
 
-- Keystone ≥ Hallmark by ≥5 gates on average across the 8 briefs.
-- Vision S1 confidence: Keystone ≤ 0.30, Hallmark ≥ 0.50 (averaged).
-- **The moat check:** our engine finds ≥8 real gate failures in Hallmark's
-  output across the 8 briefs — failures Hallmark's own model claimed passed.
-  If the engine can't catch Hallmark cutting corners, the moat doesn't exist.
+| Criterion | Target | Measured | Verdict |
+|---|---|---|---|
+| Engine-score margin | Keystone ≥ Hallmark by ≥5 gates avg | **+4.5** (48.0 vs 43.5) | **MISSED** by 0.5 |
+| Vision S1 (Keystone avg) | ≤ 0.30 | **0.25** (0/8 YES) | **PASSED** |
+| Vision S1 (Hallmark avg) | ≥ 0.50 | **0.39** (2/8 YES) | **MISSED** |
+| Moat check | ≥8 real gate failures in Hallmark output | **12 distinct gates / 28 instances** | **PASSED** |
+
+Full conditions and the sensitivity note (the stamp-metadata gate G20) in
+[`gallery/PROTOCOL.md`](gallery/PROTOCOL.md). Headlines:
+
+- Keystone shipped 48/48 on all 8 briefs through the real engine loop; no
+  brief was lost, with two near-ties (03, 06) published as the ties they are.
+- The moat exists: every Hallmark build shipped real failures its prose
+  Step-7 could not see — contrast pairs below floor, missing interaction
+  states, nested cards, two-line clickables, wrap-prop gaps — and on brief 05
+  a page whose hero is unreachable behind a ⌘K palette stuck open at load.
+- 1.0.0 was NOT cut on this run: the headline margin missed by half a gate.
+
+The executed gallery (both pages per brief, screenshots at 5 viewports,
+scores, per-brief verdicts): [`gallery/index.html`](gallery/index.html) —
+served or opened directly; entries are inlined.

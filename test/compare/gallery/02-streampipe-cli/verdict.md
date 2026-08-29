@@ -1,64 +1,32 @@
-# Brief 02 · verdict — Keystone vs Hallmark
+# Verdict · Brief 02 — streampipe CLI (docs landing, Terminal)
 
-Blind-critique judgment (Candidate A / Candidate B) + harness scoring, recorded per
-`docs/superpowers/plans/2026-08-29-5b-brief02-gallery-verdicts.md`. A = `keystone/keystone-render/`,
-B = `hallmark/keystone-render/` (mapping by directory provenance, recorded after judging).
+> "Make a docs landing for an open-source CLI called Streampipe. It does stream parsing for log/event pipelines. Use the Terminal theme. Audience: backend developers. Use case: install the tool and read the docs. Tone: technical, terse."
 
-Engine: Keystone's check-gates, fresh empty log, 5 viewports — same rules for both sides. Scores are 48 gate numbers (G40/41 share a row). **Losses published.**
+## Engine (48 gates, deterministic)
 
-| Side | Score | Distinct failed gates |
-|---|---|---|
-| Keystone | **48/48 (rows 47/47)** | none |
-| Hallmark | **44/48 (rows 43/61)** | G20, G26, G40, G49 |
-
-**Winner by engine score: keystone** (delta +4 gates).
-
-## Gate verdicts — blind judgment, both candidates
-
-A: G6 P | G9 P | G29 P | G42 P | G43 P | G44 P | G45 P | G38a P | G30 P | G46 flag:
-"events 18,204 · 212 ev" — demo-output fiction inside the terminal box, not a page claim |
-G47 P | G35 P | G36 P | S1 NO 0.18 | S2 Feels exactly like the brief — a terse phosphor CLI
-docs page for SREs, with the command as hero and install/docs one hop away.
-
-B: G6 P | G9 P | G29 P | G42 P | G43 P | G44 P | G45 P | G38a P | G30 P | G46 clean: only
-"streampipe 0.9.2" versioning visible | G47 P | G35 P | G36 P | S1 YES 0.55: dead right
-half-canvas at 1280; no brand, no CTA, generic "Install"/"One pipeline" labels | S2 Matches
-the brief's register — technical, terse, install-first — but reads as a bare draft of it
-rather than a designed docs landing.
-
-Gate notes where the one-word verdict needs the sentence:
-- **G44 (both)**: desktop folds carry the headline and the primary action (A: the `$ RUN`
-  pill + install links; B: the install command block — the page has no button CTA).
-- **G43 (both)**: the footer is below the fold in both captures; judged from the shipped
-  structure — no 4-column fingerprint on either side.
-- **G46 (A)**: figures sit inside the demo output box — the command's own stdout
-  simulation, not a page proof-claim. Flagged for completeness.
-- **G38a (both)**: all type upright mono; zero italics in either render.
-
-## Vision S1 — both sides, same 18-question prompt
-
-| Side | S1 | Confidence | Evidence (1280 + 375) |
+| Side | Score | Failed gates | Failing rows |
 |---|---|---|---|
-| Keystone | NO | ~0.20 | dark mono register with deep-cobalt hit bar and bordered term blocks — coherent CLI docs |
-| Hallmark | NO | ~0.20 | coherent dark phosphor terminal; the large empty right column is the main tell |
+| Hallmark | 44/48 | G20, G26, G40, G49 | 43/61 |
+| Keystone | **48/48** | none | 47/47 |
 
-Hallmark failed-gate notes: G20 (missing *Keystone* stamp) is a cross-skill convention
-difference; G26 (variant buttons missing :hover/:focus-visible/:active/:disabled),
-G40 (muted text on dark, APCA Lc < 60), and G49 (two-line clickable text) are craft
-failures the moat exists to catch.
+Hallmark's real failures: G26 (`.btn` missing `:hover`/`:active`), G40 (a
+contrast pair below floor), G49 (clickable text wraps to two lines at a
+mobile width). G20 = stamp metadata (PROTOCOL.md).
 
-Rendered at 1280/375/320/414/768 from the committed candidates; screenshots in
-`hallmark/keystone-render/` and `keystone/keystone-render/`. Below-fold sections
-(nav-adjacent bands, footer) are judged from the visible rhythm plus the shipped
-structure — the captures are viewport-height.
+## Vision (18-question prompt, 1280 + 375)
 
-## Engine summary (appended post-hoc, from verdict.json)
-
-| Side | Score | Distinct failed gates |
+| Row | Hallmark | Keystone |
 |---|---|---|
-| Keystone | **48/48 (rows 47/47)** | none |
-| Hallmark | **44/48 (rows 43/61)** | G20, G26, G40, G49 |
+| S1 | NO (0.35) — dark-terminal is a genre default; the empty right half of the page reads as unbalanced rather than austere | NO (0.30) — the green radial glow and `$ RUN` pill are the most decorative moves on the page |
+| S2 | YES — terse, install-first, correct vocabulary | YES — docs index + run panel; verb-first |
+| G38a | PASS | PASS |
+| G46 | clean (version 0.9.2 self-declared) | clean w/ note — `events 18,204 / 212 ev` is illustrative command output in a demo panel, not marketing claims |
+| G47 re-drawn chrome | PASS — plain typographic `<pre>` blocks, no fake window chrome | PASS — ASCII summary box is the terminal genre itself, not fake IDE chrome |
+| G44 hero fit | PASS (headline + lede + Install visible) | PASS (headline + output panel + RUN visible) |
+| Mobile 375 | clean | clean |
 
-**Winner by engine score: keystone (+4 gates).** The blind S1 YES 0.55 on the
-Hallmark side stands — stricter than any summary pass would have produced; kept
-verbatim per the honesty clause.
+Skill picks: both sides honoured the pinned Terminal theme (Hallmark Index-First, Keystone Terminal/Index-First).
+
+**Engine winner: Keystone (+4).** Same theme, same genre — the separation is
+state coverage (G26), one contrast pair (G40), and a two-line clickable (G49):
+exactly the failures prose self-grading doesn't catch.

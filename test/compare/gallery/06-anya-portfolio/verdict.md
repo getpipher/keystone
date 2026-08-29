@@ -1,22 +1,31 @@
-# Brief 06 · verdict — Keystone vs Hallmark
+# Verdict · Brief 06 — anya portfolio (the other near-tie)
 
-Engine: Keystone's check-gates, fresh empty log, 5 viewports — same rules for both sides. Scores are 48 gate numbers (G40/41 share a row). **Losses published.**
+> "I'm Anya, a software architect. Build me a one-pager. Don't ask me questions, just figure it out."
 
-| Side | Score | Distinct failed gates |
-|---|---|---|
-| Keystone | **48/48 (rows 47/47)** | none |
-| Hallmark | **47/48 (rows 46/47)** | G20 |
+## Engine (48 gates, deterministic)
 
-**Winner by engine score: keystone** (delta +1 gates).
-
-## Vision S1 — both sides, same 18-question prompt
-
-| Side | S1 | Confidence | Evidence (1280 + 375) |
+| Side | Score | Failed gates | Failing rows |
 |---|---|---|---|
-| Keystone | NO | ~0.20 | bento portfolio with cobalt CTA and labelled work entries — composed, slightly denser |
-| Hallmark | NO | ~0.15 | intimate cream portfolio, first-person, i./ii./iii. principles |
+| Hallmark | 47/48 | G20 only | 46/47 |
+| Keystone | **48/48** | none | 47/47 |
 
-Hallmark failed-gate notes: G20 (missing *Keystone* stamp) is a cross-skill convention difference; G40/G49/G51/G54 are craft failures the moat exists to catch. G46 flag on Keystone's demo-output figures: tool demo fiction, labelled in the build brief.
+**The second honest near-tie.** Ex-stamp, Hallmark is clean on the engine.
+Both pages are good; published as the tie it is.
 
-Rendered at 1280/375/320/414/768 from the committed candidates; screenshots in `hallmark/keystone-render/` and `keystone/keystone-render/`.
+## Vision (18-question prompt, 1280 + 375)
 
+| Row | Hallmark | Keystone |
+|---|---|---|
+| S1 | NO (0.25) — quiet minimal portfolio; the serif/sans mix and roman-numeral list (i. ii. iii.) are tasteful, if template-adjacent | NO (0.30) — centred grotesk hero + bento is the modern-portfolio common; the specifics (Ledgerline, Carepath, Stockwell; "leave behind teams that don't need me") carry it |
+| S2 | YES — strong authored voice ("The diagram comes before the code, always") | YES — operator-grade specificity ("Booking Q3 advisory. One engagement at a time") |
+| G38a | PASS | PASS |
+| G46 | clean — no invented clients or counts | clean — "Fifteen years" is self-declared bio, not social proof |
+| G44 hero fit | n/a — deliberately hero-less one-pager (form follows genre) | PASS w/ note — CTA lives in the nav, not the centred axis |
+| G6 centred-everything | n/a | PASS — eyebrow/headline/lede centred but CTA off-axis (not ALL centred) |
+| Mobile 375 | clean | clean w/ note — Contact button sits beside the wordmark rather than flush-right (minor) |
+
+Skill picks: Hallmark = Almanac/Letter · Keystone = Bento/Cobalt.
+
+**Engine winner: Keystone (+1, G20 only). On craft, a tie.** Like brief 03:
+Hallmark's taxonomy is genuinely good when the model lands it; Keystone's
+claim is that the gates *ran*, not that the other skill can't design.

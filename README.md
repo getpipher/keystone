@@ -91,12 +91,28 @@ every decision and verdict — including the honest ones. See
 
 The thesis is falsifiable: run the *same brief* through both skills, with the
 same model, no human intervention — then render and score both outputs with
-*our* engine, and ask the vision question of both screenshots. The harness
-ships in [`test/compare/`](test/compare/) (8 verbatim briefs from Hallmark's
-own MIT test suite); the runs and the public gallery land in Plan 5b.
+*our* engine, and ask the vision question of both screenshots. Executed
+2026-08-29 across 8 verbatim briefs from Hallmark's own MIT test suite —
+full conditions in [`test/compare/gallery/PROTOCOL.md`](test/compare/gallery/PROTOCOL.md),
+per-brief verdicts in [`test/compare/gallery/`](test/compare/gallery/).
 
-**The honesty clause:** if Hallmark beats Keystone on a brief, the gallery
-shows it. A rigged demo would destroy the very thing this project sells.
+| Metric (8 briefs, same model both sides) | Hallmark | Keystone |
+|---|---|---|
+| Engine score, average of 48 gates | 43.5 | **48.0** (48/48 × 8) |
+| Vision S1 "looks AI-generated?" (avg confidence) | 0.39 — 2/8 YES | **0.25 — 0/8 YES** |
+| Real gate failures the other side's flow couldn't see | 12 distinct gates / 28 instances | 0 |
+
+No brief was lost — but the two near-ties (03, 06) are published as ties, the
+S1 target for Hallmark (≥ 0.50) was NOT reached, and the headline margin
+(+4.5) missed the ≥5 target by half a gate, so 1.0.0 waits. What the run
+did prove is the moat: every Hallmark build shipped failures its prose
+"Step 7" could not see — and on brief 05 the page loads with a ⌘K palette
+stuck open over its own hero, which nobody who looked at the render even once
+would have shipped.
+
+**The honesty clause, kept:** the losses, the near-ties, and the missed
+targets are all in the gallery. A rigged demo would destroy the very thing
+this project sells.
 
 ## Status
 
@@ -106,7 +122,7 @@ shows it. A rigged demo would destroy the very thing this project sells.
 | Skill catalog | ✅ SKILL.md + 21 macros + 50 archetypes + 8 deep theme specs |
 | Audit verb | ✅ path + URL mode, SSRF guard, ranked punch list |
 | Examples | ✅ 5 builds, all 48/48, committed evidence |
-| Comparison gallery | 🔜 Plan 5b — harness shipped, runs pending |
+| Comparison gallery | ✅ executed 2026-08-29 — 8 briefs × 2 skills, scored + vision-passed, losses published |
 
 ## Development
 

@@ -1,0 +1,254 @@
+/* Keystone · macrostructure: Index-First · theme: Terminal · tone: technical-terse · anchor hue: 145 phosphor · nav: N8 · footer: Ft4 · gates: 48/48 engine-verified */
+:root[data-theme="terminal"] {
+  --color-paper:      oklch(13% 0.01 145);
+  --color-paper-2:    oklch(18% 0.012 145);
+  --color-ink:        oklch(92% 0.02 145);
+  --color-muted:      oklch(75% 0.015 145);
+  --color-rule:       oklch(30% 0.015 145);
+  --color-accent:     oklch(78% 0.20 145);   /* phosphor — the one signal */
+  --color-accent-ink: oklch(13% 0.01 145);
+  --color-focus:      oklch(78% 0.20 145);
+  --color-glow:       color-mix(in oklch, var(--color-accent) 18%, transparent);
+  --font-display:     "JetBrains Mono", monospace;
+  --font-body:        "JetBrains Mono", monospace;
+  --font-mono:        "JetBrains Mono", monospace;
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-md:   1.25rem;
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs:  0.5rem;
+  --space-sm:  0.75rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+  --z-glow: 400;
+  --page-gutter: clamp(1rem, 4vw, 1.5rem);
+}
+
+/* Global clip — horizontal scroll is a hard fail (G34) */
+html { overflow-x: clip; }
+body { overflow-x: clip; }
+
+body {
+  margin: 0;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── N8 · Terminal command nav ───────────────────────────── */
+.nav-term {
+  padding: var(--space-md) var(--page-gutter);
+  border-bottom: 1px solid var(--color-rule);
+}
+.nav-term__line {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.nav-term__line .prompt {
+  color: var(--color-accent);
+  padding-right: 0.4ch;
+}
+.nav-term__line a {
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+  transition: color var(--dur-micro) var(--ease-out);
+}
+.caret {
+  display: inline-block;
+  width: 1ch;
+  color: var(--color-accent);
+  animation: blink 1.05s steps(2) infinite;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* ── Command-as-hero (theme signature 3) ─────────────────── */
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-lg);
+  padding: var(--space-2xl) var(--page-gutter) var(--space-3xl);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+/* one phosphor bloom — fixed, background-only, no animation (G2/G23/G29 override) */
+.glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle at 30% 20%, var(--color-glow), transparent 60%);
+  z-index: var(--z-glow);
+}
+.cmd {
+  position: relative;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-md);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  color: var(--color-accent);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.out {
+  position: relative;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--color-muted);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.run {
+  position: relative;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--text-sm);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-accent-ink);
+  background-color: var(--color-accent);
+  border: none;
+  border-radius: 999px;
+  padding: var(--space-sm) var(--space-xl);
+  min-height: 44px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity var(--dur-micro) var(--ease-out);
+}
+
+/* ── Index-First intro + docs index ──────────────────────── */
+.intro {
+  margin: 0;
+  padding: var(--space-xl) var(--page-gutter) 0;
+  max-width: 62ch;
+  color: var(--color-muted);
+}
+.index {
+  padding: var(--space-xl) var(--page-gutter) var(--space-3xl);
+  max-width: 62ch;
+}
+.cat {
+  margin: var(--space-2xl) 0 var(--space-md);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  letter-spacing: 0.08em;
+  color: var(--color-ink);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.links li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-xs) var(--space-md);
+  padding-block: var(--space-sm);
+  border-top: 1px solid var(--color-rule);
+}
+.links li:first-child { border-top: 0; }
+.idx-link {
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+  transition: color var(--dur-micro) var(--ease-out);
+}
+.idx-desc {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+
+/* ── Link + button states (G26) ──────────────────────────── */
+.nav-term__line a:hover,
+.idx-link:hover {
+  color: var(--color-accent);
+}
+.nav-term__line a:focus-visible,
+.idx-link:focus-visible,
+.run:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+.nav-term__line a:active,
+.idx-link:active {
+  color: var(--color-muted);
+}
+.nav-term__line a:disabled,
+.idx-link:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.run:hover { opacity: 0.85; }
+.run:active { opacity: 0.7; }
+.run:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Ft4 · Dense typographic colophon ────────────────────── */
+.foot-dense {
+  padding: var(--space-2xl) var(--page-gutter);
+  border-top: 1px solid var(--color-rule);
+  background-color: var(--color-paper-2);
+}
+.foot-dense p {
+  margin: 0;
+  max-width: 62ch;
+  font-size: var(--text-xs);
+  line-height: 1.7;
+  color: var(--color-muted);
+}
+
+/* Mobile collapse — 40rem type breakpoint */
+@media (max-width: 40rem) {
+  .cmd {
+    font-size: var(--text-base);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+  .hero {
+    padding-block: var(--space-xl) var(--space-2xl);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+}
+
+/* Reduced motion — caret holds still (G27); the page itself is still (Index-First: reveal none) */
+@media (prefers-reduced-motion: reduce) {
+  .caret { animation: none; opacity: 1; }
+  .run { transition: none; }
+  *, *::before, *::after {
+    animation-duration: 150ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
+  }
+}

@@ -42,7 +42,7 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
   mkdirSync(outDir, { recursive: true })
   const browser = await chromium.launch({ headless: true })
   const screenshots: { width: number; path: string }[] = []
-  const computedPairs: { selector: string; color: string; backgroundColor: string }[] = []
+  const computedPairs: { selector: string; color: string; backgroundColor: string; width: number; height: number }[] = []
   const viewportMetrics: ViewportMetric[] = []
   let domSnapshot = ""
   let finalUrl = ""  // the URL Playwright ended on after redirects (first viewport's goto)
@@ -68,7 +68,7 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
     // don't exist in the browser page.evaluate context (ReferenceError: __name is
     // not defined). A raw JS string is not transpiled, so no __name is injected.
     // The `)` after the closing backtick closes page.evaluate(.
-    const metrics = await page.evaluate(`(() => {
+    const metrics = (await page.evaluate(`(() => {
       const rect = (el) => el ? { top: Math.round(el.getBoundingClientRect().top), bottom: Math.round(el.getBoundingClientRect().bottom) } : null
       const scrollWidth = document.documentElement.scrollWidth
       const innerWidth = window.innerWidth
@@ -88,7 +88,12 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
       const ctaEl = section ? section.querySelector("a[href], button") : null
       const cta = rect(ctaEl)
       return { scrollWidth, innerWidth, innerHeight, hero: { eyebrow, headline, lede, cta } }
-    })()`)
+    })()`)) as {
+      scrollWidth: number
+      innerWidth: number
+      innerHeight: number
+      hero: HeroRect | null
+    }
 
     // Hero is only meaningful at the 1280px pass; omit it from other viewports.
     const metric: ViewportMetric = {
@@ -104,7 +109,7 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
     // named inner functions, so the arrow-fn form does not trigger __name.
     if (w === 1280) {
       const pairs = await page.evaluate(() => {
-        const out = []
+        const out: { selector: string; color: string; backgroundColor: string; width: number; height: number }[] = []
         // body * skips <head> children (style/meta/title/link/script) — they have
         // no visible text but produce computed styles, which spuriously fail G40
         // contrast (APCA Lc 0 on transparent/empty pairs). Plan 1b-1 CF1.
@@ -117,7 +122,7 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
           // the body's page color). Without this, transparent bg → oklch(0 0 0)
           // (black) and every text-on-transparent pair spuriously fails contrast.
           let bg = cs.backgroundColor
-          let node = el
+          let node: Element | null = el
           while (bg === "transparent" || /,\s*0\)$/.test(bg)) {
             node = node.parentElement
             if (!node) break
@@ -148,7 +153,7 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
     // Plan 1b-2: clickable line-metrics for G49 (two-line clickable text). Additive.
     // Capture offsetHeight + lineHeight for buttons/CTAs/nav links at 1280 + 375.
     if (w === 1280 || w === 375) {
-      const clickables = await page.evaluate(`(() => {
+      const clickables = (await page.evaluate(`(() => {
         const sel = "button, a.btn, a.cta, [role=button], nav a"
         const out = []
         for (const el of document.querySelectorAll(sel)) {
@@ -156,7 +161,7 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
           out.push({ selector: el.tagName.toLowerCase() + (el.className ? "." + el.className.split(" ")[0] : ""), offsetHeight: el.offsetHeight, lineHeight: parseFloat(cs.lineHeight) || 0 })
         }
         return out
-      })()`)
+      })()`)) as { selector: string; offsetHeight: number; lineHeight: number }[]
       for (const c of clickables) clickableMetrics.push({ viewport: w, ...c })
     }
     await ctx.close()

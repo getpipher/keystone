@@ -1,0 +1,52 @@
+name: CI
+
+# Typecheck + every test suite, including the render-dependent ones (Chromium
+# is installed so the examples regression and the env-guarded CLI render tests
+# actually run — a "trust the gates" repo tests its render path on every push).
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Install Chromium (version-matched to playwright-core)
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Engine + gates
+        run: pnpm test
+
+      - name: Skill structural lint
+        run: pnpm test:lint
+
+      - name: Render extension
+        run: pnpm test:render
+        env:
+          KEYSTONE_RENDER_TEST: "1"
+
+      - name: Example regression (Tier 3)
+        run: pnpm test:examples
+        env:
+          KEYSTONE_RENDER_TEST: "1"
+
+      - name: Env-guarded CLI render tests
+        run: node --test test/engine/check-gates.test.mjs
+        env:
+          KEYSTONE_RENDER_TEST: "1"

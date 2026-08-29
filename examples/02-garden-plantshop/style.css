@@ -1,0 +1,532 @@
+/* Keystone · macrostructure: Long Document · tone: warm-editorial · anchor hue: 145 · gates: 48/48 engine-verified */
+/* Keystone · pre-emit critique: P5 H4 E5 S5 R5 V5 */
+
+/* — Garden tokens · editorial · light · chromatic-green (exported to tokens.css) —
+   Two steps of the one green: --color-accent (52%) draws hairline rules, link
+   underlines, and the focus ring; --color-accent-deep (38%) carries accent TEXT
+   so every text pair clears APCA Lc 60 (G40-41). Neutrals are tinted toward
+   120-145° (G22) and nothing is pure black or white (G7). */
+:root {
+  --color-paper: oklch(97% 0.015 120);
+  --color-paper-2: oklch(94% 0.02 120);
+  --color-paper-3: oklch(90% 0.025 120);
+  --color-ink: oklch(22% 0.015 140);
+  --color-ink-2: oklch(34% 0.02 140);
+  --color-accent: oklch(52% 0.13 145);
+  --color-accent-deep: oklch(38% 0.12 145);
+  --color-accent-ink: oklch(98% 0.01 120);
+  --color-focus: oklch(52% 0.13 145);
+  --font-display: "Newsreader", ui-serif, Georgia, serif;
+  --font-body: "Source Serif 4", ui-serif, Georgia, serif;
+  --font-mono: "IBM Plex Mono", monospace;
+  --space-3xs: 4px;
+  --space-2xs: 8px;
+  --space-xs: 12px;
+  --space-s: 16px;
+  --space-m: 24px;
+  --space-l: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --measure: 65ch;
+  --gutter: clamp(20px, 6vw, 64px);
+}
+
+/* — base — */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+  min-width: 0;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--color-accent-deep);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--color-accent) 45%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 160ms var(--ease-out), color 160ms var(--ease-out);
+}
+
+a:hover {
+  color: var(--color-ink);
+  text-decoration-color: var(--color-accent);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+a:active {
+  color: var(--color-ink-2);
+  text-decoration-color: var(--color-ink-2);
+}
+
+a:disabled,
+a[aria-disabled="true"] {
+  color: var(--color-ink-2);
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.skip-link {
+  position: absolute;
+  inset-inline-start: var(--gutter);
+  inset-block-start: calc(-1 * var(--space-3xl));
+  background: var(--color-paper);
+  border: 1px solid var(--color-accent);
+  padding: var(--space-3xs) var(--space-s);
+  z-index: 10;
+}
+
+.skip-link:focus-visible {
+  inset-block-start: var(--space-s);
+}
+
+/* — masthead · N6 — */
+.masthead-inner {
+  max-width: 60rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.masthead {
+  padding-block: var(--space-l) var(--space-s);
+  border-block-end: 1px solid color-mix(in oklch, var(--color-ink) 18%, transparent);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.masthead-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-l);
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-xl);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.masthead-day {
+  margin-inline-start: auto;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-2);
+}
+
+.masthead-links {
+  display: flex;
+  gap: var(--space-m);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.masthead-links a {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: 20px;
+  padding-block: var(--space-3xs);
+  text-underline-offset: 4px;
+}
+
+/* — the entry (Long Document) — */
+.entry {
+  max-width: calc(var(--measure) + 16rem);
+  margin-inline: auto;
+  padding-block: var(--space-2xl) var(--space-3xl);
+  padding-inline: var(--gutter);
+}
+
+.entry-head {
+  max-width: 50ch;
+  margin-block-end: var(--space-2xl);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-accent-deep);
+  margin-block-end: var(--space-s);
+}
+
+.entry-head h1 {
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  max-width: 20ch;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.entry-head .hl {
+  color: var(--color-accent-deep);
+}
+
+.lede {
+  max-width: 50ch;
+  margin-block-start: var(--space-m);
+  font-size: var(--text-lg);
+  line-height: 1.55;
+  color: var(--color-ink-2);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+/* the prose body: single column, 65ch, inline heads */
+.prose {
+  max-width: var(--measure);
+}
+
+.prose > * + * {
+  margin-block-start: var(--space-m);
+}
+
+.prose p {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.inline-head {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-xl);
+  line-height: 1.25;
+  margin-block-start: var(--space-2xl);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.prose a {
+  text-underline-offset: 3px;
+}
+
+.drop::first-letter {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 3.2em;
+  line-height: 0.82;
+  float: inline-start;
+  padding-inline-end: var(--space-2xs);
+  color: var(--color-accent-deep);
+}
+
+/* hairline accent rule between movements — the gap is the divider, the rule is the beat */
+.rule {
+  border: 0;
+  border-block-start: 1px solid color-mix(in oklch, var(--color-accent) 40%, transparent);
+  margin-block: var(--space-2xl);
+  width: 100%;
+  /* textless rule: drop the UA's gray color so the computed pair stays clean (G40) */
+  color: transparent;
+}
+
+/* the stock list: a botanical catalogue strip */
+.stock {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.stock caption {
+  text-align: start;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-2);
+  padding-block: var(--space-s);
+}
+
+.stock th,
+.stock td {
+  border-block-end: 1px solid color-mix(in oklch, var(--color-ink) 14%, transparent);
+  padding: var(--space-2xs) var(--space-s);
+  text-align: start;
+  vertical-align: baseline;
+}
+
+.stock thead th {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--color-ink-2);
+}
+
+.stock td {
+  color: var(--color-ink);
+}
+
+.stock .latin {
+  font-style: italic;
+  color: var(--color-ink-2);
+}
+
+.stock .price {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* marginalia: a mono side-note hung in the wide margin */
+.margin-note {
+  float: inline-end;
+  clear: inline-end;
+  width: 13rem;
+  margin-block: var(--space-2xs) var(--space-m);
+  margin-inline-end: -16rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.55;
+  color: var(--color-ink-2);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.margin-note::before {
+  content: "";
+  display: block;
+  width: var(--space-l);
+  border-block-start: 1px solid var(--color-accent);
+  margin-block-end: var(--space-2xs);
+}
+
+blockquote {
+  margin: 0;
+  padding-inline-start: var(--space-m);
+  border-inline-start: 2px solid var(--color-accent);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  line-height: 1.5;
+  color: var(--color-ink);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+blockquote cite {
+  display: block;
+  margin-block-start: var(--space-2xs);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-style: normal;
+  color: var(--color-ink-2);
+}
+
+/* the visit block: varied rhythm — paper-2 band, not another prose stretch */
+.visit {
+  max-width: none;
+  margin-block-start: var(--space-2xl);
+  background: var(--color-paper-2);
+  border-block: 1px solid color-mix(in oklch, var(--color-ink) 12%, transparent);
+  padding: var(--space-xl) var(--space-l);
+  display: grid;
+  gap: var(--space-s);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.visit h2 {
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.visit p {
+  max-width: 60ch;
+  color: var(--color-ink-2);
+}
+
+.hours {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: var(--color-ink);
+}
+
+/* — footer · Ft1 mast-headed — */
+.colophon-inner {
+  max-width: 60rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.colophon {
+  border-block-start: 1px solid color-mix(in oklch, var(--color-ink) 18%, transparent);
+  padding-block: var(--space-xl) var(--space-l);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.colophon-brand {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-xl);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.colophon-tag {
+  max-width: 48ch;
+  margin-block-start: var(--space-2xs);
+  color: var(--color-ink-2);
+}
+
+.colophon-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-m);
+  margin-block-start: var(--space-l);
+  padding-block-start: var(--space-m);
+  border-block-start: 1px solid color-mix(in oklch, var(--color-ink) 12%, transparent);
+}
+
+.colophon-row ul {
+  display: flex;
+  gap: var(--space-m);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.colophon-row a {
+  font-size: var(--text-sm);
+  line-height: 20px;
+}
+
+.colophon-fine {
+  margin-inline-start: auto;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  color: var(--color-ink-2);
+}
+
+/* — motion: Long Document is just there; only state transitions — */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* — responsive — */
+@media (max-width: 64rem) {
+  .margin-note {
+    float: none;
+    width: auto;
+    margin-inline-end: 0;
+    border-inline-start: 1px solid var(--color-accent);
+    padding-inline-start: var(--space-s);
+  }
+  .margin-note::before {
+    display: none;
+  }
+}
+
+@media (max-width: 40rem) {
+  .masthead-row {
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+  .masthead-day {
+    margin-inline-start: 0;
+    width: 100%;
+  }
+  .entry {
+    padding-inline: var(--gutter);
+  }
+  .stock {
+    display: block;
+    overflow-x: auto;
+  }
+  .visit {
+    padding: var(--space-l) var(--space-s);
+  }
+}

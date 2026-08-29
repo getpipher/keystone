@@ -1,0 +1,3 @@
+A: G6 F | G9 P | G29 P | G42 P | G43 P | G44 P | G45 P | G38a P | G30 P | G46 clean: "30 to 500 students" is supplied verbatim by the brief | G47 P | G35 P | G36 P | S1 NO 0.20 | S2 Feels like this brief — salon-room voice ("Run your course like a salon, not a system."), but the centred stack is the default landing shape.
+
+B: G6 P | G9 P | G29 P | G42 P | G43 P | G44 P | G45 P | G38a P | G30 P | G46 clean: "thirty to five hundred students" is supplied verbatim by the brief | G47 P | G35 P | G36 P | S1 NO 0.10 | S2 Feels like this brief — a fine-press letter ("Dear educator,") with no marketing stack at all: the salon room rendered as register, not claim.

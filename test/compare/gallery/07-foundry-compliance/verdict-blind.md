@@ -1,0 +1,3 @@
+A: G6 P | G9 P | G29 P | G42 P | G43 P | G44 P | G45 P | G38a P | G30 P | G46 clean: the demanded count renders as an honest em-dash placeholder ("number to confirm before launch") | G47 P | G35 P | G36 P | S1 NO 0.20 | S2 Feels like this brief — a two-column compliance SaaS: ink-filled review CTA, framework chips, connect/generate/collect cards.
+
+B: G6 P | G9 P | G29 P | G42 P | G43 P | G44 P | G45 P | G38a P | G30 P | G46 clean: the demanded count renders as an honest em-dash placeholder ("metric to confirm") beside "04 frameworks wired in" | G47 P | G35 P | G36 P | S1 NO 0.15 | S2 Feels like this brief — a stat-led compliance page: "Audit-ready is a state, not a season." over a labelled placeholder strip and numbered how-it-works steps.

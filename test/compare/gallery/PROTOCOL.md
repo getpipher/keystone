@@ -133,3 +133,8 @@ table with the note that ex-stamp Hallmark was clean there. Vision S1 came in
 BELOW the Hallmark ≥ 0.50 target (0.39) — published as measured. The criterion
 the thesis rests on — the moat check — passed with a wide margin. The overall
 verdict: 3 of 4 criterion-halves met; 1.0.0 NOT cut on this run.
+
+**Update 2026-08-30:** v1.0.0 was subsequently tagged on this measured result —
+the misses above stand as published and no metric was altered to reach the
+tag. The 1.0.0 criterion was API stability (engine, skill, CLI complete and
+green), not the marketing targets.

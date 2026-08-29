@@ -1,7 +1,7 @@
 ---
 name: keystone
 description: "Anti-AI-slop design skill with an executable gate engine. Use when building a new landing page or web page, auditing an existing site, or when the user invokes Keystone by name. Beats Hallmark by enforcing its gates with a real engine instead of imagining the render."
-version: 0.1.0
+version: 1.0.0
 ---
 
 # Keystone

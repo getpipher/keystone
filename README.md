@@ -124,6 +124,12 @@ this project sells.
 | Examples | ✅ 5 builds, all 48/48, committed evidence |
 | Comparison gallery | ✅ executed 2026-08-29 — 8 briefs × 2 skills, scored + vision-passed, losses published |
 
+**On the 1.0.0 tag:** it is cut on the measured result — the moat check passed
+decisively (the thesis), while the headline margin (+4.5 vs the ≥5 target) and
+the Hallmark-side S1 (0.39 vs ≥0.50) missed and stand published in the
+gallery. No metric was altered to reach the tag; 1.0.0 is the
+API-stability promise, not a claim that every marketing target was hit.
+
 ## Development
 
 ```bash

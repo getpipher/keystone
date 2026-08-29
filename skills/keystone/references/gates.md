@@ -291,7 +291,7 @@ modern-minimal, fail.
 The accent colour must not cover more than ~5% of any single viewport (count by area: solid fills,
 large headings in accent, full-bleed accent backgrounds).
 **Layer:** Deterministic
-**Checker:** `engine/gates/g23-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g23-accent-viewport.mjs` (shipped)
 **Genre note:** Atmospheric allows accent-tinted radial blooms covering up to ~20% of the canvas.
 **The check:** Computed-styles dump: sum the bounding-box area of all elements whose computed
 `color` or `background-color` matches the accent token. If total area > 5% of viewport area, fail.
@@ -302,7 +302,7 @@ filling surfaces.
 No padding/gap/margin that isn't on the named spacing scale (`--space-3xs` … `--space-5xl`,
 multiples of 4px). Arbitrary `padding: 17px` is a tell.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g24-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g24-off-scale-spacing.mjs` (shipped)
 **The check:** CSS parse: scan all `padding`, `gap`, `margin` declarations for px values not
 divisible by 4 or not referencing a `--space-*` token. Any match fails.
 **Fix:** Round to the nearest spacing-scale value or use the appropriate `--space-*` token.
@@ -311,7 +311,7 @@ divisible by 4 or not referencing a `--space-*` token. Any match fails.
 No prose container with `max-width` outside the 45–75ch range. Under 45ch is choppy, over 75ch
 loses the eye.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g25-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g25-prose-maxwidth.mjs` (shipped)
 **The check:** CSS parse: any element with `max-width` in `ch` units outside 45–75. If the element
 contains prose (paragraph, article body, lede), fail.
 **Fix:** Set `max-width: 65ch` for body prose, `max-width: 50ch` for ledes. Stay in the 45–75ch
@@ -332,7 +332,7 @@ disabled.
 No `transform`/`animation` keyframe that is NOT covered by a `@media (prefers-reduced-motion:
 reduce)` fallback. Every motion gets a reduced-motion alternative.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g27-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g27-reduced-motion.mjs` (shipped)
 **The check:** CSS parse: collect all `@keyframes` and `transition` declarations. Check for a
 `@media (prefers-reduced-motion: reduce)` block that neutralizes them. If any motion has no
 reduced-motion counterpart, fail.
@@ -345,7 +345,7 @@ transition: none !important; } }` or scope it per-element.
 If the page has a demo video, it must not autoplay with sound, lack a `poster`, lack
 `fetchpriority="high"`, or use `loading="lazy"` on the LCP element.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g28-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g28-lcp-video.mjs` (shipped)
 **The check:** DOM parse: any `<video>` element with `autoplay` + `muted` absent, no `poster`,
 or any `<img>` with `loading="lazy"` inside the hero section. Any match fails.
 **Fix:** Add `poster`, `fetchpriority="high"`, remove `loading="lazy"` from LCP, mute autoplay.
@@ -376,7 +376,7 @@ and lead with typography.
 No defaulting to a Lottie library when a hand-built SVG or pure-CSS shape would have worked. Lottie
 is last resort, not the default.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g31-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g31-lottie-default.mjs` (shipped)
 **The check:** DOM parse: any `<lottie-player>` or `lottie-viewer` element. If present, fail unless
 the brief explicitly calls for Lottie.
 **Fix:** Replace with a hand-built SVG or pure-CSS shape. Lottie is last resort.
@@ -396,7 +396,7 @@ knob. Two Bento Grids with `tiles=6, spans=irregular, accent=corner-only` are th
 No visual-only `<svg>`, custom-art `<div>`, `<canvas>`, or decorative figure lacking `aria-label`
 or `aria-hidden="true"`.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g33-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g33-decorative-aria.mjs` (shipped)
 **The check:** DOM parse: any `<svg>`, `<canvas>`, or decorative `<div>` (role="img" or class
 containing "art"/"decorative") that lacks both `aria-label` and `aria-hidden="true"`. Any match
 fails.
@@ -421,7 +421,7 @@ For every decorative effect on text — highlighter `<mark>`, `<em>` band, accen
 not at the baseline (which reads as a fat underline). Underlines must be 1–2px and offset 1–2px
 from the baseline.
 **Layer:** Det+Vis
-**Checker:** `engine/gates/g35-*.mjs` (Plan 1b — partial det for gradient position) + vision:
+**Checker:** `engine/gates/g35-text-effect-position.mjs` (shipped — partial det) + vision:
 `describe_image` Q13 (see § The vision pass)
 **The check:** Det: parse `linear-gradient` in `background-image` on text elements — check if the
 gradient band is positioned at the baseline vs behind the x-height. Vision: "highlighter band at
@@ -446,7 +446,7 @@ The page must not use more than three distinct `font-family` families. Count: `-
 family at different weights counts as one family. Mono counts as a family if used in any non-code
 context.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g37-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g37-three-fonts.mjs` (shipped)
 **The check:** CSS parse: collect all distinct `font-family` values. Count unique families
 (same family at different weights = one). If count > 3, fail. If mono is used outside code
 blocks, count it as a family.
@@ -456,7 +456,7 @@ blocks, count it as a family.
 The outlier face must not appear in more than two slots on the page. The outlier is a register,
 not a third surface — wordmark + hero stat is the canonical pair.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g38-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g38-outlier-slots.mjs` (shipped)
 **The check:** CSS parse: count selectors that reference `--font-outlier`. If count > 2, fail.
 **Fix:** Collapse the third outlier usage back to the body face. The outlier is wordmark + one
 other slot, no more.
@@ -481,7 +481,7 @@ border-width shifts between states; focus ring built from `border` instead of `o
 height ≠ adjacent button height; helper-text slot collapses when empty; disabled signalled by
 `opacity` alone.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g39-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g39-input-states.mjs` (shipped)
 **The check:** CSS parse: for each input/textarea/select selector, check all five conditions.
 Border-width must be constant across states. Focus ring must use `outline`. Input height must
 match adjacent button height. Helper-text must have `min-height: 1lh`. Disabled must use
@@ -612,7 +612,7 @@ existing token reference.
 No button label, primary nav link, footer link, tab label, breadcrumb, or CTA text wraps to two or
 more lines at any viewport between 320px and 1920px.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g49-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g49-two-line-clickable.mjs` (shipped)
 **The check:** Playwright per viewport: button/nav-link/CTA `offsetHeight` vs computed
 `line-height`. If `offsetHeight > line-height * 1.5` (approximately 2+ lines), fail.
 **Fix:** Shorten the label ("Get started free" → "Start free"), set `white-space: nowrap` on the
@@ -636,7 +636,7 @@ track.
 No element rendering display-size text (`h1`, `.hero__display`, `.section__title`) may lack
 `overflow-wrap: anywhere; min-width: 0`. Long hyphenated words overflow viewport without it.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g51-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g51-display-wrap.mjs` (shipped)
 **The check:** CSS parse: for each display-size selector, check for `overflow-wrap: anywhere` and
 `min-width: 0`. If either is missing, fail.
 **Fix:** Add `overflow-wrap: anywhere; min-width: 0` to all display-size elements.
@@ -645,7 +645,7 @@ No element rendering display-size text (`h1`, `.hero__display`, `.section__title
 When a theme overrides `.section__head { grid-template-columns: ... }` to anything other than `1fr`,
 it must also include a mobile-collapse rule at `@media (max-width: 48rem)` with matching specificity.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g52-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g52-section-head-collapse.mjs` (shipped)
 **The check:** CSS parse: collect all `.section__head` (or equivalent) rules with
 `grid-template-columns` ≠ `1fr`. Check for a corresponding `@media (max-width: 48rem)` rule that
 collapses to `1fr`. If missing, fail.
@@ -657,7 +657,7 @@ When implementing tab toggles via `<input type="radio">` + `:checked` selectors,
 either stay in normal document flow (no `position: absolute; top: 0`) or ship a JS handler that
 intercepts clicks with `{ preventScroll: true }`.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g53-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g53-radio-tabs-scroll.mjs` (shipped)
 **The check:** DOM + CSS parse: any `<input type="radio">` used for tab toggling with
 `position: absolute; top: 0` and no corresponding JS `preventDefault` / `preventScroll` handler.
 If found, fail.
@@ -684,7 +684,7 @@ No display-size element with both `text-transform: uppercase` AND `line-height` 
 Uppercase glyphs have no descenders — at line-height < 1.0, cap-tops of line N+1 collide with the
 baseline of line N when the title wraps.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g55-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g55-allcaps-lineheight.mjs` (shipped)
 **The check:** CSS parse: for any display-size element (`h1`, `h2`, `.hero__display`,
 `.section__title`, anything ≥ `--text-2xl`) with `text-transform: uppercase`, check `line-height`.
 If < 1.0, fail.
@@ -695,7 +695,7 @@ on the display element.
 No element with `position: sticky; top: 0` when a sticky page-level `<header>`/`<nav>` also exists
 at `top: 0`. Both stick to the viewport top and overlap — the deeper element paints over the nav.
 **Layer:** Deterministic
-**Checker:** `engine/gates/g56-*.mjs` (Plan 1b — detector pattern TBD)
+**Checker:** `engine/gates/g56-sticky-nav-overlap.mjs` (shipped)
 **The check:** CSS parse: collect all elements with `position: sticky; top: 0`. If more than one
 exists (and one is the page-level nav/header), fail. Check for a `--banner-height` offset on
 secondary sticky elements.

@@ -4,8 +4,9 @@
 // candidates were built is Plan 5b's protocol (see README.md in this directory).
 //
 // Candidate layout (per brief dir, both sides required):
-//   <candidates>/<NN-slug>/hallmark/{index.html, style.css[, tokens.css]}
-//   <candidates>/<NN-slug>/keystone/{index.html, style.css[, tokens.css]}
+//   <candidates>/<NN-slug>/hallmark/{index.html, style.css}
+//   <candidates>/<NN-slug>/keystone/{index.html, style.css}
+// (tokens live inlined in style.css; a separate tokens.css is not scored)
 //
 // Usage:
 //   node --import tsx test/compare/run-comparison.mjs --candidates <dir> --out <dir>

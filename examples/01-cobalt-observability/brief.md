@@ -114,7 +114,7 @@ Stamp filled in `style.css` line 1; `.keystone/log.json` seeded (gitignored).
 ## Self-audit
 
 `keystone audit` run on this directory after the build — see
-`keystone-audit-report.md` (44 audited gates · 4 N/A). Audit mode re-derives
+`keystone-audit-report.md` (43 audited gates · 4 N/A). Audit mode re-derives
 everything from the committed files, which is the point: the evidence in this
 directory is the whole input.
 

@@ -21,6 +21,7 @@ Per the curated-rewrite policy in Keystone's design spec:
     Playwright render extension, the 8 deep theme specifications, and the
     engine-verified Step 7 loop are Keystone's original contribution.
 
-Hallmark's MIT license is preserved at /tmp/hallmark/LICENSE and acknowledged
-here with thanks. See README § "How Keystone relates to Hallmark" for the
+Hallmark's MIT license is preserved in the upstream repository
+(https://github.com/Nutlope/hallmark/blob/main/LICENSE) and acknowledged here
+with thanks. See the README section "How Keystone relates to Hallmark" for the
 full relationship.

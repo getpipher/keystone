@@ -21,3 +21,7 @@ RAW DATA: ./keystone-audit/{computed.json, dom.html, viewports.json, clickable.j
 | S3 | Two Keystone pages, different sites? | judged across the example set — see examples/README.md |
 | G38a | Italic headers | **PASS** — all headings roman |
 | G46 | Invented metrics | **FLAG (accepted)** — p99/retention/regions/prices are the fictional product's own consistent spec; no social-proof fabrication (no customer counts, logos, testimonials, uptime claims) |
+
+> Note: the raw audit data (`keystone-audit/` — computed pairs, DOM snapshot,
+> per-viewport clickables) is intentionally not committed; regenerate it with
+> `node engine/keystone.mjs audit examples/01-cobalt-observability --out .`

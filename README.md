@@ -87,7 +87,7 @@ five viewport screenshots the vision pass judged, and a `brief.md` recording
 every decision and verdict — including the honest ones. See
 [examples/README.md](examples/README.md).
 
-## The comparison story
+## How Keystone relates to Hallmark
 
 The thesis is falsifiable: run the *same brief* through both skills, with the
 same model, no human intervention — then render and score both outputs with
@@ -102,7 +102,7 @@ shows it. A rigged demo would destroy the very thing this project sells.
 
 | Layer | State |
 |---|---|
-| Engine | ✅ complete — 46 detectors / 48 gate numbers, 273 tests |
+| Engine | ✅ complete — 46 detectors / 48 gate numbers, 275 tests |
 | Skill catalog | ✅ SKILL.md + 21 macros + 50 archetypes + 8 deep theme specs |
 | Audit verb | ✅ path + URL mode, SSRF guard, ranked punch list |
 | Examples | ✅ 5 builds, all 48/48, committed evidence |

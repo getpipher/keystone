@@ -14,7 +14,10 @@ import { execFileSync } from "node:child_process"
 const ROOT = join(import.meta.dirname, "..")
 const slugs = readdirSync(join(ROOT, "examples")).filter((d) => /^\d{2}-/.test(d)).sort()
 
+const cache = new Map()
+
 function score(slug) {
+  if (cache.has(slug)) return cache.get(slug)
   const dir = join(ROOT, "examples", slug)
   assert.ok(existsSync(join(dir, "index.html")), `${slug}: index.html missing`)
   assert.ok(existsSync(join(dir, "style.css")), `${slug}: style.css missing`)
@@ -30,7 +33,9 @@ function score(slug) {
     ],
     { cwd: ROOT },
   )
-  return JSON.parse(readFileSync(join(out, "keystone-report.json"), "utf8"))
+  const report = JSON.parse(readFileSync(join(out, "keystone-report.json"), "utf8"))
+  cache.set(slug, report)
+  return report
 }
 
 function failedGates(report) {

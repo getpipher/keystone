@@ -67,8 +67,10 @@ jobs:
 
       # Keep GitHub Releases in sync with npm: create a release for the tag
       # (auto-generated notes). Idempotent — skips if the release already exists.
+      # Tag-guarded: on workflow_dispatch, GITHUB_REF_NAME is a branch, and
+      # creating a "release" for it would mint a bogus git tag.
       - name: Create GitHub Release
-        if: success()
+        if: success() && startsWith(github.ref, 'refs/tags/')
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

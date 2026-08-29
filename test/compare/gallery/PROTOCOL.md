@@ -110,6 +110,21 @@ light SaaS trace panel, portfolio bento, blue compliance page, a letter).
 Hallmark: mostly — but 4 of 8 pages share the cream-editorial serif register
 and 2 of 2 SaaS briefs landed on the same minimal-grotesk register.
 
+## Parallel blind-judge lanes — disclosure
+
+The run was executed by parallel autonomous lanes in one shared checkout (the
+session's background-result pipeline stalled, so lanes recorded their work as
+commits). Surviving independent records: `verdict-blind.md` for all 8 briefs —
+01/02 recovered from the lanes' earlier commits after a working-tree clobber,
+re-filed as companions. Cross-check against the controller's per-brief
+verdicts: both found 05-A's stuck palette (G44 FAIL, S1 YES), both found the
+03/06 near-ties, and the blind lane found 08-A's centred-everything stack
+(G6 FAIL) matching the engine. One recorded divergence on brief 06 (keystone
+S1: first judge NO 0.30, second judge YES 0.45) is preserved in 06's
+verdict.md rather than resolved by authority. Governance note: a lane merged
+the branch and pushed to master directly, bypassing the planned PR — branch
+protection on this repo is recommended before the next multi-agent run.
+
 ## Honesty clause
 
 Losses are published. On the engine score there were none to publish — the

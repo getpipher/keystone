@@ -192,7 +192,7 @@ export default function (pi: any) {
       viewports: { type: "array", items: { type: "number" }, description: "CSS pixel widths to screenshot", default: [1280, 375, 320, 414, 768] },
       outDir: { type: "string", description: "Directory to write outputs", default: "./keystone-render" },
     },
-    async run(input: RenderInput) {
+    async execute(_toolCallId: string, input: RenderInput) {
       return render(input)
     },
   })

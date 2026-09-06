@@ -1,5 +1,7 @@
 // extensions/render.ts
 import { chromium } from "playwright-core"
+import { Type } from "typebox"
+
 import { pathToFileURL } from "node:url"
 import { writeFileSync, mkdirSync } from "node:fs"
 import { join } from "node:path"
@@ -186,14 +188,15 @@ export default function (pi: any) {
   pi.registerTool({
     name: "keystone_render",
     description: "Render an HTML file with headless Chromium at given viewports. Returns screenshots + computed styles + DOM snapshot for the Keystone gate engine.",
-    parameters: {
-      htmlPath: { type: "string", description: "Absolute path to the HTML file to render" },
-      url: { type: "string", description: "Optional live URL to render instead of htmlPath (audit URL mode). If set, htmlPath is ignored." },
-      viewports: { type: "array", items: { type: "number" }, description: "CSS pixel widths to screenshot", default: [1280, 375, 320, 414, 768] },
-      outDir: { type: "string", description: "Directory to write outputs", default: "./keystone-render" },
-    },
+    parameters: Type.Object({
+      htmlPath: Type.String({ description: "Absolute path to the HTML file to render" }),
+      url: Type.Optional(Type.String({ description: "Optional live URL to render instead of htmlPath (audit URL mode). If set, htmlPath is ignored." })),
+      viewports: Type.Optional(Type.Array(Type.Number({ description: "CSS pixel widths to screenshot" }))),
+      outDir: Type.Optional(Type.String({ description: "Directory to write outputs" })),
+    }),
     async execute(_toolCallId: string, input: RenderInput) {
-      return render(input)
+      const result = await render(input)
+      return { content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }], details: result }
     },
   })
 }

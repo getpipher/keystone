@@ -1,11 +1,31 @@
 // extensions/render.ts
-import { chromium } from "playwright-core"
+// NOTE: playwright-core must not be referenced in ANY static import — not
+// even `import type`. omp's guarded extension loader preloads every import
+// specifier it sees at load time; the ~9 MB graph cost ~20 s per startup (#21).
+// Types flow via inference from the dynamic import below.
 import { Type } from "typebox"
 
 import { pathToFileURL } from "node:url"
 import { writeFileSync, mkdirSync } from "node:fs"
 import { join } from "node:path"
 import { toOklchString } from "../engine/color.mjs"
+// Memoized lazy loader. The `ReturnType`-derived annotation is deliberate:
+// naming a concrete type would require a static playwright-core import,
+// which omp's loader forbids here (#21) — this stays module-private.
+let cachedChromium: Awaited<ReturnType<typeof loadChromium>> | undefined
+async function loadChromium() {
+  // Indirected specifier: omp's guarded loader preloads every statically
+  // resolvable import — including dynamic import() literals — at startup
+  // (#21). Assembling the name at runtime keeps the ~9 MB graph out of the
+  // preload set; it loads once, on first actual render.
+  const spec = ["playwright", "-core"].join("")
+  const mod = await import(spec)
+  return mod.chromium
+}
+async function getChromium() {
+  cachedChromium ??= await loadChromium()
+  return cachedChromium
+}
 
 interface RenderInput {
   htmlPath: string
@@ -42,7 +62,7 @@ export async function render(input: RenderInput): Promise<RenderOutput> {
   const viewports = input.viewports ?? [1280, 375, 320, 414, 768]
   const outDir = input.outDir ?? "./keystone-render"
   mkdirSync(outDir, { recursive: true })
-  const browser = await chromium.launch({ headless: true })
+  const browser = await (await getChromium()).launch({ headless: true })
   const screenshots: { width: number; path: string }[] = []
   const computedPairs: { selector: string; color: string; backgroundColor: string; width: number; height: number }[] = []
   const viewportMetrics: ViewportMetric[] = []

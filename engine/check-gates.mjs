@@ -40,23 +40,20 @@ if (args.log) {
 }
 
 async function main() {
-  // --render: bootstrap the TS render extension via tsx, run Chromium
+  // --render: run headless Chromium via the playwright driver (child process —
+  // no omp extension-loader involvement; v1.1.0 dropped the tsx bootstrap).
   if (args.render) {
-    let renderModule
+    let render
     try {
-      const { tsImport } = await import("tsx/esm/api")
-      // check-gates.mjs lives in engine/, so resolve UP to the repo root's extensions/
-      renderModule = await tsImport(new URL("../extensions/render.ts", import.meta.url).href, import.meta.url)
+      ;({ render } = await import("./render.mjs"))
     } catch (e) {
-      // Log the real error so a path/config issue isn't masked as a missing-tsx message.
-      console.error("--render failed to load the render extension:", e instanceof Error ? e.message : String(e))
-      console.error("(requires the tsx runtime — run via pi, or: npm i tsx)")
+      console.error("--render failed to load the render engine:", e instanceof Error ? e.message : String(e))
       process.exit(1)
     }
 
     let out2
     try {
-      out2 = await renderModule.render({
+      out2 = await render({
         htmlPath: args.html,
         viewports: viewportsArg,
         outDir: join(out, "keystone-render"),

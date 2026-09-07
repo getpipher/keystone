@@ -31,7 +31,7 @@ avoid repeating the same weakness.
 
 ## The vision pass — the 18-question prompt
 
-Step 7.2 renders the page via `keystone_render({ htmlPath, viewports: [1280, 375] })` then calls `describe_image({ image_paths: [<1280.png>, <375.png>], prompt: <below> })`. The vision model answers each gate PASS or FAIL with one-sentence evidence, for both desktop (1280) and mobile (375).
+Step 7.2 renders the page at [1280, 375] (via the host render path — the `keystone_render` tool on pi, or `engine/render-omp.mjs` imported from omp's eval kernel; see SKILL.md § 7.2) then calls `describe_image({ image_paths: [<1280.png>, <375.png>], prompt: <below> })`. The vision model answers each gate PASS or FAIL with one-sentence evidence, for both desktop (1280) and mobile (375).
 
 ```
 You are a design critic. For each gate, answer PASS or FAIL with one-sentence evidence.

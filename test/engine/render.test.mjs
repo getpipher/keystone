@@ -1,10 +1,12 @@
-// test/extensions/render.test.mjs
+// test/engine/render.test.mjs — render() over the playwright driver (real
+// headless Chromium). Ported from test/extensions/render.test.mjs (v1.0.x)
+// when render() moved to engine/render.mjs. Runs via `pnpm test:render`.
 import { test } from "node:test"
 import assert from "node:assert/strict"
 import { writeFileSync, mkdtempSync, readFileSync, existsSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
-import { render } from "../../extensions/render.ts" // via tsx or compiled
+import { render } from "../../engine/render.mjs"
 
 test("render produces screenshots at 2 viewports", async () => {
   const dir = mkdtempSync(join(tmpdir(), "keystone-render-"))
@@ -45,6 +47,7 @@ test("render url mode: goto a file:// URL of a fixture (audit URL-mode branch)",
   assert.ok(existsSync(out.computedStylesPath))
   const computed = JSON.parse(readFileSync(out.computedStylesPath, "utf8"))
   assert.ok(computed.length > 0, "url-mode render still dumps computed pairs")
+  assert.equal(out.finalUrl, fileUrl, "finalUrl reflects the navigated URL")
 })
 
 test("render emits viewportMetrics + oklch computed pairs", async () => {
@@ -72,4 +75,7 @@ test("render emits viewportMetrics + oklch computed pairs", async () => {
   assert.ok(existsSync(join(dir, "viewports.json")))
   // Plan 1b-2: computed pairs carry bounding-box width/height (for G23 accent-area).
   assert.ok(typeof computed[0].width === "number" && typeof computed[0].height === "number", "pairs have width/height")
+  // Plan 1b-2: clickable metrics captured at 1280 + 375 (G49).
+  assert.ok(out.clickableMetrics.length > 0, "cta captured as clickable")
+  assert.deepEqual([...new Set(out.clickableMetrics.map(c => c.viewport))].sort((a, b) => a - b), [375, 1280])
 })

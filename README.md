@@ -27,8 +27,9 @@ never sees the page.
 pi install npm:@getpipher/keystone
 ```
 
-Exposes the `keystone` skill (Build + Audit verbs) and the `keystone_render`
-tool in one pi package.
+Exposes the `keystone` skill (Build + Audit verbs) and the render layer in one
+package: the `keystone_render` tool on pi hosts, omp's built-in browser on omp
+(eval-kernel import — no bundled Chromium driver), and `--render` CLI mode.
 
 ## What you get
 

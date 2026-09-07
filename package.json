@@ -1,6 +1,6 @@
 {
   "name": "@getpipher/keystone",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Anti-AI-slop design skill with an executable gate engine. Beats Hallmark by enforcing its gates instead of imagining them.",
   "keywords": [
     "pi-package",
@@ -40,15 +40,14 @@
     "test": "node --test test/engine/*.mjs test/engine/gates/*.mjs",
     "test:run": "node --test --test-reporter=spec test/engine/*.mjs test/engine/gates/*.mjs",
     "test:lint": "node --test test/lint-skill.mjs",
-    "test:render": "node --import tsx --test test/extensions/render.test.mjs",
+    "test:render": "node --test test/engine/render.test.mjs",
     "test:examples": "node --test test/examples.test.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "linkedom": "^0.18.13",
     "playwright-core": "1.62.0",
-    "postcss": "^8.5.23",
-    "tsx": "^4.23.1"
+    "postcss": "^8.5.23"
   },
   "devDependencies": {
     "@types/node": "^24.13.3",

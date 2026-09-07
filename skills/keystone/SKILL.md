@@ -163,9 +163,13 @@ Always:
   **Cap: 3 deterministic iterations.** (Fast path: drop `--render` to run only the 11 source-only gates between full renders — cheaper iteration for pure-token fixes.)
 
 - **7.2 VISION PASS**
-  `keystone_render({ htmlPath, viewports: [1280, 375] })` → `describe_image({ image_paths: [<1280.png>, <375.png>], prompt: <the 18-question prompt from gates.md § The vision pass> })`.
+  Render at **[1280, 375]** for the vision model, then `describe_image({ image_paths: [<1280.png>, <375.png>], prompt: <the 18-question prompt from gates.md § The vision pass> })`.
+  - **omp host** (no `keystone_render` tool — the extension skips registration there): render via the eval kernel with omp's built-in browser — one import, never author render code yourself:
+    `const { render } = await import(`${HOME}/.omp/plugins/node_modules/@getpipher/keystone/engine/render-omp.mjs`)` (if that path doesn't exist, locate `engine/render-omp.mjs` inside the installed `@getpipher/keystone` package or the repo, then `await render({ htmlPath, viewports: [1280, 375], outDir: "./keystone-render" })`).
+  - **pi host**: call the tool — `keystone_render({ htmlPath, viewports: [1280, 375] })`.
   Read each verdict. Any FAIL (except G46, which flags rather than auto-fails) → apply the fix, re-render, re-vision.
   **Cap: 2 vision iterations.** S1 (*"does this look AI-generated?"*) is the thesis gate Hallmark cannot ask.
+
 
 - **7.3 RESOLUTION**
   - 58/58 pass → preview row: `Slop test · 58/58 ✓ (engine-verified) — ./keystone-report.html`

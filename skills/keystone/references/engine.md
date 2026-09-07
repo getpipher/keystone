@@ -2,7 +2,7 @@
 
 How the executable gate engine works. The model reads this to orchestrate
 Step 7 (the engine-verified slop test). For the gate definitions themselves,
-see gates.md. For the render extension, see the render tool.
+see gates.md. For the render layer, see § The render layer below.
 
 ## Three tiers (recap)
 
@@ -10,7 +10,7 @@ see gates.md. For the render extension, see the render tool.
 |---|---|---|---|
 | Skill | rule-set, catalog, gate definitions | skills/keystone/ | the model reads it |
 | Engine | deterministic gate checkers (math + DOM + CSS parse) | engine/ | `node engine/check-gates.mjs` (bash) |
-| Extension | headless render + screenshot + computed-styles dump | extensions/render.ts | the `keystone_render` tool |
+| Render | headless render + screenshot + computed-styles dump | engine/render-core.mjs + drivers | `keystone_render` tool (pi) · eval-kernel import (omp) · CLI `--render` |
 
 ## The deterministic gates (Phase 1 — shipped)
 
@@ -53,8 +53,9 @@ Flags:
 - `--out` — output directory (default: `.`)
 - `--log` — path to `.keystone/log.json`; feeds G8/G32 (diversification)
   the prior macrostructure log so reuse is detected
-- `--render` — runs headless Chromium via the render extension; without it
-  only the 11 CSS/HTML-only gates run (G34/G44/G40-41 need the render dump)
+- `--render` — runs headless Chromium via the playwright driver (child
+  process); without it only the 11 CSS/HTML-only gates run
+  (G34/G44/G40-41 need the render dump)
 - `--viewports` — csv CSS pixel widths (default: `1280,375,320,414,768`
   when `--render` is set; `[]` otherwise)
 
@@ -80,19 +81,27 @@ Each detector is a pure function `(ctx: DetectorContext) => GateResult[]`
 (or single `GateResult`). Detectors use `pass(gate, name)` and
 `fail(gate, name, evidence, fix, file?, line?)` from `engine/types.mjs`.
 
-## The render extension
+## The render layer
+
+One flow — `engine/render-core.mjs` — behind three drivers:
+
+| Driver | File | Used by |
+|---|---|---|
+| playwright-core (lazy import) | `engine/driver-playwright.mjs` | the CLI (`--render`, audit) and the `keystone_render` pi extension tool |
+| omp built-in browser | `engine/driver-omp-native.mjs` | omp hosts — imported from omp's eval kernel as `engine/render-omp.mjs` |
 
 ```
-keystone_render({ htmlPath, viewports?: [1280, 375, 320, 414, 768], outDir?: string })
-  -> { screenshots: [{ width, path }], computedStylesPath, domSnapshotPath, viewportMetrics }
+render({ htmlPath, url?, viewports?: [1280, 375, 320, 414, 768], outDir?: string })
+  -> { screenshots: [{ width, path }], computedStylesPath, domSnapshotPath, viewportMetrics, finalUrl, clickableMetrics }
 ```
 
-Headless Chromium (via `playwright-core`) at exact CSS px widths. Returns
-screenshot paths + a computed-styles JSON dump (`computed.json` — up to 200
-`{ selector, color, backgroundColor }` pairs from the 1280px pass, converted
-to canonical OKLCH strings via `engine/color.mjs`) + a DOM snapshot
-(`dom.html`) + `viewportMetrics` (one per viewport: `{ width, scrollWidth,
-innerWidth, innerHeight, hero? }`).
+Headless Chromium at exact CSS px widths. Returns screenshot paths + a
+computed-styles JSON dump (`computed.json` — up to 200
+`{ selector, color, backgroundColor, width, height }` pairs from the 1280px
+pass, converted to canonical OKLCH strings via `engine/color.mjs`) + a DOM
+snapshot (`dom.html`) + `viewportMetrics` (one per viewport: `{ width,
+scrollWidth, innerWidth, innerHeight, hero? }`) + `clickable.json` (G49
+line-metrics at 1280 + 375) + `finalUrl` (post-redirect, audit re-check).
 
 `viewports.json` is written to `outDir` with the full `viewportMetrics`
 array. The `hero` object is captured only at the 1280px pass (omitted from
@@ -102,15 +111,19 @@ headline; preceding short-text sibling (`<p>/<span>/<div>/<small>/<b>` with
 following `<p>` = lede; first `<a[href]>`/`<button>` in nearest
 `section/header/article/main` ancestor = cta. No `<h1>` → hero null.
 
-The extension is thin on purpose: rare updates when gates change.
+Host routing (v1.1.0): the extension registers `keystone_render` on pi only —
+omp's extension runtime has no browser API (can1357/oh-my-pi#11091), so on omp
+the skill imports `engine/render-omp.mjs` from the eval kernel and renders via
+omp's built-in browser. No playwright-core is loaded on the omp path.
 
 ## The iterate-until-pass loop (Step 7)
 
 7.1 DETERMINISTIC — run `check-gates.mjs`. If any Det gate FAILs, read the
     fix suggestions, apply, re-emit, re-run. Cap: 3 iterations.
-7.2 VISION — `keystone_render` at [1280, 375], then `describe_image` with the
-    18 vision-gate questions. If any Vis gate FAILs, fix, re-render, re-vision.
-    Cap: 2 iterations. (Plan 3.)
+7.2 VISION — render at [1280, 375] (`keystone_render` tool on pi;
+    `engine/render-omp.mjs` via the eval kernel on omp — SKILL.md § 7.2),
+    then `describe_image` with the 18 vision-gate questions. If any Vis gate
+    FAILs, fix, re-render, re-vision. Cap: 2 iterations. (Plan 3.)
 7.3 RESOLUTION — 58/58 → "58/58 (engine-verified) — ./keystone-report.html".
     Failures remain → "N/58 — fails: <#s> (engine-verified)". Ship with
     declared failures, never silently claim pass.
@@ -161,13 +174,12 @@ engine does NOT call vision.
 
 ## Plan-3 wiring (shipped)
 
-- **RGB→OKLCH** — the render extension emits OKLCH into `computed.json`
-  (boundary); `engine/color.mjs` `lightnessOf` accepts oklch/rgb/hex so
-  G40-41 scores any computed pair.
+- **RGB→OKLCH** — the render layer emits OKLCH into `computed.json`
+- **Vision pass** — protocol-level: the model renders (host path: the
+  `keystone_render` tool on pi, `engine/render-omp.mjs` eval import on omp)
+  then calls `describe_image` with the 18-question prompt
+  (gates.md § The vision pass). The engine does not call vision.
 - **CLI flags** — `--render`/`--viewports`/`--log` ship the full 13-detector
   suite end-to-end.
 - **ctx mutation** — `orchestrate()` is non-mutating; fresh ctx per iteration
   is the caller's default.
-- **Vision pass** — protocol-level: the model calls `keystone_render` then
-  `describe_image` with the 18-question prompt (gates.md § The vision pass).
-  The engine does not call vision.

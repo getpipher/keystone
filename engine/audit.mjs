@@ -236,11 +236,9 @@ async function main() {
 
 async function loadRender() {
   try {
-    const { tsImport } = await import("tsx/esm/api")
-    return await tsImport(new URL("../extensions/render.ts", import.meta.url).href, import.meta.url)
+    return await import("./render.mjs")
   } catch (e) {
-    console.error("audit: failed to load the render extension:", e instanceof Error ? e.message : String(e))
-    console.error("(requires the tsx runtime — run via pi, or: npm i tsx)")
+    console.error("audit: failed to load the render engine:", e instanceof Error ? e.message : String(e))
     process.exit(1)
   }
 }

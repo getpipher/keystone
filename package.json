@@ -40,7 +40,7 @@
     "test": "node --test test/engine/*.mjs test/engine/gates/*.mjs",
     "test:run": "node --test --test-reporter=spec test/engine/*.mjs test/engine/gates/*.mjs",
     "test:lint": "node --test test/lint-skill.mjs",
-    "test:render": "node --test test/engine/render.test.mjs",
+    "test:render": "node --test test/render/render.test.mjs",
     "test:examples": "node --test test/examples.test.mjs",
     "typecheck": "tsc --noEmit"
   },
